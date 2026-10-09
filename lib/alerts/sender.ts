@@ -6,6 +6,7 @@ import { randomUUID } from "node:crypto";
 
 import { devSignInEnabled } from "../auth/dev";
 import { maskContact } from "./contact";
+import { sesSender } from "./ses-sender";
 
 export interface OutgoingMessage {
   to: string;
@@ -52,9 +53,9 @@ export function logSender(channel: "email" | "sms"): AlertSender & { last: Map<s
 const globalForSenders = globalThis as typeof globalThis & { __alertSenders?: Senders & { devLog?: ReturnType<typeof logSender>[] } };
 
 /**
- * The app's senders. With local dev sign-in on, both channels log only.
- * Otherwise nothing is available until a provider is configured, and sign-up
- * says alerts start later.
+ * The app's senders. With local dev sign-in on, both channels log only. In
+ * AWS, email goes through SES (ALERTS_EMAIL=ses). Otherwise nothing is
+ * available, and sign-up says alerts start later.
  */
 export function appSenders(): Senders {
   if (!globalForSenders.__alertSenders) {
@@ -62,6 +63,12 @@ export function appSenders(): Senders {
       const email = logSender("email");
       const sms = logSender("sms");
       globalForSenders.__alertSenders = { email, sms, devLog: [email, sms] };
+    } else if (process.env.ALERTS_EMAIL === "ses" && process.env.ALERTS_EMAIL_FROM) {
+      // Texting waits for a provider (QUESTIONS 27).
+      globalForSenders.__alertSenders = {
+        email: sesSender({ from: process.env.ALERTS_EMAIL_FROM, configurationSet: process.env.SES_CONFIGURATION_SET }),
+        sms: null,
+      };
     } else {
       globalForSenders.__alertSenders = { email: null, sms: null };
     }

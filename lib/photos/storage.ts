@@ -4,6 +4,8 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve, sep } from "node:path";
 
+import { s3PhotoStorage } from "./s3-storage";
+
 export interface PhotoStorage {
   put(key: string, data: Buffer): Promise<void>;
   get(key: string): Promise<Buffer | null>;
@@ -12,7 +14,7 @@ export interface PhotoStorage {
 }
 
 /** Keys are short relative paths like "p/<uuid>/thumb.webp". Nothing else. */
-function checkKey(key: string): string {
+export function checkKey(key: string): string {
   if (!/^[a-z0-9][a-z0-9._-]*(\/[a-z0-9][a-z0-9._-]*)*\/?$/i.test(key) || key.split("/").includes("..")) {
     throw new Error(`Bad storage key: ${JSON.stringify(key)}`);
   }
@@ -65,8 +67,19 @@ export function localPhotoStorage(root: string): PhotoStorage {
 
 const globalForStorage = globalThis as typeof globalThis & { __photoStorage?: PhotoStorage };
 
-/** The app's photo storage: PHOTO_STORAGE_DIR, or .data/photos in the project (git-ignored). */
+/**
+ * The app's photo storage: the S3 bucket in AWS (PHOTO_STORAGE=s3,
+ * PHOTO_BUCKET), otherwise PHOTO_STORAGE_DIR or .data/photos (git-ignored).
+ */
 export function photoStorage(): PhotoStorage {
-  globalForStorage.__photoStorage ??= localPhotoStorage(process.env.PHOTO_STORAGE_DIR ?? join(process.cwd(), ".data", "photos"));
+  if (!globalForStorage.__photoStorage) {
+    if (process.env.PHOTO_STORAGE === "s3") {
+      const bucket = process.env.PHOTO_BUCKET;
+      if (!bucket) throw new Error("PHOTO_STORAGE=s3 needs PHOTO_BUCKET");
+      globalForStorage.__photoStorage = s3PhotoStorage(bucket);
+    } else {
+      globalForStorage.__photoStorage = localPhotoStorage(process.env.PHOTO_STORAGE_DIR ?? join(process.cwd(), ".data", "photos"));
+    }
+  }
   return globalForStorage.__photoStorage;
 }

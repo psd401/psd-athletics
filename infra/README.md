@@ -40,9 +40,19 @@ The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn'
 5. Request SES production access for the account. New accounts can only send to verified addresses.
 6. Push a first image tagged `bootstrap`, or set `image_tag`, then run migrations as a one-off task (`bun run db:migrate`) with the `app_subnets` and `app_security_group` outputs.
 
-## Still needed in the app before it can run here
+## The app side
 
-These come in the next PR: a `Dockerfile` (Next.js standalone on bun, ARM64, user 1000), `GET /api/health` (the target group's health check), the S3 photo storage adapter (`PHOTO_STORAGE=s3`), the SES alert sender (`ALERTS_EMAIL=ses`), and connecting to Postgres from `DATABASE_HOST`/`DATABASE_SECRET_ARN` with the password read at connect time, so RDS rotation doesn't break connections.
+- `Dockerfile`: Node 24 runs Next.js (as `bun run` does locally), bun installs and runs jobs, the RDS certificate bundle is included, and the user is `node` (uid 1000).
+- `GET /api/health` is the target group's health check. It's shallow and doesn't touch the database.
+- `PHOTO_STORAGE=s3` with `PHOTO_BUCKET` uses `lib/photos/s3-storage.ts`.
+- `ALERTS_EMAIL=ses` with `ALERTS_EMAIL_FROM` uses `lib/alerts/ses-sender.ts`.
+- `DATABASE_HOST`/`DATABASE_NAME`/`DATABASE_SECRET_ARN` connect over verified TLS. The password is read from the RDS secret when a connection opens (`lib/db/postgres.ts`).
+- Verified locally (2026-10-09): the arm64 image builds. Against Postgres 17 in Docker, migrations and seed run (seed is idempotent) and `/ghh` serves from Postgres. `sharp` works in the image.
+- Not verified until AWS: the real Secrets Manager, S3 and SES calls (unit-tested with stand-in clients).
+
+## Deploying
+
+Deploys need a reusable workflow in `PSD401/.github` (build the arm64 image, push to ECR, register a task definition revision, run `bun run db:migrate` as a one-off task, update the service), because this repo can't add CI logic. The deploy role in `ci.tf` allows exactly those steps.
 
 ## Not verified until the first apply
 

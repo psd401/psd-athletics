@@ -1,0 +1,16 @@
+.git
+.next
+node_modules
+.data
+test-results
+playwright-report
+infra
+design
+docs
+e2e
+**/*.test.ts
+**/*.test.tsx
+*.md
+Dockerfile
+.dockerignore
+.claude

@@ -13,7 +13,7 @@ import * as s from "../db/schema";
 export const DEV_PASSWORD = "local-dev-only";
 
 export function devSignInEnabled(env: Record<string, string | undefined> = process.env): boolean {
-  if (env.ATHLETICS_DEV_SIGN_IN !== "1" || env.DATABASE_URL) return false;
+  if (env.ATHLETICS_DEV_SIGN_IN !== "1" || env.DATABASE_URL || env.DATABASE_HOST) return false;
   try {
     const host = new URL(env.BETTER_AUTH_URL ?? "http://localhost:3000").hostname;
     return host === "localhost" || host === "127.0.0.1";
