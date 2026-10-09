@@ -16,3 +16,10 @@ Choices made while building, newest last. Each entry says what was decided, why,
 10. **CODEOWNERS covers agent config and workflows** (`.claude/`, `.mcp.json`, `.github/`, `CLAUDE.md`, `AGENTS.md`), per standards/02 and /04 rule 13.
 11. **The `mcp-server` property stays `false`** until the MCP server exists. Set it to `true` and add `server.json` in the PR that adds the server.
 12. **Photos of student athletes in the repo are fine.** Students who take part in athletics waive photo privacy as part of participating (Kris Hagel). This resolves the claude-review finding on PR #2 about the photos in `design/assets/photos/`. The product's opt-out holds in SPEC §7 stay as designed.
+
+## 2026-10-08 — Build plan (`docs/PLAN.md`)
+
+13. **Stack for the open slots:** Postgres + Drizzle ORM with committed SQL migrations; PGlite in process when `DATABASE_URL` is unset, so dev, Vitest and Playwright need no database server (`psd-ci` has none); S3 for photos; scheduled job handlers in `jobs/`; the official TypeScript MCP SDK. Reasons and costs in PLAN §2.
+14. **Better Auth instead of Auth.js** (CLAUDE.md said Auth.js). Auth.js is maintained by the Better Auth team since September 2025, is in security-patch mode, and v5 never left beta; Better Auth is stable and keeps sessions in our database. Pending sign-off (QUESTIONS 21).
+15. **Missing data shows as missing.** Tickets, Watch and Directions buttons render only when the game has the link or venue; stories hide when there are none; alert forms are disabled until Phase 6; EN · ES and Search wait until they work. The comps show these filled in; the fixtures don't have the data (PLAN §4).
+16. **Public pages render per request in Phase 2** because Live/Tonight/Final depend on the time. Caching with revalidate-on-sync arrives with the sync in Phase 3.
