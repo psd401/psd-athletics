@@ -3,7 +3,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 import { createMemoryDb, type Db } from "../db/client";
 import { seedFromFixtures } from "../db/seed";
-import { getGame, listGames, listHonors, listSchools, listTeams } from "./queries";
+import * as s from "../db/schema";
+import { getGame, getTeamContent, listGames, listHonors, listSchools, listTeams } from "./queries";
 
 let db: Db;
 
@@ -79,5 +80,34 @@ describe("listHonors and listTeams", () => {
     expect(teams.filter((t) => t.term === "fall").map((t) => t.sport)).toEqual([
       "Football", "Girls Soccer", "Volleyball", "Boys Tennis", "Cross Country", "Girls Swim and Dive", "Boys Water Polo",
     ]);
+  });
+});
+
+describe("getTeamContent", () => {
+  it("returns only published content and directory fields", async () => {
+    const [team] = await listTeams(db, { schoolId: "ghhs" });
+    await db.insert(s.person).values({ id: "coach-1", name: "Coach", email: "coach-1@psd401.net", emailVerified: true });
+    await db.insert(s.rosterEntry).values({ teamId: team!.id, displayName: "Alex R.", jerseyNumber: "12", position: "QB", grade: 12 });
+    await db.insert(s.story).values([
+      { schoolId: "ghhs", teamId: team!.id, title: "Draft", slug: "draft", body: "x", authorId: "coach-1" },
+      { schoolId: "ghhs", teamId: team!.id, title: "Live", slug: "live", body: "x", authorId: "coach-1", status: "published", publishedAt: new Date("2026-10-03T00:00:00Z") },
+    ]);
+    await db.insert(s.coachNote).values([
+      { teamId: team!.id, authorId: "coach-1", body: "Unposted" },
+      { teamId: team!.id, authorId: "coach-1", body: "Bus leaves at 4", publishedAt: new Date("2026-10-07T00:00:00Z") },
+    ]);
+
+    const content = await getTeamContent(db, team!.id);
+    expect(content.roster).toEqual([{ id: expect.any(String), displayName: "Alex R.", jerseyNumber: "12", position: "QB", grade: 12 }]);
+    expect(content.stories.map((x) => x.title)).toEqual(["Live"]);
+    expect(content.coachNote?.body).toBe("Bus leaves at 4");
+    expect(content.albums).toEqual([]);
+    expect(content.documents).toEqual([]);
+    expect(content.sponsors).toEqual([]);
+  });
+
+  it("is empty for a team with nothing published", async () => {
+    const teams = await listTeams(db, { schoolId: "phs" });
+    expect(await getTeamContent(db, teams[0]!.id)).toEqual({ roster: [], stories: [], albums: [], documents: [], coachNote: null, sponsors: [] });
   });
 });

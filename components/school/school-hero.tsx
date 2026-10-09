@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import type { SchoolView } from "../../lib/data/queries";
 import type { SchoolContent } from "../../lib/schools/content";
@@ -156,6 +157,12 @@ export function SchoolHero({ school, content, marquee, marqueeTeamGames, tonight
                   <CalendarAddIcon />
                   Add to calendar
                 </a>
+                <Link
+                  className={`${styles.btn} ${styles.btnLine}`}
+                  href={`/${school.slug}/teams/${marquee.sportSlug}${marquee.level === "varsity" ? "" : `?level=${marquee.level}`}`}
+                >
+                  Team page
+                </Link>
               </div>
             </>
           ) : (

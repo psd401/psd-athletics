@@ -1,13 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+
+import { ArrowIcon } from "../athletics/icons";
 
 import styles from "./school.module.css";
 
 export interface SeasonTeams {
   term: "fall" | "winter" | "spring";
   label: string;
-  teams: { name: string; meta: string }[];
+  teams: { name: string; meta: string; href: string }[];
 }
 
 /** Teams by season as ARIA tabs: arrow keys move between seasons. */
@@ -72,10 +75,15 @@ export function TeamsTabs({ seasons, initial }: { seasons: SeasonTeams[]; initia
           <ul className={styles.teams}>
             {current?.teams.map((team) => (
               <li key={team.name}>
-                <div className={styles.team}>
+                <Link className={styles.team} href={team.href}>
                   <h3 className={`ath-display ${styles.teamName}`}>{team.name}</h3>
-                  <p className={styles.teamMeta}>{team.meta}</p>
-                </div>
+                  <span className={styles.teamFoot}>
+                    <span className={styles.teamMeta}>{team.meta}</span>
+                    <span className={styles.teamArrow} aria-hidden="true">
+                      <ArrowIcon />
+                    </span>
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>

@@ -753,6 +753,19 @@
   color: var(--ath-ink);
 }
 
+[data-school] a.formCard {
+  color: var(--ath-ink);
+  text-decoration: none;
+}
+
+a.formCard:hover {
+  border-color: var(--ath-line-strong);
+}
+
+[data-school] a.formCardLead {
+  color: var(--ath-on-ground);
+}
+
 .formCardLead {
   background: var(--ath-brand);
   border-color: var(--ath-brand);
@@ -844,6 +857,38 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+[data-school] a.team {
+  color: var(--ath-on-ground);
+  text-decoration: none;
+}
+
+a.team:hover {
+  background: var(--ath-brand-hover);
+}
+
+.teamFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.teamArrow {
+  width: var(--space-10);
+  height: var(--space-10);
+  border-radius: 50%;
+  background: var(--ath-accent);
+  color: var(--ath-on-accent);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.teamArrow svg {
+  width: 18px;
+  height: 18px;
 }
 
 .team {

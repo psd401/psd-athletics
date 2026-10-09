@@ -89,3 +89,10 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 
 47. **School links are live** in each school's utility bar, Fan Zone and footer, and on the hub's school cards: GoFan, NFHS Network, BSN Sideline store and Puget Sound League, from `lib/schools/content.ts`. That closes the "Link coming soon" placeholders from DECISIONS 28 and 35 for these four. The seed now records the confirmed ArbiterLive ids (`fixtures/school-content.json`).
 
+
+## 2026-10-08 — Team pages (PLAN task 2.4)
+
+48. **`/[school]/teams/[sport]` is the one team page for every sport and level.** Levels are links (`?level=jv`), so they work without JavaScript and can be shared. The record band shows only what the published record has. When there's none (most non-varsity teams), a note says records appear once published and the schedule still shows each result.
+49. **Roster, Coaches, News, Photos and Documents read their real tables** (published rows only; roster fields are directory information) and show a plain empty state until coaches post in the Studio. The comp's `[Athlete name]` and `[Head coach name]` placeholders aren't shown on public pages, and neither is the comp's team photo, which comes from albums in Phase 5. Partner slots keep their `[Sponsor]` placeholders, as on the school home.
+50. **Team names are now links** in the Teams menu, the season tiles, the season form cards and the hero ("Team page"). That closes that part of DECISIONS 35.
+51. **"Subscribe to schedule" opens the schedule filtered to the team**, where the calendar links for that team live, rather than repeating the subscribe buttons on every team page.

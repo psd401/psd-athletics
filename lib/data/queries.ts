@@ -1,7 +1,7 @@
 // Read queries for the public pages. Server only: these return plain objects
 // that are safe to hand to Client Components.
 
-import { and, asc, eq, gte, lte, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lte, type SQL } from "drizzle-orm";
 
 import type { Db } from "../db/client";
 import * as s from "../db/schema";
@@ -133,4 +133,69 @@ export async function listTeams(db: Db, { schoolId }: { schoolId?: string } = {}
     term: season.term,
     record: team.record,
   }));
+}
+
+export interface TeamContent {
+  roster: { id: string; displayName: string; jerseyNumber: string | null; position: string | null; grade: number | null }[];
+  stories: { id: string; title: string; summary: string | null; publishedAt: Date }[];
+  albums: { id: string; title: string; publishedAt: Date }[];
+  documents: { id: string; title: string; kind: string; url: string | null }[];
+  coachNote: { body: string; publishedAt: Date } | null;
+  sponsors: { id: string; name: string; url: string | null }[];
+}
+
+/**
+ * Everything published for one team. Only published rows, and only
+ * directory-information roster fields (CLAUDE.md student privacy).
+ */
+export async function getTeamContent(db: Db, teamId: string): Promise<TeamContent> {
+  const [roster, stories, albums, documents, notes, sponsors] = await Promise.all([
+    db
+      .select({
+        id: s.rosterEntry.id,
+        displayName: s.rosterEntry.displayName,
+        jerseyNumber: s.rosterEntry.jerseyNumber,
+        position: s.rosterEntry.position,
+        grade: s.rosterEntry.grade,
+      })
+      .from(s.rosterEntry)
+      .where(eq(s.rosterEntry.teamId, teamId))
+      .orderBy(asc(s.rosterEntry.displayName)),
+    db
+      .select({ id: s.story.id, title: s.story.title, summary: s.story.summary, publishedAt: s.story.publishedAt })
+      .from(s.story)
+      .where(and(eq(s.story.teamId, teamId), eq(s.story.status, "published")))
+      .orderBy(desc(s.story.publishedAt)),
+    db
+      .select({ id: s.album.id, title: s.album.title, publishedAt: s.album.publishedAt })
+      .from(s.album)
+      .where(and(eq(s.album.teamId, teamId), eq(s.album.status, "published")))
+      .orderBy(desc(s.album.publishedAt)),
+    db
+      .select({ id: s.document.id, title: s.document.title, kind: s.document.kind, url: s.document.url, publishedAt: s.document.publishedAt })
+      .from(s.document)
+      .where(eq(s.document.teamId, teamId))
+      .orderBy(asc(s.document.title)),
+    db
+      .select({ body: s.coachNote.body, publishedAt: s.coachNote.publishedAt })
+      .from(s.coachNote)
+      .where(eq(s.coachNote.teamId, teamId))
+      .orderBy(desc(s.coachNote.publishedAt)),
+    db
+      .select({ id: s.sponsor.id, name: s.sponsor.name, url: s.sponsor.url })
+      .from(s.sponsor)
+      .where(and(eq(s.sponsor.teamId, teamId), eq(s.sponsor.active, true)))
+      .orderBy(asc(s.sponsor.sort)),
+  ]);
+  const published = <T extends { publishedAt: Date | null }>(rows: T[]) =>
+    rows.filter((r): r is T & { publishedAt: Date } => r.publishedAt !== null);
+  const note = published(notes)[0];
+  return {
+    roster,
+    stories: published(stories),
+    albums: published(albums),
+    documents: published(documents).map(({ id, title, kind, url }) => ({ id, title, kind, url })),
+    coachNote: note ? { body: note.body, publishedAt: note.publishedAt } : null,
+    sponsors,
+  };
 }
