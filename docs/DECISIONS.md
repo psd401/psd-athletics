@@ -109,3 +109,8 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 56. **`/[school]/game/[id]` works for any game**, not just tonight's: before the game it counts down ("Start in 28:00"; "Kickoff" for football) and flips to Live at the listed start; after, it shows the final; a past game without a score says so. A game id under the other school's path is a 404. "Game-day info" links come from the school hero's tonight card, Peninsula's match card and the team page's next game.
 57. **"Know before you go" shows only for home games** and keeps the comp's bracketed placeholders (gates, parking, bag policy, accessible seating) until the athletics office supplies them. It's a native `<details>` accordion.
 58. **The text-me switches are shown disabled** with "Text alerts start later this season", like the other alert forms until Phase 6. The comp's search button and "More" tab are left out; the phone tab bar has Home, Schedule, Scores and Teams.
+
+## 2026-10-08 — Coaches and staff (PLAN task 2.7)
+
+59. **`/[school]/staff` lists the athletics office and one card per sport.** Head coaches come from active `head_coach` role assignments (started, not ended); names only, never contact details. With no assignments yet (QUESTIONS 5, 6), every card says "Head coach not listed yet" and links to its team page. Gig Harbor's office shows the comp's `[Athletic director]` placeholder until the name is confirmed.
+60. **"Message the coach" waits for the relay.** It has to deliver to the coach's district inbox without exposing the address, which needs the email provider (QUESTIONS 3). Until then the page says the athletics office can pass messages along. The masthead gains a Coaches link, and the school footer gains "Coaches & staff".

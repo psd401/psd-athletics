@@ -49,7 +49,7 @@ export function Masthead({
   school: SchoolView;
   seasons: MenuSeason[];
   traditionNav?: string;
-  current?: "home" | "schedule" | "team";
+  current?: "home" | "schedule" | "team" | "staff";
 }) {
   const tile = school.id === "phs"; // The P logo disappears on green; it sits on a white tile (docs/BRAND.md).
   const home = `/${school.slug}`;
@@ -81,6 +81,11 @@ export function Masthead({
             </li>
             <li>
               <a href={section("results")}>Scores</a>
+            </li>
+            <li>
+              <Link href={`${home}/staff`} aria-current={current === "staff" ? "page" : undefined}>
+                Coaches
+              </Link>
             </li>
             <li>
               <a href={section("fan")}>Fan Zone</a>
@@ -377,6 +382,7 @@ export function SchoolFooter({ school, content }: { school: SchoolView; content:
               </span>
             ))}
             {hasAd ? null : <span>[Athletic director]</span>}
+            <Link href={`/${school.slug}/staff`}>Coaches &amp; staff</Link>
           </div>
           <div className={styles.footCol}>
             <h2 className={`ath-label ${styles.footLabel}`}>Families</h2>
