@@ -20,7 +20,7 @@ The athletics platform for Peninsula School District: the district hub at `athle
 
 - Next.js 16 (App Router) · React 19 · TypeScript (strict, `noUncheckedIndexedAccess`) — from `template-nextjs-app`
 - Vitest 4 + @testing-library/react (jsdom) · ESLint flat config · Playwright + axe for smoke and accessibility (add in Phase 1)
-- Chosen in `docs/PLAN.md` §2: Postgres + Drizzle ORM (SQL migrations in `drizzle/`; PGlite in process when `DATABASE_URL` is unset), S3 for photos (Phase 5), Better Auth with Google limited to `psd401.net`, scheduled job handlers in `jobs/` (Phase 3), the official TypeScript MCP SDK (Phase 7).
+- Proposed in `docs/PLAN.md` §2 (Better Auth pending sign-off, QUESTIONS 21): Postgres + Drizzle ORM (SQL migrations in `drizzle/`; PGlite in process when `DATABASE_URL` is unset), S3 for photos (Phase 5), Better Auth with Google limited to `psd401.net`, scheduled job handlers in `jobs/` (Phase 3), the official TypeScript MCP SDK (Phase 7).
 - Hosting: AWS `us-west-2`, not yet confirmed. Don't provision anything or add IaC until it is.
 
 ## Commands (exact)
