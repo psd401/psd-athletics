@@ -38,10 +38,16 @@ variable "permissions_boundary_arn" {
   default     = null
 }
 
+variable "route53_zone_id" {
+  description = "Public Route 53 zone for psd401.net (in this account)."
+  type        = string
+  default     = "Z2B9XR5HEMTG1R"
+}
+
 variable "sms_origination_identity_arn" {
   description = "psd-eoc's End User Messaging pool or phone-number ARN, shared for text alerts (DECISIONS 114). Null keeps texting off."
   type        = string
-  default     = null
+  default     = "arn:aws:sms-voice:us-west-2:338414773271:pool/pool-523bd2d550b44c329698f1400ba9032d"
 }
 
 variable "alarm_email" {

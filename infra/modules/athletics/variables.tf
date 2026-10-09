@@ -128,3 +128,9 @@ variable "sms_origination_identity_arn" {
   type        = string
   default     = null
 }
+
+variable "route53_zone_id" {
+  description = "Public Route 53 hosted zone for the domain (psd401.net). When set, Terraform adds the site alias, certificate validation and SES DKIM records. Null leaves DNS to someone else (records are outputs)."
+  type        = string
+  default     = null
+}
