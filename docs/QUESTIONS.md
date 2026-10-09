@@ -9,7 +9,7 @@ Things the district needs to answer. When one is answered, write the answer here
 | 1 | How do we get Arbiter data (API, partner feed, ICS)? Which entity ID (8486, 17802) is which school? | District AD, Technology Services | Partly answered 2026-10-08: **8486 is Gig Harbor, 17802 is Peninsula** (each ArbiterLive page names the school; Gig Harbor's athletics page links to 8486). How we get the data is still open. |
 | 2 | Hosting and DNS for `athletics.psd401.net`. Standards point to AWS `us-west-2`; Amplify or CDK? Which account? | Technology Services | Open |
 | 3 | SMS and email provider, and budget. | District AD | Open |
-| 4 | Where photo-release opt-outs live (Final Forms or the student information system), and whether rosters carry jersey numbers. | District AD | Open |
+| 4 | Where photo-release opt-outs live (Final Forms or the student information system), and whether rosters carry jersey numbers. | District AD | Partly answered 2026-10-09: athletics has no directory-information opt-out (Kris Hagel). Photo-release opt-outs and jersey numbers still open. |
 | 5 | Source of coaching assignments for roles. | District AD, HR | Open |
 | 6 | Gig Harbor athletic director's name, and all head coach names and photos. | School ADs | Open |
 | 7 | Official school social accounts and who holds them. | District AD | Open |
