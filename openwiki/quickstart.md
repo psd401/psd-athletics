@@ -50,6 +50,4 @@ Single server permission module and audit/undo ([roles](domain/roles-permissions
 - `docs/PLAN.md` does not exist yet; when written, update [planned architecture](architecture/planned-architecture.md) with the chosen DB/ORM, storage, auth, job runner and MCP SDK.
 - Once app code appears under `app/` and `lib/` (or similar), document real entry points, symbols and tests; the routing table currently points to planned locations.
 - `fixtures/` and `vendor/nexus/` are excluded by `.openwikiignore`; their contents are intentionally undocumented.
-ts are intentionally undocumented.
-s and tests; the routing table currently points to planned locations.
-- `fixtures/` and `vendor/nexus/` are excluded by `.openwikiignore`; their contents are intentionally undocumented.
+- Root `skills/` (OpenWiki agent skill files, `skills/write-connector/SKILL.md`) and the empty `conversation_history/` directory are agent tooling, not product code; intentionally undocumented.
