@@ -137,7 +137,7 @@ export function SchoolCards({ schools }: { schools: { school: SchoolView; honors
                       </a>
                     </li>
                     <li>
-                      <a href={`/${school.slug}#week`}>
+                      <a href={`/${school.slug}/schedule`}>
                         Schedule <span aria-hidden="true">→</span>
                       </a>
                     </li>

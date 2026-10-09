@@ -37,12 +37,23 @@ export function UtilityBar({ other }: { other: SchoolView }) {
   );
 }
 
-export function Masthead({ school, seasons }: { school: SchoolView; seasons: MenuSeason[] }) {
+export function Masthead({
+  school,
+  seasons,
+  current = "home",
+}: {
+  school: SchoolView;
+  seasons: MenuSeason[];
+  current?: "home" | "schedule";
+}) {
   const tile = school.id === "phs"; // The P logo disappears on green; it sits on a white tile (docs/BRAND.md).
+  const home = `/${school.slug}`;
+  // On the home page the section links stay in-page; elsewhere they go back to it.
+  const section = (id: string) => (current === "home" ? `#${id}` : `${home}#${id}`);
   return (
     <header className={`${styles.mast} ath-on-dark`}>
       <div className={`ath-wrap ${styles.mastIn}`}>
-        <Link href={`/${school.slug}`} className={styles.brand}>
+        <Link href={home} className={styles.brand}>
           {tile ? (
             <span className={styles.brandTile}>
               <Image src={school.logoPath} alt="" width={46} height={36} />
@@ -57,27 +68,27 @@ export function Masthead({ school, seasons }: { school: SchoolView; seasons: Men
         </Link>
         <nav aria-label={`${school.mascot} Athletics`}>
           <ul className={styles.nav}>
+            <li>{current === "home" ? <TeamsMenu seasons={seasons} /> : <a href={section("teams")}>Teams</a>}</li>
             <li>
-              <TeamsMenu seasons={seasons} />
+              <Link href={`${home}/schedule`} aria-current={current === "schedule" ? "page" : undefined}>
+                Schedule
+              </Link>
             </li>
             <li>
-              <a href="#week">Schedule</a>
+              <a href={section("results")}>Scores</a>
             </li>
             <li>
-              <a href="#results">Scores</a>
+              <a href={section("fan")}>Fan Zone</a>
             </li>
             <li>
-              <a href="#fan">Fan Zone</a>
+              <a href={section("tradition")}>Tradition</a>
             </li>
             <li>
-              <a href="#tradition">Tradition</a>
-            </li>
-            <li>
-              <a href="#fan">Forms</a>
+              <a href={section("fan")}>Forms</a>
             </li>
           </ul>
         </nav>
-        <a className={`${styles.btn} ${styles.btnAccent} ${styles.followBtn}`} href="#alerts" aria-label="Follow a team">
+        <a className={`${styles.btn} ${styles.btnAccent} ${styles.followBtn}`} href={section("alerts")} aria-label="Follow a team">
           <BellIcon />
           <span className={styles.followLabel}>Follow a team</span>
         </a>

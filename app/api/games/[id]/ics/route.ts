@@ -2,8 +2,7 @@ import { appDb } from "../../../../../lib/data/db";
 import { getGame } from "../../../../../lib/data/queries";
 import { calendar, gameSummary } from "../../../../../lib/schedule/ics";
 import { currentTime } from "../../../../../lib/schedule/time";
-
-const SITE_URL = process.env.SITE_URL ?? "https://athletics.psd401.net";
+import { SITE_URL } from "../../../../../lib/config/site";
 
 /** One game as an .ics file ("Add to calendar"). */
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {

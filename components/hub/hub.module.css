@@ -590,6 +590,21 @@
   border-radius: var(--radius-lg);
 }
 
+.weekMore {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--ath-line);
+}
+
+.weekMoreNote {
+  font: 500 14px/1.4 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
 /* ---------------------------------------------------------- fish bowl */
 
 .fish {
