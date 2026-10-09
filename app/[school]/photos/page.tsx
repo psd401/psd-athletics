@@ -4,13 +4,15 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 
 import { AlbumGrid } from "../../../components/school/album-grid";
+import { FeedList } from "../../../components/school/feed-list";
 import phone from "../../../components/school/phone.module.css";
 import { PhoneTabBar } from "../../../components/school/phone-tabbar";
 import ph from "../../../components/school/photos.module.css";
 import { Masthead, SchoolFooter, UtilityBar } from "../../../components/school/school-sections";
 import styles from "../../../components/school/school.module.css";
 import { appDb } from "../../../lib/data/db";
-import { listSchools } from "../../../lib/data/queries";
+import { listGames, listSchools } from "../../../lib/data/queries";
+import { gameLabels, listFeed } from "../../../lib/feed/posts";
 import { FINAL_FORMS_URL } from "../../../lib/families/steps";
 import { albumCards } from "../../../lib/photos/cards";
 import { schoolContent } from "../../../lib/schools/content";
@@ -38,7 +40,11 @@ export default async function PhotosPage({ params, searchParams }: { params: Par
   if (!school || !other) notFound();
   const { team, reported } = await searchParams;
 
-  const all = await albumCards(db, { schoolId: school.id, limit: 60 });
+  const [all, posts, games] = await Promise.all([
+    albumCards(db, { schoolId: school.id, limit: 60 }),
+    listFeed(db, { schoolId: school.id, limit: 3 }),
+    listGames(db, { schoolId: school.id }),
+  ]);
   const sports = [...new Map(all.map((a) => [a.sportSlug, a.sport])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
   const shown = team ? all.filter((a) => a.sportSlug === team) : all;
 
@@ -81,6 +87,22 @@ export default async function PhotosPage({ params, searchParams }: { params: Par
             ) : null}
             <AlbumGrid slug={slug} albums={shown} empty="No albums yet. Coaches post them after games." />
           </section>
+          {posts.length ? (
+            <section className={styles.sec} aria-labelledby="sidelines-title">
+              <div className={styles.secHead}>
+                <div className={styles.secTitle}>
+                  <span className={`ath-label ${styles.kicker}`}>Instead of a dozen team Instagrams</span>
+                  <h2 id="sidelines-title" className={`ath-display ${styles.h2}`}>
+                    From the sidelines
+                  </h2>
+                </div>
+                <Link className={`${styles.btn} ${styles.btnGhost}`} href={`/${slug}/feed`}>
+                  See the {school.mascot} feed
+                </Link>
+              </div>
+              <FeedList slug={slug} posts={posts} games={gameLabels(games)} empty="" />
+            </section>
+          ) : null}
           <section className={styles.sec} aria-labelledby="release-title">
             <div className={`${ph.explain} ath-on-dark`}>
               <div>

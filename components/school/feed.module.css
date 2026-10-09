@@ -1,0 +1,114 @@
+/* Team feed posts (design/PHS-Feed-Mobile.dc.html). */
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-school] .post {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+[data-school] .team {
+  font: 700 17px/1.3 var(--ath-font-text);
+  color: var(--ath-ink);
+}
+
+.meta {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: wrap;
+  font: 500 14px/1.4 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+[data-school] .kind {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--ath-neutral-bg);
+  color: var(--ath-neutral-ink);
+  font-size: 12px;
+}
+
+.photos {
+  display: grid;
+  gap: var(--space-1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.photos[data-count="2"],
+.photos[data-count="4"] {
+  grid-template-columns: 1fr 1fr;
+}
+
+.photos[data-count="3"] {
+  grid-template-columns: 2fr 1fr;
+}
+
+.photos[data-count="3"] img:first-child {
+  grid-row: span 2;
+  height: 100%;
+}
+
+.photos img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--ath-ground);
+}
+
+.game {
+  margin: 0;
+  font: 600 14px/1.4 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.body {
+  margin: 0;
+  font: 500 16px/1.5 var(--ath-font-text);
+}
+
+.score {
+  margin: 0;
+  font: 700 20px/1.35 var(--ath-font-text);
+}
+
+.by {
+  margin: auto 0 0;
+  font: 500 13px/1.4 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.empty {
+  margin: 0;
+  font: 500 16px/1.5 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+@media (max-width: 640px) {
+  .list {
+    grid-template-columns: 1fr;
+  }
+}
