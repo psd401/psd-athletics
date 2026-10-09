@@ -241,3 +241,11 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
    - **Email:** SES production access is on (50,000 a day). `psd401.net` is already a verified identity.
    - **CI access:** the GitHub OIDC provider already exists, so `create_github_oidc_provider` stays false.
    - **DNS:** public psd401.net DNS is the Route 53 zone `Z2B9XR5HEMTG1R` (checked through public DNS-over-HTTPS). On the district network, on-prem split-horizon servers answer instead. That's what made the zone look unauthoritative at first. `athletics.psd401.net` currently resolves through the `*.psd401.net` wildcard (54.221.139.169, 18.233.124.95). Terraform now manages the certificate-validation, DKIM and site records in the zone, only under `athletics.psd401.net`. The pool ARN is the default `sms_origination_identity_arn` in envs/prod.
+116. **First production apply (Hagel approved each step, 2026-10-09).**
+   - **Bootstrap:** 8 resources (state bucket `psd-athletics-tofu-state-338414773271` and its KMS key). Its state then moved into the bucket (`bootstrap/terraform.tfstate`).
+   - **envs/prod:** 92 resources added, 0 changed, 0 destroyed. `athletics.psd401.net` now has its own Route 53 alias to the load balancer, so the `*.psd401.net` wildcard no longer answers for it.
+   - **Secrets:** `BETTER_AUTH_SECRET` and `ALERTS_SECRET` were generated straight into Secrets Manager and never printed.
+   - **Google sign-in:** ECS won't start a task while a referenced secret has no value. `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` hold the filler `unset-pending-tech-services` until Technology Services provides the client (QUESTIONS 17). Until then the Google button shows but fails at Google; nobody can sign in either way.
+   - **Image and database:** image `bootstrap` (commit 61fdc94) pushed to ECR; `bun run db:migrate` ran as a one-off task and exited 0.
+   - **Alarms:** no email subscription for now (Hagel).
+

@@ -14,6 +14,15 @@ terraform {
       version = "~> 6.0"
     }
   }
+
+  # Added after the first apply; the bucket now holds its own state.
+  backend "s3" {
+    bucket       = "psd-athletics-tofu-state-338414773271"
+    key          = "bootstrap/terraform.tfstate"
+    region       = "us-west-2"
+    use_lockfile = true
+    encrypt      = true
+  }
 }
 
 variable "aws_account_id" {

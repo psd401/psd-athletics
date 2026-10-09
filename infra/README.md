@@ -1,6 +1,6 @@
 # infra/ — AWS for psd-athletics (Terraform)
 
-Terraform per `psd-dev-standards/standards/08-iac.md` v0.2 (psd401/psd-dev-standards#42). **Nothing here has been applied.** Agents never run `apply`; CI does, through an OIDC role, after a human approves the plan (standards/08 PR flow).
+Terraform per `psd-dev-standards/standards/08-iac.md` v0.2 (psd401/psd-dev-standards#42). **Applied 2026-10-09** (bootstrap and `envs/prod`), by Claude Code with Hagel approving each plan before its apply (DECISIONS 116). From here, CI applies through the OIDC role after a human approves the plan (standards/08 PR flow).
 
 ```
 infra/
@@ -35,7 +35,7 @@ infra/
 
 The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn't exist yet, so CI doesn't run these. This repo can't add CI logic (CLAUDE.md).
 
-## Before the first apply (one time, by an administrator)
+## First apply (done 2026-10-09; kept as the record of how)
 
 1. Create the state bucket once:
    1. In `infra/bootstrap`, run `terraform init` and `terraform apply` with local state. This creates `psd-athletics-tofu-state-338414773271`, following prr's tofu-state bucket.
@@ -64,7 +64,7 @@ The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn'
 
 Deploys need a reusable workflow in `PSD401/.github` (build the arm64 image, push to ECR, register a task definition revision, run `bun run db:migrate` as a one-off task, update the service), because this repo can't add CI logic. The deploy role in `ci.tf` allows exactly those steps.
 
-## Not verified until the first apply
+## Not verified yet
 
 - That EventBridge Scheduler accepts a task definition ARN without a revision (it should run the latest revision CI registered).
 - That pushing to the KMS-encrypted ECR repository needs nothing beyond the deploy role's ECR permissions.
