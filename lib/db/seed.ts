@@ -2,6 +2,10 @@
 // an empty database. Runs on first use of the in-memory dev database
 // (lib/db/client.ts) and from `bun run db:seed` against DATABASE_URL.
 //
+// The non-null assertions below lean on the fixture's known shape (and on
+// rows we just inserted). Don't copy them into the Arbiter sync, where the
+// input isn't ours.
+//
 // The fixtures don't include ticket links, stream links or away venues, so
 // none are written: the UI shows those as unavailable (DECISIONS 15).
 
@@ -24,7 +28,6 @@ const levels: Record<string, Level> = {
   Varsity: "varsity",
   JV: "jv",
   "C-team": "c_team",
-  "C-Team": "c_team",
   Freshman: "freshman",
 };
 
