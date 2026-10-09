@@ -32,7 +32,7 @@ The kickoff prompt (`docs/KICKOFF.md`, summarized in [roadmap](../planning/roadm
 
 - **Stack** (`package.json`): `next ^16`, `react`/`react-dom ^19`, TypeScript `~5.9`, Vitest 4, `@testing-library/react`, `jsdom`, ESLint 9 flat config. Package manager is **bun** (`bun.lock` committed).
 - **Vitest** (`vitest.config.ts`): `@vitejs/plugin-react`, `globals: true` (needed for Testing Library auto-cleanup), `jsdom`, setup `vitest.setup.ts`, includes `**/*.test.{ts,tsx}`.
-- **ESLint** (`eslint.config.mjs`): `eslint-config-next` core-web-vitals + typescript; globally ignores `.next`, `out`, `coverage`, `design/**`, `vendor/**`. For test files adds `vitest/expect-expect`, `vitest/no-focused-tests`, `vitest/no-disabled-tests` as errors (PSD testing standard). Do not loosen them; see [anti-patterns](../operations/ci-and-workflow.md#anti-patterns-that-fail-review).
+- **ESLint** (`eslint.config.mjs`): `eslint-config-next` core-web-vitals + typescript; globally ignores `.next/**`, `out/**`, `node_modules/**`, `next-env.d.ts`, `coverage/**`, `design/**`, `vendor/**`. For test files adds `vitest/expect-expect`, `vitest/no-focused-tests`, `vitest/no-disabled-tests` as errors (PSD testing standard). Do not loosen them; see [anti-patterns](../operations/ci-and-workflow.md#anti-patterns-that-fail-review).
 - **Next** (`next.config.ts`): only `reactStrictMode: true`.
 - TypeScript is strict with `noUncheckedIndexedAccess` per `CLAUDE.md` (see `tsconfig.json`).
 - `design/` and `vendor/` are reference/third-party material: the app never imports from `design/`, and `vendor/nexus/` is read-only (see [design system](../design/brand-and-design-system.md)).
@@ -44,12 +44,6 @@ The kickoff prompt (`docs/KICKOFF.md`, summarized in [roadmap](../planning/roadm
 - Always `bun run test` (the package script), never bare `bun test`.
 
 | Check | Command | When |
-|---|---|---|
-| Focused unit test | `bun run test components/counter.test.tsx` | any component change |
-| Lint | `bun run lint` | any change (includes test-quality rules) |
-| Types | `bun run typecheck` | any TS change |
-| Production build | `bun run build` | before PR; required by CLAUDE.md as a PR gate (conditional for doc-only edits) |
-ck | Command | When |
 |---|---|---|
 | Focused unit test | `bun run test components/counter.test.tsx` | any component change |
 | Lint | `bun run lint` | any change (includes test-quality rules) |

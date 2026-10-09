@@ -5,7 +5,7 @@ description: Entry point for the psd-athletics knowledge base, covering the Peni
 tags: [quickstart, overview, routing]
 openwiki:
   roles: [repository]
-  source_paths: [README.md, CLAUDE.md, docs/SPEC.md, package.json]
+  source_paths: [README.md, CLAUDE.md, AGENTS.md, docs/SPEC.md, package.json]
   validation_commands: [bun run test, bun run lint, bun run typecheck]
 ---
 
@@ -49,4 +49,7 @@ Single server permission module and audit/undo ([roles](domain/roles-permissions
 
 - `docs/PLAN.md` does not exist yet; when written, update [planned architecture](architecture/planned-architecture.md) with the chosen DB/ORM, storage, auth, job runner and MCP SDK.
 - Once app code appears under `app/` and `lib/` (or similar), document real entry points, symbols and tests; the routing table currently points to planned locations.
+- `fixtures/` and `vendor/nexus/` are excluded by `.openwikiignore`; their contents are intentionally undocumented.
+ts are intentionally undocumented.
+s and tests; the routing table currently points to planned locations.
 - `fixtures/` and `vendor/nexus/` are excluded by `.openwikiignore`; their contents are intentionally undocumented.
