@@ -44,9 +44,11 @@ export function Masthead({
   school,
   seasons,
   current = "home",
+  traditionNav = "Tradition",
 }: {
   school: SchoolView;
   seasons: MenuSeason[];
+  traditionNav?: string;
   current?: "home" | "schedule" | "team";
 }) {
   const tile = school.id === "phs"; // The P logo disappears on green; it sits on a white tile (docs/BRAND.md).
@@ -84,7 +86,7 @@ export function Masthead({
               <a href={section("fan")}>Fan Zone</a>
             </li>
             <li>
-              <a href={section("tradition")}>Tradition</a>
+              <a href={section("tradition")}>{traditionNav}</a>
             </li>
             <li>
               <a href={section("fan")}>Forms</a>

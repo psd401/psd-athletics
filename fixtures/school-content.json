@@ -62,8 +62,23 @@
       "sport": "Football",
       "figure": "1978",
       "title": "3A state football champions",
-      "detail": "Under coach Larry Lunke",
+      "detail": "Under coach Larry Lunke. Back-to-back league titles followed in 2012 and 2013.",
       "featuredOnHub": true
+    },
+    {
+      "school": "phs",
+      "sport": "Unified Soccer",
+      "figure": "Unified",
+      "title": "Unified Soccer, winter and spring",
+      "detail": "Athletes with and without disabilities on one roster, wearing the same green.",
+      "featuredOnHub": false
+    },
+    {
+      "school": "phs",
+      "figure": "Letter",
+      "title": "Varsity Letter in Community Service",
+      "detail": "Earn a letter for hours given back to the Key Peninsula and Gig Harbor.",
+      "featuredOnHub": false
     }
   ],
   "schools": [

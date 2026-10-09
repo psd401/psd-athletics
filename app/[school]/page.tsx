@@ -16,12 +16,15 @@ import {
   UtilityBar,
 } from "../../components/school/school-sections";
 import { SchoolWeek, type WeekGame } from "../../components/school/school-week";
+import { AthleticsOffice, FishBowlChampions, LiveNow, MatchHero, Pillars } from "../../components/school/seahawks-sections";
+import { WeekBoard } from "../../components/school/week-board";
 import styles from "../../components/school/school.module.css";
 import { TeamsTabs, type SeasonTeams } from "../../components/school/teams-tabs";
 import { appDb } from "../../lib/data/db";
 import { listGames, listHonors, listSchools, listTeams } from "../../lib/data/queries";
 import { schoolContent } from "../../lib/schools/content";
-import { byStart, gameState, groupByDay, latestFinals, marqueeGame, tickerItems, winStreak } from "../../lib/schedule/games";
+import { byStart, gameState, groupByDay, latestFinals, latestFishBowl, marqueeGame, tickerItems, winStreak } from "../../lib/schedule/games";
+import { boardDays } from "../../lib/schedule/board";
 import { seasonFormCards, streakNote, teamMeta } from "../../lib/schedule/school";
 import { addDays, clockOffsetMs, currentTime, formatLongDate, formatMonthDay, formatWeekday, pacificDate } from "../../lib/schedule/time";
 
@@ -65,12 +68,13 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
   const school = schools.find((s) => s.slug === slug);
   const other = schools.find((s) => s.slug !== slug);
   if (!school || !other) notFound();
-  const [games, honors, teams] = await Promise.all([
-    listGames(db, { schoolId: school.id }),
+  const [allGames, honors, teams] = await Promise.all([
+    listGames(db),
     listHonors(db, { schoolId: school.id }),
     listTeams(db, { schoolId: school.id }),
   ]);
 
+  const games = allGames.filter((g) => g.schoolId === school.id);
   const marquee = marqueeGame(games, now);
   const tonight =
     games
@@ -106,17 +110,63 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
     };
   });
 
+  const masthead = (
+    <Masthead
+      school={school}
+      traditionNav={content.traditionNav}
+      seasons={seasons.map((s) => ({ term: s.term, label: s.label, sports: s.teams.map((t) => ({ name: t.name, href: t.href })) }))}
+    />
+  );
+  const ticker = (
+    <ScoreTicker
+      items={tickerItems(games, now, { mode: "school", finals: 4 })}
+      label={content.scoreboardLabel}
+      variant="school"
+      regionLabel={`${school.mascot} scores`}
+    />
+  );
+  const sourceLabel = week.length > 0 && week.every((w) => w.game.source === "arbiter") ? "Synced from Arbiter" : "Fall schedule snapshot";
+  const finals = <LatestFinals games={latestFinals(games, 8)} />;
+  const teamsTabs = <TeamsTabs seasons={seasons} initial={currentTerm(today)} />;
+  const alerts = <SchoolAlerts school={school} content={content} teams={teams.filter((t) => t.term === currentTerm(today))} />;
+
+  if (content.layout === "seahawks") {
+    // design/PHS-Home.dc.html: match-card hero, live strip, week board, champions band, pillars, office.
+    const live = games.filter((g) => gameState(g, now) === "live").sort(byStart)[0] ?? null;
+    const board = boardDays(week.map(({ game, state }) => ({ game, state })), today, 7);
+    return (
+      <div data-school={slug} className={styles.page}>
+        <UtilityBar other={other} content={content} />
+        {masthead}
+        <main>
+          {ticker}
+          <MatchHero schoolView={school} content={content} marquee={marquee} now={now} clockOffsetMs={clockOffsetMs(now)} />
+          <LiveNow game={live} />
+          <WeekBoard
+            days={board}
+            kicker={`Week of ${formatMonthDay(today)} · ${sourceLabel}`}
+            schoolSlug={slug}
+            mascot={school.mascot}
+            featureId={marquee?.id ?? null}
+          />
+          {finals}
+          <FishBowlChampions result={latestFishBowl(allGames)} schoolId={school.id} />
+          {teamsTabs}
+          <Pillars schoolView={school} content={content} honors={honors} />
+          <AthleticsOffice schoolView={school} content={content} />
+          {alerts}
+        </main>
+        <SchoolFooter school={school} content={content} />
+      </div>
+    );
+  }
+
   return (
     <div data-school={slug} className={styles.page}>
       <UtilityBar other={other} content={content} />
-      <Masthead school={school} seasons={seasons.map((s) => ({ term: s.term, label: s.label, sports: s.teams.map((t) => ({ name: t.name, href: t.href })) }))} />
+      {masthead}
       <main>
-        <ScoreTicker
-          items={tickerItems(games, now, { mode: "school", finals: 4 })}
-          label={content.scoreboardLabel}
-          variant="school"
-          regionLabel={`${school.mascot} scores`}
-        />
+        {ticker}
         <SchoolHero
           school={school}
           content={content}
@@ -131,17 +181,15 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           schoolSlug={slug}
           mascot={school.mascot}
           games={week}
-          rangeLabel={`${formatMonthDay(today)} – ${formatMonthDay(addDays(today, WEEK_DAYS))} · ${
-            week.length > 0 && week.every((w) => w.game.source === "arbiter") ? "Synced from Arbiter" : "Fall schedule snapshot"
-          }`}
+          rangeLabel={`${formatMonthDay(today)} – ${formatMonthDay(addDays(today, WEEK_DAYS))} · ${sourceLabel}`}
           sport={marquee ? { slug: marquee.sportSlug, name: marquee.sport } : null}
         />
-        <LatestFinals games={latestFinals(games, 8)} />
+        {finals}
         <SeasonForm schoolSlug={slug} cards={seasonFormCards(games, now, { marqueeSport: marquee?.sportSlug ?? null, limit: 3 })} />
-        <TeamsTabs seasons={seasons} initial={currentTerm(today)} />
+        {teamsTabs}
         <Tradition school={school} content={content} honors={honors} />
         <FanZone school={school} content={content} />
-        <SchoolAlerts school={school} content={content} teams={teams.filter((t) => t.term === currentTerm(today))} />
+        {alerts}
         <Partners content={content} />
       </main>
       <SchoolFooter school={school} content={content} />

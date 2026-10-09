@@ -150,6 +150,8 @@ describe("seedFromFixtures", () => {
     expect(contacts.map((c) => c.role).sort()).toEqual(["Athletic Director", "Athletic Secretary"]);
     const honors = await db.select().from(s.honor).where(eq(s.honor.featuredOnHub, true));
     expect(honors).toHaveLength(5);
+    const phsHonors = await db.select({ figure: s.honor.figure }).from(s.honor).where(eq(s.honor.schoolId, "phs")).orderBy(s.honor.sort);
+    expect(phsHonors.map((h) => h.figure)).toEqual(["’12 · ’13", "1978", "Unified", "Letter"]);
   });
 
   it("does nothing the second time", async () => {
