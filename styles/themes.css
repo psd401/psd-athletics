@@ -1,0 +1,140 @@
+/*
+ * Athletics theme tokens for the public sites (docs/BRAND.md).
+ *
+ * Nexus (vendor/nexus/tokens.css, loaded first) supplies spacing, radii,
+ * motion, breakpoints and z-index. This file adds the school palettes and
+ * the athletics type, then maps them to semantic --ath-* tokens per theme.
+ * Components use only the semantic tokens, so one component renders in any
+ * school's theme. Set the theme with data-school="hub" | "ghh" | "phs".
+ *
+ * This is the only place raw color values live (styles/tokens.test.ts).
+ */
+
+:root {
+  /* Gig Harbor Tides */
+  --ghh-abyss: #011430;
+  --ghh-navy: #022c66;
+  --ghh-deep: #01204d;
+  --ghh-columbia: #69abe0;
+  --ghh-foam: #eaf3fc;
+  --ghh-paper: #f2f6fb;
+  --ghh-ink: #0b1a33;
+  --ghh-muted: #4c5d77;
+  --ghh-line: #d4dfec;
+  --ghh-tag: #e3eefb;
+
+  /* Peninsula Seahawks */
+  --phs-forest: #0d2726;
+  --phs-green: #194746;
+  --phs-deep: #123836;
+  --phs-silver: #a7a9ac;
+  --phs-silver-light: #b9bcc0;
+  --phs-wash: #e5edec;
+  --phs-paper: #f2f5f5;
+  --phs-ink: #0e1e1d;
+  --phs-muted: #45585a;
+  --phs-line: #d4dddc;
+  --phs-tag: #e2eae9;
+
+  /* District hub */
+  --hub-night: #0a111c;
+  --hub-ink: #0f1a28;
+  --hub-paper: #f3f5f8;
+  --hub-muted: #556273;
+  --hub-line: #dce2ea;
+  --hub-sunken: #e6ebf1;
+
+  /* Shared status colors. Live is darker than BRAND's #E5383B so white
+     label text on it reaches 4.5:1 (4.87:1; #E5383B is 4.23:1). */
+  --ath-white: #ffffff;
+  --ath-live: #d62f33;
+  --ath-tonight-bg: #ffe7a3;
+  --ath-tonight-ink: #4a3300;
+  --ath-neutral-bg: #e9edf2;
+  --ath-neutral-ink: #2d3a4a;
+
+  /* Type. Families come from next/font (app/fonts.ts). Big Shoulders is the
+     variable family that replaced Big Shoulders Display on Google Fonts;
+     opsz 72 is the Display cut. */
+  --ath-font-display: var(--font-big-shoulders), Impact, sans-serif;
+  --ath-font-display-settings: "opsz" 72;
+  --ath-font-text: var(--font-barlow), system-ui, sans-serif;
+  --ath-font-label: var(--font-barlow-condensed), var(--font-barlow), sans-serif;
+  --ath-leading-display: 0.86;
+  --ath-tracking-label: 0.1em;
+  --ath-tracking-label-wide: 0.16em;
+}
+
+/* Semantic tokens. Every theme defines every one of these. */
+[data-school="hub"] {
+  --ath-ground: var(--hub-night);
+  --ath-brand: var(--hub-ink);
+  --ath-brand-deep: var(--hub-night);
+  --ath-brand-hover: #22344a;
+  --ath-accent: var(--ghh-columbia);
+  --ath-on-accent: var(--hub-night);
+  --ath-on-ground: var(--ath-white);
+  --ath-on-ground-muted: #c4cfdb;
+  --ath-on-ground-subtle: #9aa8b8;
+  --ath-tint: var(--hub-sunken);
+  --ath-paper: var(--hub-paper);
+  --ath-surface: var(--ath-white);
+  --ath-ink: var(--hub-ink);
+  --ath-muted: var(--hub-muted);
+  --ath-score-muted: #74859f;
+  --ath-line: var(--hub-line);
+  --ath-line-strong: #c5cfdb;
+  --ath-link: #0b4fb3;
+  --ath-motif: var(--ghh-columbia);
+}
+
+[data-school="ghh"] {
+  --ath-ground: var(--ghh-abyss);
+  --ath-brand: var(--ghh-navy);
+  --ath-brand-deep: var(--ghh-deep);
+  --ath-brand-hover: #06408f;
+  --ath-accent: var(--ghh-columbia);
+  --ath-on-accent: var(--ghh-abyss);
+  --ath-on-ground: var(--ath-white);
+  --ath-on-ground-muted: #c7d6ea;
+  --ath-on-ground-subtle: #9fb3ce;
+  --ath-tint: var(--ghh-foam);
+  --ath-paper: var(--ghh-paper);
+  --ath-surface: var(--ath-white);
+  --ath-ink: var(--ghh-ink);
+  --ath-muted: var(--ghh-muted);
+  --ath-score-muted: #74859f;
+  --ath-line: var(--ghh-line);
+  --ath-line-strong: #9db2cc;
+  --ath-link: #0457d1;
+  --ath-motif: var(--ghh-columbia);
+}
+
+[data-school="phs"] {
+  --ath-ground: var(--phs-forest);
+  --ath-brand: var(--phs-green);
+  --ath-brand-deep: var(--phs-deep);
+  --ath-brand-hover: var(--phs-deep);
+  --ath-accent: var(--phs-silver-light);
+  --ath-on-accent: var(--phs-forest);
+  --ath-on-ground: var(--ath-white);
+  --ath-on-ground-muted: #d3dddc;
+  --ath-on-ground-subtle: #b3c2c1;
+  --ath-tint: var(--phs-wash);
+  --ath-paper: var(--phs-paper);
+  --ath-surface: var(--ath-white);
+  --ath-ink: var(--phs-ink);
+  --ath-muted: var(--phs-muted);
+  --ath-score-muted: #6e8381;
+  --ath-line: var(--phs-line);
+  --ath-line-strong: #9db1af;
+  --ath-link: var(--phs-green);
+  --ath-motif: #d3dddc;
+}
+
+[data-school] {
+  font-family: var(--ath-font-text);
+  color: var(--ath-ink);
+  background: var(--ath-paper);
+  -webkit-font-smoothing: antialiased;
+}
