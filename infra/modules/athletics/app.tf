@@ -124,6 +124,14 @@ data "aws_iam_policy_document" "task" {
     actions   = ["ses:SendEmail"]
     resources = [aws_sesv2_email_identity.domain.arn, aws_sesv2_configuration_set.alerts.arn]
   }
+  dynamic "statement" {
+    for_each = local.sms_enabled ? [1] : []
+    content {
+      sid       = "AlertTexts"
+      actions   = ["sms-voice:SendTextMessage"]
+      resources = [aws_pinpointsmsvoicev2_pool.alerts[0].arn, aws_pinpointsmsvoicev2_configuration_set.alerts[0].arn]
+    }
+  }
   statement {
     sid       = "DatabasePassword"
     actions   = ["secretsmanager:GetSecretValue"]
@@ -140,7 +148,12 @@ resource "aws_iam_role_policy" "task" {
 
 locals {
   site_url = "https://${var.domain_name}"
-  container_environment = [
+  sms_environment = local.sms_enabled ? [
+    { name = "ALERTS_SMS", value = "eum" },
+    { name = "SMS_POOL_ARN", value = aws_pinpointsmsvoicev2_pool.alerts[0].arn },
+    { name = "SMS_CONFIGURATION_SET", value = aws_pinpointsmsvoicev2_configuration_set.alerts[0].name },
+  ] : []
+  container_environment = concat([
     { name = "NODE_ENV", value = "production" },
     { name = "PORT", value = tostring(local.app_port) },
     { name = "HOSTNAME", value = "0.0.0.0" },
@@ -156,7 +169,7 @@ locals {
     { name = "ALERTS_EMAIL", value = "ses" },
     { name = "ALERTS_EMAIL_FROM", value = var.alerts_from_address },
     { name = "SES_CONFIGURATION_SET", value = aws_sesv2_configuration_set.alerts.configuration_set_name },
-  ]
+  ], local.sms_environment)
   container_secrets = [for key, s in aws_secretsmanager_secret.app : { name = key, valueFrom = s.arn }]
 }
 

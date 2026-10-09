@@ -1,6 +1,7 @@
 variable "aws_account_id" {
-  description = "The AWS account this environment lives in. Plans refuse to run against any other (QUESTIONS 26)."
+  description = "The AWS account this environment lives in: the district account shared with psd401-prr and psd-eoc (Hagel, 2026-10-09). Plans refuse to run against any other."
   type        = string
+  default     = "338414773271"
   validation {
     condition     = can(regex("^[0-9]{12}$", var.aws_account_id))
     error_message = "A 12-digit AWS account ID."
@@ -33,6 +34,12 @@ variable "create_github_oidc_provider" {
 
 variable "permissions_boundary_arn" {
   description = "The account's deploy permissions boundary (standards/08, phase 6 plan), once it exists."
+  type        = string
+  default     = null
+}
+
+variable "sms_origination_identity_arn" {
+  description = "Carrier-registered number ARN for text alerts (QUESTIONS 27). Null keeps texting off."
   type        = string
   default     = null
 }

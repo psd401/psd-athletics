@@ -4,10 +4,13 @@ Terraform per `psd-dev-standards/standards/08-iac.md` v0.2 (psd401/psd-dev-stand
 
 ```
 infra/
-  modules/athletics/   the app: network, load balancer + WAF, ECS Fargate, RDS Postgres, S3, SES, secrets, schedules, alarms, CI role
+  bootstrap/           one-time: this app's state bucket (applied once by an administrator)
+  modules/athletics/   the app: network, load balancer + WAF, ECS Fargate, RDS Postgres, S3, SES, SMS, secrets, schedules, alarms, CI role
   envs/prod/           production root module (state, provider, tags, account guard)
   .tflint.hcl          tflint with the AWS ruleset
 ```
+
+**Account:** the district account shared with psd401-prr and psd-eoc, `338414773271`, in `us-west-2` (Hagel, 2026-10-09). The app has its own VPC, so it shares no subnets or route tables with those apps.
 
 ## What it builds (DECISIONS 107)
 
@@ -18,6 +21,7 @@ infra/
 | Database | **RDS PostgreSQL 17**, Multi-AZ, encrypted, SSL forced, 14-day backups, deletion protection. The master password lives only in RDS-managed Secrets Manager. |
 | Photos | Private, KMS-encrypted, versioned **S3** bucket; files are served by the app's `/media` route. |
 | Email | **SES** domain identity with DKIM and a configuration set (TLS required, bounces and complaints suppressed). |
+| Texts | **AWS End User Messaging**, set up like psd-eoc: a pool around a carrier-registered number, an opt-out list (AWS answers STOP), a HELP reply, and a configuration set. Created only once `sms_origination_identity_arn` is set. |
 | Jobs | **EventBridge Scheduler** runs the same image with `bun run job deliver-alerts` every 5 minutes. |
 | Secrets | `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALERTS_SECRET` are created empty; values are set by hand and never touch Terraform state. |
 | CI | ECR repository (immutable tags, scan on push) and a deploy role that only a GitHub `production` environment job in `psd401/psd-athletics` can assume. |
@@ -33,19 +37,25 @@ The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn'
 
 ## Before the first apply (one time, by an administrator)
 
-1. Confirm the AWS account, and create the state bucket (versioned, encrypted, public access blocked) per QUESTIONS 26. Copy `envs/prod/backend.hcl.example` and `terraform.tfvars.example` and fill them in. They're git-ignored.
+1. Create the state bucket once:
+   1. In `infra/bootstrap`, run `terraform init` and `terraform apply` with local state. This creates `psd-athletics-tofu-state-338414773271`, following prr's tofu-state bucket.
+   2. Add a `backend "s3"` block pointing at that bucket (key `bootstrap/terraform.tfstate`).
+   3. Run `terraform init -migrate-state` so the bucket holds its own state.
+
+   Then copy `envs/prod/backend.hcl.example` and `terraform.tfvars.example` and fill them in. They're git-ignored.
 2. Set `create_github_oidc_provider = true` only if the account has no GitHub OIDC provider yet.
 3. Plan and apply from CI (or a supervised session with scoped credentials, phase 6 decision 6.3). The first apply waits on the certificate. Add the `dns_records` output to psd401.net DNS: the site CNAME, the certificate validation and SES DKIM.
 4. Set the four secret values in Secrets Manager (`app_secret_names` output).
-5. Request SES production access for the account. New accounts can only send to verified addresses.
-6. Push a first image tagged `bootstrap`, or set `image_tag`, then run migrations as a one-off task (`bun run db:migrate`) with the `app_subnets` and `app_security_group` outputs.
+5. Check whether the shared account already has SES production access (eoc sends email). If not, request it.
+6. For texts, register a number for athletics alerts in End User Messaging (toll-free verification or a 10DLC campaign), as eoc did for its own number. Then set `sms_origination_identity_arn`. eoc's number is registered for emergency notices, so athletics needs its own registration.
+7. Push a first image tagged `bootstrap`, or set `image_tag`, then run migrations as a one-off task (`bun run db:migrate`) with the `app_subnets` and `app_security_group` outputs.
 
 ## The app side
 
 - `Dockerfile`: Node 24 runs Next.js (as `bun run` does locally), bun installs and runs jobs, the RDS certificate bundle is included, and the user is `node` (uid 1000).
 - `GET /api/health` is the target group's health check. It's shallow and doesn't touch the database.
 - `PHOTO_STORAGE=s3` with `PHOTO_BUCKET` uses `lib/photos/s3-storage.ts`.
-- `ALERTS_EMAIL=ses` with `ALERTS_EMAIL_FROM` uses `lib/alerts/ses-sender.ts`.
+- `ALERTS_EMAIL=ses` with `ALERTS_EMAIL_FROM` uses `lib/alerts/ses-sender.ts`. `ALERTS_SMS=eum` with `SMS_POOL_ARN` uses `lib/alerts/eum-sender.ts` (single wire attempt, as eoc does). A number that texted STOP is marked stopped.
 - `DATABASE_HOST`/`DATABASE_NAME`/`DATABASE_SECRET_ARN` connect over verified TLS. The password is read from the RDS secret when a connection opens (`lib/db/postgres.ts`).
 - Verified locally (2026-10-09): the arm64 image builds. Against Postgres 17 in Docker, migrations and seed run (seed is idempotent) and `/ghh` serves from Postgres. `sharp` works in the image.
 - Not verified until AWS: the real Secrets Manager, S3 and SES calls (unit-tested with stand-in clients).

@@ -10,6 +10,7 @@ import * as s from "../db/schema";
 import { listGames } from "../data/queries";
 import { levelLabel, opponentLine, result, type GameView } from "../schedule/games";
 import { pacificDate, TIME_ZONE } from "../schedule/time";
+import { OptedOutError } from "./eum-sender";
 import { stopToken } from "./follow";
 import type { Senders } from "./sender";
 
@@ -90,17 +91,20 @@ export async function deliverOutbox(db: Db, senders: Senders, now: Date, limit =
       waiting++;
       continue;
     }
-    const stop = `${SITE_URL}/alerts/stop?f=${msg.followerId}&t=${stopToken(msg.followerId)}`;
+    // Texts: AWS handles STOP replies. Email: a signed stop link.
+    const footer = msg.channel === "sms" ? "Reply STOP to end." : `\n\nStop these alerts: ${SITE_URL}/alerts/stop?f=${msg.followerId}&t=${stopToken(msg.followerId)}`;
     try {
       const { providerId } = await sender.send({
         to,
         subject: msg.kind === "final" ? "Final score" : "Schedule change",
-        body: `${msg.body}\n\nStop these alerts: ${stop}`,
+        body: msg.channel === "sms" ? `${msg.body} ${footer}` : `${msg.body}${footer}`,
       });
       await db.update(s.alertMessage).set({ status: "sent", sentAt: now, providerId }).where(eq(s.alertMessage.id, msg.id));
       sent++;
-    } catch {
+    } catch (error) {
       await db.update(s.alertMessage).set({ status: "failed" }).where(eq(s.alertMessage.id, msg.id));
+      // They texted STOP: stop everything for them here too.
+      if (error instanceof OptedOutError) await db.update(s.follower).set({ stoppedAt: now }).where(eq(s.follower.id, msg.followerId));
       failed++;
     }
   }

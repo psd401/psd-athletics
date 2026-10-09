@@ -223,3 +223,8 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
    - **Gates:** OAuth (a psd401.net person signs in and allows the assistant) and `can()`.
    - **Kept:** audit with the connection id, 30-minute undo, and turning an assistant off.
    - **Also updated:** the CLAUDE.md non-negotiable "Agents propose; people publish" in this PR. Standards/07's "dry-run by default" for MCP-2/3 writes is set aside for this server by its owner.
+113. **AWS account and texts** (Hagel, 2026-10-09).
+   - **Account:** the district account shared with psd401-prr and psd-eoc (338414773271), now the default `aws_account_id`. The app keeps its own VPC.
+   - **State:** a dedicated bucket, `psd-athletics-tofu-state-338414773271`, from `infra/bootstrap`, following prr's tofu-state bucket.
+   - **Texts:** AWS End User Messaging, like eoc: pool, opt-out list, HELP reply, configuration set. Sends are one attempt, transactional. Texts end "Reply STOP to end." (AWS handles STOP), and a number AWS reports as opted out is marked stopped here.
+   - **Not yet:** athletics needs its own carrier registration (toll-free verification or a 10DLC campaign). eoc's number is registered for emergency notices, so texting stays off until `sms_origination_identity_arn` is set.

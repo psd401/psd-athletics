@@ -1,3 +1,5 @@
 # Copy to terraform.tfvars (git-ignored) or pass as -var in CI.
-aws_account_id = "123456789012"
-alarm_email    = "athletics-alarms@psd401.net"
+# aws_account_id defaults to the shared district account (338414773271).
+alarm_email = "athletics-alarms@psd401.net"
+# Set once athletics alerts have a carrier-registered number (QUESTIONS 27):
+# sms_origination_identity_arn = "arn:aws:sms-voice:us-west-2:338414773271:phone-number/phone-..."
