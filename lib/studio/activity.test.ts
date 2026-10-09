@@ -7,7 +7,7 @@ import * as s from "../db/schema";
 import { seedFromFixtures } from "../db/seed";
 import { listTeams } from "../data/queries";
 import type { Actor } from "../permissions";
-import { describeChange, listActivity } from "./activity";
+import { describeChange, listActivity, summarize } from "./activity";
 
 let db: Db;
 const t0 = new Date("2026-10-09T18:00:00Z");
@@ -46,6 +46,16 @@ describe("listActivity", () => {
     expect(soon.every((i) => i.canUndo)).toBe(true);
     const late = await listActivity(db, ad, ["ghhs", "phs"], new Date(t0.getTime() + 31 * 60_000));
     expect(late.every((i) => !i.canUndo)).toBe(true);
+  });
+});
+
+describe("summarize", () => {
+  it("picks a title, name or note and keeps it short", () => {
+    expect(summarize({ title: "Tides sweep Silas", body: "…" })).toBe("Tides sweep Silas");
+    expect(summarize({ displayName: "Alex R." })).toBe("Alex R.");
+    expect(summarize({ body: "x".repeat(80) })).toBe(`${"x".repeat(57)}…`);
+    expect(summarize(null)).toBeNull();
+    expect(summarize({ id: "1" })).toBeNull();
   });
 });
 

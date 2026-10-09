@@ -186,3 +186,40 @@
     grid-template-columns: 1fr;
   }
 }
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  max-width: 560px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1fr auto;
+  gap: var(--space-3);
+  align-items: end;
+  margin: var(--space-4) 0;
+}
+
+.tableWrap {
+  position: relative;
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .formRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Studio inputs meet the 44px touch target (CLAUDE.md); Nexus's default is 40px. */
+.shell :global(.nx-input),
+.shell :global(.nx-select),
+.shell :global(.nx-btn) {
+  min-height: var(--touch-min);
+}
+
+.form > button {
+  justify-self: start;
+}

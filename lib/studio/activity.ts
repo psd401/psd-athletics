@@ -15,6 +15,18 @@ export interface ActivityItem {
   undoUntil: Date | null;
   undoneAt: Date | null;
   canUndo: boolean;
+  /** A short label for what changed: a title, a name, or the start of a note. */
+  summary: string | null;
+}
+
+/** "Bus leaves at 4:15", "Alex R.", a story's title. Never more than 60 characters. */
+export function summarize(snapshot: unknown): string | null {
+  if (!snapshot || typeof snapshot !== "object") return null;
+  const o = snapshot as Record<string, unknown>;
+  const value = [o.title, o.displayName, o.name, o.body].find((v): v is string => typeof v === "string" && v.trim().length > 0);
+  if (!value) return null;
+  const one = value.trim().replace(/\s+/g, " ");
+  return one.length > 60 ? `${one.slice(0, 57)}…` : one;
 }
 
 /**
@@ -47,6 +59,7 @@ export async function listActivity(db: Db, actor: Actor, schoolIds: string[], no
       undoUntil: log.undoUntil,
       undoneAt: log.undoneAt,
       canUndo: open && allowed,
+      summary: summarize(log.after ?? log.before),
     };
   });
 }

@@ -46,7 +46,10 @@ export default async function ActivityPage() {
                       {item.actorName}
                       {item.viaAgent ? " (through an AI agent)" : ""} {describeChange(item.verb, item.objectType)}
                     </span>
-                    <span className="nx-row__sub">{when.format(item.createdAt)}</span>
+                    <span className="nx-row__sub">
+                      {item.summary ? `“${item.summary}” · ` : ""}
+                      {when.format(item.createdAt)}
+                    </span>
                   </span>
                   <span className="nx-row__end">
                     {item.undoneAt ? (
