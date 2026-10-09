@@ -14,6 +14,7 @@ import t from "../../../../components/school/team.module.css";
 import { appDb } from "../../../../lib/data/db";
 import { getTeamContent, listGames, listSchools, listTeams, type TeamView } from "../../../../lib/data/queries";
 import { LEAGUE_URL, schoolContent } from "../../../../lib/schools/content";
+import { safeHttpsUrl } from "../../../../lib/security/url";
 import { levelLabel, opponentLine, timeLabel, type Level } from "../../../../lib/schedule/games";
 import { formatRecord, ordinal } from "../../../../lib/schedule/school";
 import { recordStats, teamRows, type ResultCell } from "../../../../lib/schedule/team";
@@ -168,7 +169,7 @@ export default async function TeamPage({ params, searchParams }: { params: Param
   const rosterPanel = (
     <div className={t.card}>
       <div className={t.cardHead}>
-        <h2 className={`ath-display ${t.h2}`}>{year ?? ""} roster</h2>
+        <h2 className={`ath-display ${t.h2}`}>{year ? `${year} roster` : "Roster"}</h2>
         <span className={t.meta}>Names follow the district&apos;s directory-information rules</span>
       </div>
       {teamContent.roster.length === 0 ? (
@@ -245,7 +246,7 @@ export default async function TeamPage({ params, searchParams }: { params: Param
           <ul className={t.list}>
             {teamContent.documents.map((d) => (
               <li key={d.id} className={t.card}>
-                {d.url ? <a href={d.url}>{d.title}</a> : d.title} <span className={t.small}>{d.kind}</span>
+                {safeHttpsUrl(d.url) ? <a href={safeHttpsUrl(d.url)!}>{d.title}</a> : d.title} <span className={t.small}>{d.kind}</span>
               </li>
             ))}
           </ul>
@@ -385,7 +386,9 @@ export default async function TeamPage({ params, searchParams }: { params: Param
               <h2 className={`ath-label ${t.asideLabel}`}>Team partners</h2>
               <ul className={t.sponsors}>
                 {teamContent.sponsors.length > 0
-                  ? teamContent.sponsors.map((s) => <li key={s.id}>{s.url ? <a href={s.url}>{s.name}</a> : s.name}</li>)
+                  ? teamContent.sponsors.map((s) => (
+                      <li key={s.id}>{safeHttpsUrl(s.url) ? <a href={safeHttpsUrl(s.url)!}>{s.name}</a> : s.name}</li>
+                    ))
                   : ["[Sponsor]", "[Sponsor]"].map((p, i) => <li key={i}>{p}</li>)}
               </ul>
             </div>

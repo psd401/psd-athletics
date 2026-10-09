@@ -7,7 +7,12 @@ import { axeViolations, hasHorizontalScroll } from "./axe";
 test.describe("Peninsula home", () => {
   test("has the match-card hero, live strip, week board and champions band, and passes axe", async ({ page }) => {
     await page.goto("/phs");
+    await expect(page).toHaveTitle("Peninsula Seahawks Athletics");
+    await expect(page.locator("[data-school]")).toHaveAttribute("data-school", "phs");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Lights on in Purdy.");
+    // Restored from the old school.spec Peninsula test: home games give directions to Roy Anderson Field.
+    await expect(page.getByText("Roy Anderson Field").first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "Directions" }).first()).toHaveAttribute("href", /14105%20Purdy%20Dr%20NW/);
     await expect(page.getByText("The Seahawks host North Thurston at 7:00 PM.")).toBeVisible();
     await expect(page.getByRole("link", { name: "Buy tickets on GoFan" })).toHaveAttribute("href", "https://gofan.co/app/school/WA23302");
     await expect(page.getByText("Live now", { exact: true }).first()).toBeVisible();

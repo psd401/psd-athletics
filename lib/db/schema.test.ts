@@ -164,7 +164,8 @@ describe("photo", () => {
 describe("student privacy", () => {
   it("roster entries hold directory information only", () => {
     expect(Object.keys(getTableColumns(s.rosterEntry)).sort()).toEqual([
-      "createdAt", "displayName", "grade", "id", "jerseyNumber", "photoReleaseOptOut", "position", "teamId", "updatedAt",
+      "createdAt", "directoryOptOut", "displayName", "grade", "id", "jerseyNumber", "photoReleaseOptOut", "position", "publishedAt",
+      "teamId", "updatedAt",
     ]);
   });
 });
