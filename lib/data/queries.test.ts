@@ -61,11 +61,10 @@ describe("getGame", () => {
 });
 
 describe("listSchools", () => {
-  it("includes the athletics office without email addresses", async () => {
+  it("includes the athletics office as published by the school", async () => {
     const [ghhs, phs] = await listSchools(db);
-    expect(ghhs?.contacts).toEqual([{ name: "Carly Fries-Geldermann", role: "Athletic Secretary", phone: null }]);
-    expect(phs?.contacts[0]).toEqual({ name: "Ross Filkins", role: "Athletic Director", phone: "253-530-4410" });
-    expect(JSON.stringify(phs)).not.toContain("@psd401.net");
+    expect(ghhs?.contacts).toEqual([{ name: "Carly Fries-Geldermann", role: "Athletic Secretary", email: null, phone: null }]);
+    expect(phs?.contacts[0]).toEqual({ name: "Ross Filkins", role: "Athletic Director", email: "filkinsr@psd401.net", phone: "253-530-4410" });
   });
 });
 

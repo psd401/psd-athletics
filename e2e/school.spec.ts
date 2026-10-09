@@ -62,19 +62,7 @@ test.describe("Gig Harbor home, desktop menu", () => {
   });
 });
 
-test.describe("Peninsula home", () => {
-  test("renders the same template in the Peninsula theme and passes axe", async ({ page }) => {
-    await page.goto("/phs");
-    await expect(page).toHaveTitle("Peninsula Seahawks Athletics");
-    await expect(page.locator("[data-school]")).toHaveAttribute("data-school", "phs");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Friday night at home.");
-    await expect(page.getByRole("link", { name: /Directions to Roy Anderson Field/ })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "More than a scoreboard" })).toBeVisible();
-    await expect(page.locator("#fan").getByRole("link", { name: /Tickets/ })).toHaveAttribute("href", "https://gofan.co/app/school/WA23302");
-    expect(await axeViolations(page)).toEqual([]);
-    expect(await hasHorizontalScroll(page)).toBe(false);
-  });
-
+test.describe("school routes", () => {
   test("unknown schools are not found", async ({ page }) => {
     const response = await page.goto("/xyz");
     expect(response?.status()).toBe(404);

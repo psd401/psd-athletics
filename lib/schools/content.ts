@@ -15,6 +15,13 @@ export interface SchoolLinks {
 
 export interface SchoolContent {
   slug: "ghh" | "phs";
+  /**
+   * Section order and hero style. "tides" is design/GHHS-Home.dc.html,
+   * "seahawks" is design/PHS-Home.dc.html. Both use the same components.
+   */
+  layout: "tides" | "seahawks";
+  /** Where home games are, for the match-card headline ("Lights on in Purdy."). */
+  homeTown: string;
   links: SchoolLinks;
   motif: "waves" | "chevrons";
   heroPhoto: string;
@@ -24,6 +31,10 @@ export interface SchoolContent {
   fanIntro: string;
   traditionKicker: (founded: number | null) => string;
   traditionTitle: string;
+  /** For the pillars layout: which honors to show, in order (by figure). Empty means all. */
+  pillarFigures: string[];
+  /** Masthead label for the tradition section: "Tradition" or "Community". */
+  traditionNav: string;
   alertsKicker: string;
   alertsTitle: string;
   alertsText: string;
@@ -34,6 +45,8 @@ export interface SchoolContent {
 export const schoolContent: Record<string, SchoolContent> = {
   ghh: {
     slug: "ghh",
+    layout: "tides",
+    homeTown: "Gig Harbor",
     links: {
       tickets: "https://gofan.co/app/school/WA23221",
       watch: "https://www.nfhsnetwork.com/schools/gig-harbor-high-school-gig-harbor-wa",
@@ -47,6 +60,8 @@ export const schoolContent: Record<string, SchoolContent> = {
     fanIntro: "Everything a Tides family needs, one tap away. No digging through PDFs.",
     traditionKicker: (founded) => (founded ? `Home of the Tides since ${founded}` : "Home of the Tides"),
     traditionTitle: "Built on titles",
+    traditionNav: "Tradition",
+    pillarFigures: [],
     alertsKicker: "Tide Pride alerts",
     alertsTitle: "Know the moment a game moves.",
     alertsText: "Pick your teams. When Arbiter changes a time, field or date, you get one text. Final scores too, if you want them.",
@@ -55,6 +70,8 @@ export const schoolContent: Record<string, SchoolContent> = {
   },
   phs: {
     slug: "phs",
+    layout: "seahawks",
+    homeTown: "Purdy",
     links: {
       tickets: "https://gofan.co/app/school/WA23302",
       watch: "https://www.nfhsnetwork.com/schools/peninsula-high-school-gig-harbor-wa",
@@ -62,12 +79,15 @@ export const schoolContent: Record<string, SchoolContent> = {
     },
     motif: "chevrons",
     heroPhoto: "/images/phs-osprey.jpg",
-    traditionPhoto: "/images/phs-osprey.jpg",
+    traditionPhoto: "/images/phs-team.jpg",
     ghostText: "Seahawks",
     scoreboardLabel: "Hawks scoreboard",
     fanIntro: "Everything a Seahawks family needs, one tap away. No digging through PDFs.",
     traditionKicker: (founded) => (founded ? `Peninsula High School since ${founded}` : "Peninsula High School"),
     traditionTitle: "More than a scoreboard",
+    traditionNav: "Community",
+    // The comp's three pillars; the 2012–13 league titles are in 1978's detail.
+    pillarFigures: ["1978", "Unified", "Letter"],
     alertsKicker: "Hawk alerts",
     alertsTitle: "Follow your Seahawk.",
     alertsText: "One text when a game moves. One text with the final. That's it.",
