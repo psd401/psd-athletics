@@ -63,5 +63,26 @@ describe("describeChange", () => {
   it("reads like a sentence", () => {
     expect(describeChange("publish", "story")).toBe("published a story");
     expect(describeChange("undo", "coach_note")).toBe("undid a change to a coach's note");
+    expect(describeChange("assign", "role_assignment")).toBe("gave someone a role");
+    expect(describeChange("end", "role_assignment")).toBe("ended a role");
+    expect(describeChange("remove", "role_assignment")).toBe("removed a role");
+  });
+});
+
+describe("role changes in the log", () => {
+  it("say whose role and which one", async () => {
+    const at = new Date("2026-10-09T19:00:00Z");
+    await recordChange(db, {
+      actor: ad,
+      verb: "assign",
+      objectType: "role_assignment",
+      objectId: "r1",
+      scope: { schoolId: "ghhs", teamId: null },
+      before: null,
+      after: { id: "r1", personId: "o", role: "assistant_coach", schoolId: null, teamId: null, startsOn: "2026-10-09", endsOn: null, source: "manual" },
+      now: at,
+    });
+    const [item] = await listActivity(db, ad, ["ghhs"], at, 1);
+    expect(item).toMatchObject({ objectId: "r1", summary: "Coach O · Assistant coach" });
   });
 });

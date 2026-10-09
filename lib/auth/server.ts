@@ -24,6 +24,12 @@ export function createAuth(db: Db) {
     secret: process.env.BETTER_AUTH_SECRET,
     // Password sign-in exists only for the made-up dev people (lib/auth/dev.ts).
     emailAndPassword: { enabled: devSignInEnabled(), disableSignUp: true },
+    // People added in People and roles have a person row before their first
+    // Google sign-in, not yet verified. Link Google to that row on first
+    // sign-in (Google verifies the address; validateUserInfo checks the
+    // domain). Safe because nobody can create a person row themselves: sign-up
+    // is off and rows come only from an athletic director or a Google sign-in.
+    account: { accountLinking: { enabled: true, requireLocalEmailVerified: false } },
     // Send sign-in errors (like a non-district account) back to our page.
     onAPIError: { errorURL: "/sign-in" },
     database: drizzleAdapter(db, {

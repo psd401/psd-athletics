@@ -223,3 +223,18 @@
 .form > button {
   justify-self: start;
 }
+
+/* Row headers in Nexus tables read as body text, not column headers. */
+.shell :global(.nx-table) th.rowHead {
+  background: transparent;
+  color: var(--ink);
+  font: 600 14px/20px var(--font-sans);
+  white-space: normal;
+  position: static;
+}
+
+.rowHead small {
+  display: block;
+  font-weight: 400;
+  color: var(--ink-muted);
+}

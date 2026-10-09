@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { getAuth } from "../auth/server";
 import { appDb } from "../data/db";
 import { listSchools, listTeams, type SchoolView, type TeamView } from "../data/queries";
-import { can, loadActor, type Action, type Actor } from "../permissions";
+import { can, canAssign, loadActor, type Action, type Actor } from "../permissions";
 import { currentTime, pacificDate } from "../schedule/time";
 
 export interface StudioContext {
@@ -49,7 +49,7 @@ export async function requireStudio(next = "/studio"): Promise<StudioContext> {
   };
 }
 
-/** True when the person can manage people anywhere (school or district AD). */
-export function managesPeople(ctx: Pick<StudioContext, "schools" | "can">): boolean {
-  return ctx.schools.some((s) => ctx.can("people.manage", { schoolId: s.id, teamId: null }));
+/** Schools where the person can add people (athletic directors and secretaries). */
+export function peopleSchools(ctx: Pick<StudioContext, "schools" | "actor">): SchoolView[] {
+  return ctx.schools.filter((s) => canAssign(ctx.actor, "head_coach", s.id));
 }

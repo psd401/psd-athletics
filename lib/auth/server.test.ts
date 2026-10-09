@@ -59,3 +59,12 @@ describe("Google sign-in", () => {
     });
   });
 });
+
+describe("people added before their first sign-in", () => {
+  it("get their Google account linked to the row an athletic director made", () => {
+    // Better Auth refuses to link to an unverified local row by default; invited
+    // people are unverified until Google verifies them (lib/studio/people.ts).
+    expect(auth.options.account?.accountLinking).toMatchObject({ enabled: true, requireLocalEmailVerified: false });
+    expect(auth.options.emailAndPassword?.disableSignUp).toBe(true);
+  });
+});

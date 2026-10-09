@@ -2,7 +2,8 @@ import { and, desc, eq, inArray, or, type SQL } from "drizzle-orm";
 
 import type { Db } from "../db/client";
 import * as s from "../db/schema";
-import { can, type Actor } from "../permissions";
+import { can, type Actor, type Role } from "../permissions";
+import { roleNames } from "./people";
 
 export interface ActivityItem {
   id: string;
@@ -44,6 +45,18 @@ export async function listActivity(db: Db, actor: Actor, schoolIds: string[], no
     .where(and(or(...conditions)))
     .orderBy(desc(s.auditLog.createdAt))
     .limit(limit);
+  // Role snapshots carry a person id, not a name; look the names up.
+  const rolePeople = rows.flatMap(({ log }) => {
+    const snap = (log.after ?? log.before) as Record<string, unknown> | null;
+    return log.objectType === "role_assignment" && typeof snap?.personId === "string" ? [snap.personId] : [];
+  });
+  const names = new Map(
+    rolePeople.length ? (await db.select({ id: s.person.id, name: s.person.name }).from(s.person).where(inArray(s.person.id, rolePeople))).map((p) => [p.id, p.name]) : [],
+  );
+  const roleSummary = (snap: Record<string, unknown> | null) =>
+    snap && typeof snap.personId === "string" && typeof snap.role === "string" && snap.role in roleNames
+      ? `${names.get(snap.personId) ?? "Someone"} · ${roleNames[snap.role as Role]}`
+      : null;
   return rows.map(({ log, name }) => {
     const open = !log.undoneAt && log.undoUntil !== null && log.undoUntil.getTime() > now.getTime() && log.verb !== "undo";
     const allowed =
@@ -59,7 +72,10 @@ export async function listActivity(db: Db, actor: Actor, schoolIds: string[], no
       undoUntil: log.undoUntil,
       undoneAt: log.undoneAt,
       canUndo: open && allowed,
-      summary: summarize(log.after ?? log.before),
+      summary:
+        log.objectType === "role_assignment"
+          ? roleSummary((log.after ?? log.before) as Record<string, unknown> | null)
+          : summarize(log.after ?? log.before),
     };
   });
 }
@@ -83,6 +99,9 @@ export function describeChange(verb: string, objectType: string): string {
     publish: `published a ${what}`,
     unpublish: `unpublished a ${what}`,
     undo: `undid a change to a ${what}`,
+    assign: `gave someone a ${what}`,
+    end: `ended a ${what}`,
+    remove: `removed a ${what}`,
   };
   return verbs[verb] ?? `${verb} a ${what}`;
 }

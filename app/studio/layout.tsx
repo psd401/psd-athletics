@@ -7,7 +7,7 @@ import "../../vendor/nexus/bundle.css";
 import { StudioNav, type NavItem } from "../../components/studio/studio-nav";
 import styles from "../../components/studio/studio.module.css";
 import { getAuth } from "../../lib/auth/server";
-import { managesPeople, requireStudio } from "../../lib/studio/context";
+import { peopleSchools, requireStudio } from "../../lib/studio/context";
 
 export const metadata: Metadata = { title: "Athletics Studio" };
 
@@ -38,8 +38,8 @@ export default async function StudioLayout({ children }: { children: ReactNode }
   // Pages are added here as they're built.
   const items: NavItem[] = [{ href: "/studio", label: "Today" }];
   if (ctx.myTeams.length > 0) items.push({ href: "/studio/teams", label: "Team pages" }, { href: "/studio/stories", label: "Stories" });
+  if (peopleSchools(ctx).length > 0) items.push({ href: "/studio/people", label: "People and roles" });
   items.push({ href: "/studio/activity", label: "Activity" });
-  void managesPeople;
 
   return (
     <div data-theme="nexus" className={styles.shell}>
