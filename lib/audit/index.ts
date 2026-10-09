@@ -18,6 +18,8 @@ const tables = {
   document: s.document,
   sponsor: s.sponsor,
   role_assignment: s.roleAssignment,
+  album: s.album,
+  photo: s.photo,
 } as const;
 
 export type ObjectType = keyof typeof tables;
