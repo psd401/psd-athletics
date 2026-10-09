@@ -3,7 +3,10 @@
 import { useState } from "react";
 
 import { homeAwayLabel, levelLabel, opponentLine, timeLabel, type GameState, type GameView } from "../../lib/schedule/games";
+import Link from "next/link";
+
 import { GameActions } from "../athletics/game-actions";
+import { ArrowIcon } from "../athletics/icons";
 import { StatusTag } from "../athletics/status-tag";
 import styles from "./hub.module.css";
 
@@ -100,6 +103,17 @@ export function HubWeek({ days, rangeLabel, sourceLine }: { days: WeekDay[]; ran
           </div>
         ))}
         {total === 0 ? <div className={styles.empty}>No games match these filters this week. Try showing both schools.</div> : null}
+        <div className={styles.weekMore}>
+          <Link className={`${styles.pill} ${styles.pillDark}`} href="/ghh/schedule">
+            Gig Harbor schedule
+            <ArrowIcon />
+          </Link>
+          <Link className={`${styles.pill} ${styles.pillDark}`} href="/phs/schedule">
+            Peninsula schedule
+            <ArrowIcon />
+          </Link>
+          <span className={styles.weekMoreNote}>Each schedule has calendar links for Google, Apple and Outlook.</span>
+        </div>
       </div>
     </section>
   );

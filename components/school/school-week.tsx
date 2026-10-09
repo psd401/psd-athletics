@@ -3,7 +3,10 @@
 import { useState } from "react";
 
 import { levelLabel, opponentLine, timeLabel, type GameState, type GameView } from "../../lib/schedule/games";
+import Link from "next/link";
+
 import { GameActions } from "../athletics/game-actions";
+import { CalendarAddIcon } from "../athletics/icons";
 import { StatusTag } from "../athletics/status-tag";
 import styles from "./school.module.css";
 
@@ -22,7 +25,11 @@ export function SchoolWeek({
   games,
   rangeLabel,
   sport,
+  schoolSlug,
+  mascot,
 }: {
+  schoolSlug: string;
+  mascot: string;
   games: WeekGame[];
   rangeLabel: string;
   /** The marquee sport's chip, e.g. Football. */
@@ -101,6 +108,15 @@ export function SchoolWeek({
         ) : (
           <div className={styles.empty}>No games match this filter this week.</div>
         )}
+        <div className={styles.weekMore}>
+          <Link className={`${styles.btn} ${styles.btnBrand}`} href={`/${schoolSlug}/schedule`}>
+            Full {mascot} schedule
+          </Link>
+          <Link className={`${styles.btn} ${styles.btnGhost}`} href={`/${schoolSlug}/schedule`}>
+            <CalendarAddIcon />
+            Subscribe to the {mascot} calendar
+          </Link>
+        </div>
       </div>
     </section>
   );

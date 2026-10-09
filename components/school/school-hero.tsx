@@ -17,7 +17,7 @@ function wavePath(y: number): string {
   return `M0 ${y} C 90 ${y - 30}, 180 ${y + 30}, 270 ${y} ${segments.join(" ")}`;
 }
 
-function Motif({ kind }: { kind: SchoolContent["motif"] }) {
+export function Motif({ kind }: { kind: SchoolContent["motif"] }) {
   return (
     <svg className={styles.motif} viewBox="0 0 1800 700" preserveAspectRatio="none" aria-hidden="true">
       {kind === "waves"

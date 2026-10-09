@@ -124,6 +124,8 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           clockOffsetMs={clockOffsetMs(now)}
         />
         <SchoolWeek
+          schoolSlug={slug}
+          mascot={school.mascot}
           games={week}
           rangeLabel={`${formatMonthDay(today)} – ${formatMonthDay(addDays(today, WEEK_DAYS))} · ${
             week.length > 0 && week.every((w) => w.game.source === "arbiter") ? "Synced from Arbiter" : "Fall schedule snapshot"

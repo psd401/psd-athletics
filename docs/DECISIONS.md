@@ -65,3 +65,11 @@ Choices made while building, newest last. Each entry says what was decided, why,
 38. **The Google OAuth client is set up through `psd-gcp-infra`.** That repo keeps OAuth clients and consent screens out of Terraform (no public API) and documents them in its `RUNBOOK.md`, so the athletics client is a runbook entry there: an Internal consent screen (district accounts only), scopes `openid email profile`, redirect URIs `http://localhost:3000/api/auth/callback/google` and `https://athletics.psd401.net/api/auth/callback/google`. The client ID and secret go to the Keychain locally and Secrets Manager in the cloud (QUESTIONS 17).
 39. **Away venues come from Arbiter.** No hand entry; away games keep no Directions button until the sync brings venues (QUESTIONS 19).
 40. **PRs stay stacked** and work continues without waiting for each merge.
+
+## 2026-10-08 — Schedule (PLAN task 2.3)
+
+41. **`/ghh/schedule` and `/phs/schedule` are one route** with the school masthead, not the comp's white schedule header, so every page of a school's site has the same navigation (the current page is marked with `aria-current`).
+42. **Filters live in the URL** (`?sport=football&level=varsity&where=home&q=…&view=month`) and unknown values fall back to "all". The subscribe links always point at the feed for exactly what's filtered: `/api/calendar/<school>.ics` with the same query (a team feed is `?sport=…&level=…`). Google gets the `webcal://` address as `cid`, Apple gets `webcal://`, Outlook gets `outlook.office.com …/addfromweb`, and Copy link copies the `https://` address. Feeds may be cached for 15 minutes; the Arbiter sync will revalidate them in Phase 3.
+43. **The month view is a real table** (a caption, Sunday-first column headers, today marked `aria-current="date"`) instead of the comp's `role="grid"`, which would need full grid keyboard support. On phones the table scrolls sideways inside a focusable, labeled region (axe `scrollable-region-focusable`). Away games say "@" and home games "vs", so home and away aren't shown by color alone.
+44. **Every past game without a score shows "Result not reported"**, and finals say "Final · Win 37–8" in words. "Jump to today" moves to the first day from today onward.
+45. **The hub links to both school schedules** instead of the comp's single "Full schedule", since there isn't a combined schedule page.

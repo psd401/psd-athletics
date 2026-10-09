@@ -136,6 +136,7 @@
 }
 
 [data-school] .nav a:hover,
+[data-school] .nav a[aria-current="page"],
 .nav button:hover,
 .nav button[aria-expanded="true"] {
   background: var(--ath-brand-deep);
@@ -624,6 +625,23 @@
   color: var(--ath-muted);
   border: 1.5px dashed var(--ath-line);
   border-radius: var(--radius-lg);
+}
+
+.weekMore {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+[data-school] .btnGhost {
+  background: var(--ath-surface);
+  color: var(--ath-ink);
+  box-shadow: inset 0 0 0 1.5px var(--ath-line);
+}
+
+[data-school] .btnGhost:hover {
+  background: var(--ath-tint);
 }
 
 /* ---------------------------------------------------------- finals */
