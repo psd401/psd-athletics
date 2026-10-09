@@ -34,6 +34,7 @@ bun run lint         # eslint . — includes test-quality rules
 bun run typecheck    # tsc --noEmit
 bun run db:generate  # drizzle-kit: write a new SQL migration in drizzle/ after editing lib/db/schema.ts
 bun run db:migrate   # apply migrations to DATABASE_URL (without it, the app uses in-memory PGlite and migrates itself)
+bun run db:seed      # load fixtures/ into DATABASE_URL (the in-memory dev database seeds itself)
 ```
 
 Always `bun run test` (the package script), never bare `bun test` (bun's own runner).
@@ -46,7 +47,7 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 - `lib/db/schema.ts` — the data model; `drizzle/` — committed migrations (never edit one; generate a new one).
 - `design/` — approved comps (`*.dc.html`) and `assets/` (logos, photos). Reference only; the app doesn't import from here.
 - `docs/` — `SPEC.md`, `BRAND.md`, `KICKOFF.md`, `DECISIONS.md`, `QUESTIONS.md` (`PLAN.md` arrives in Phase 1).
-- `fixtures/fall-2026-snapshot.json` — real fall 2026 games, records and school facts; seed data.
+- `fixtures/fall-2026-snapshot.json` — real fall 2026 games, records and school facts; `fixtures/school-content.json` — honors for the titles bands. Loaded by `lib/db/seed.ts`.
 - `vendor/nexus/` — read-only copy of Nexus from `psd-dev-standards`. Never edit.
 - `.github/workflows/` — thin callers of `PSD401/.github` reusable workflows. Never add CI logic here.
 
