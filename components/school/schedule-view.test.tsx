@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { emptyFilters } from "../../lib/schedule/filters";
@@ -46,7 +46,7 @@ describe("ScheduleView", () => {
 
   it("filters by level and updates the subscribe links", () => {
     renderView();
-    fireEvent.click(screen.getByRole("group", { name: "Level" }).querySelector("button:nth-child(3)")!);
+    fireEvent.click(within(screen.getByRole("group", { name: "Level" })).getByRole("button", { name: "JV" }));
     expect(screen.getByText("1 of 3 games")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Apple" })).toHaveAttribute("href", "webcal://athletics.psd401.net/api/calendar/ghh.ics?level=jv");
     expect(window.location.search).toBe("?level=jv");

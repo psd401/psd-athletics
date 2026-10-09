@@ -53,5 +53,10 @@ test.describe("school schedule", () => {
     expect(body).toContain("X-WR-CALNAME:Seahawks · Football · Varsity");
     expect(body.match(/BEGIN:VEVENT/g)).toHaveLength(8);
     expect((await request.get("/api/calendar/elsewhere.ics")).status()).toBe(404);
+
+    // A filter that matches nothing still names the sport.
+    const empty = await (await request.get("/api/calendar/phs.ics?sport=football&level=c_team")).text();
+    expect(empty).toContain("X-WR-CALNAME:Seahawks · Football · C-team");
+    expect(empty).not.toContain("BEGIN:VEVENT");
   });
 });
