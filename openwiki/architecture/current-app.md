@@ -6,7 +6,7 @@ tags: [nextjs, vitest, eslint, template, tooling]
 openwiki:
   roles: [architecture, testing]
   change_kinds: [tooling, tests, routing]
-  source_paths: [app/layout.tsx, app/page.tsx, components/counter.tsx, components/counter.test.tsx, package.json, vitest.config.ts, eslint.config.mjs, next.config.ts, tsconfig.json]
+  source_paths: [app/layout.tsx, app/page.tsx, components/counter.tsx, components/counter.test.tsx, package.json, vitest.config.ts, vitest.setup.ts, eslint.config.mjs, next.config.ts, tsconfig.json]
   symbols: [RootLayout, Home, Counter]
   test_paths: [components/counter.test.tsx]
   invariants: [At least one real behavior-asserting test must exist because psd-ci fails zero-test repos., Lint forbids .only, .skip and assertion-free tests in *.test.ts(x).]
@@ -44,6 +44,12 @@ The kickoff prompt (`docs/KICKOFF.md`, summarized in [roadmap](../planning/roadm
 - Always `bun run test` (the package script), never bare `bun test`.
 
 | Check | Command | When |
+|---|---|---|
+| Focused unit test | `bun run test components/counter.test.tsx` | any component change |
+| Lint | `bun run lint` | any change (includes test-quality rules) |
+| Types | `bun run typecheck` | any TS change |
+| Production build | `bun run build` | before PR; required by CLAUDE.md as a PR gate (conditional for doc-only edits) |
+ck | Command | When |
 |---|---|---|
 | Focused unit test | `bun run test components/counter.test.tsx` | any component change |
 | Lint | `bun run lint` | any change (includes test-quality rules) |

@@ -23,6 +23,7 @@ openwiki:
 | `claude-review.yml` | PR opened/ready/reopened (skipped for Dependabot) | `reusable-claude-review.yml` (needs `id-token: write`) |
 | `license-check.yml` | PRs | `reusable-license-check.yml` |
 | `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml`; refreshes this wiki |
+| `security-scan.yml` | PRs, push to `main`, Monday 09:00 cron, manual | `reusable-security-scan.yml@main`; the `@main` ref is deliberate so central bumps propagate, and it is annotated for zizmor's unpinned-uses check |
 
 Never edit workflows to bypass psd-ci. `.github/`, `.claude/`, `.mcp.json`, `CLAUDE.md`, `AGENTS.md` and `vendor/nexus/` require owner review via `.github/CODEOWNERS`. `.github/dependabot.yml` handles dependency updates; adding dependencies requires stating why in the PR body.
 
