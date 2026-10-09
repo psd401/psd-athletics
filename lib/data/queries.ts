@@ -1,7 +1,7 @@
 // Read queries for the public pages. Server only: these return plain objects
 // that are safe to hand to Client Components.
 
-import { and, asc, desc, eq, gte, lte, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, gte, isNotNull, lte, type SQL } from "drizzle-orm";
 
 import type { Db } from "../db/client";
 import * as s from "../db/schema";
@@ -145,8 +145,9 @@ export interface TeamContent {
 }
 
 /**
- * Everything published for one team. Only published rows, and only
- * directory-information roster fields (CLAUDE.md student privacy).
+ * Everything published for one team. Only published rows; roster entries
+ * also leave out students whose families opted out of directory
+ * information, and carry directory fields only (CLAUDE.md student privacy).
  */
 export async function getTeamContent(db: Db, teamId: string): Promise<TeamContent> {
   const [roster, stories, albums, documents, notes, sponsors] = await Promise.all([
@@ -159,7 +160,9 @@ export async function getTeamContent(db: Db, teamId: string): Promise<TeamConten
         grade: s.rosterEntry.grade,
       })
       .from(s.rosterEntry)
-      .where(eq(s.rosterEntry.teamId, teamId))
+      .where(
+        and(eq(s.rosterEntry.teamId, teamId), isNotNull(s.rosterEntry.publishedAt), eq(s.rosterEntry.directoryOptOut, false)),
+      )
       .orderBy(asc(s.rosterEntry.displayName)),
     db
       .select({ id: s.story.id, title: s.story.title, summary: s.story.summary, publishedAt: s.story.publishedAt })

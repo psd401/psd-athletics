@@ -84,10 +84,17 @@ describe("listHonors and listTeams", () => {
 });
 
 describe("getTeamContent", () => {
-  it("returns only published content and directory fields", async () => {
+  it("returns only published content, never opted-out students, and only directory fields", async () => {
     const [team] = await listTeams(db, { schoolId: "ghhs" });
     await db.insert(s.person).values({ id: "coach-1", name: "Coach", email: "coach-1@psd401.net", emailVerified: true });
-    await db.insert(s.rosterEntry).values({ teamId: team!.id, displayName: "Alex R.", jerseyNumber: "12", position: "QB", grade: 12 });
+    const published = new Date("2026-09-01T00:00:00Z");
+    await db.insert(s.rosterEntry).values([
+      { teamId: team!.id, displayName: "Alex R.", jerseyNumber: "12", position: "QB", grade: 12, publishedAt: published },
+      // Not shown: not yet published by the coach.
+      { teamId: team!.id, displayName: "Draft D.", jerseyNumber: "3" },
+      // Not shown: the family opted out of directory information.
+      { teamId: team!.id, displayName: "Private P.", jerseyNumber: "7", publishedAt: published, directoryOptOut: true },
+    ]);
     await db.insert(s.story).values([
       { schoolId: "ghhs", teamId: team!.id, title: "Draft", slug: "draft", body: "x", authorId: "coach-1" },
       { schoolId: "ghhs", teamId: team!.id, title: "Live", slug: "live", body: "x", authorId: "coach-1", status: "published", publishedAt: new Date("2026-10-03T00:00:00Z") },
