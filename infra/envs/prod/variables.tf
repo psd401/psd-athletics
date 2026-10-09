@@ -39,7 +39,7 @@ variable "permissions_boundary_arn" {
 }
 
 variable "sms_origination_identity_arn" {
-  description = "Carrier-registered number ARN for text alerts (QUESTIONS 27). Null keeps texting off."
+  description = "psd-eoc's End User Messaging pool or phone-number ARN, shared for text alerts (DECISIONS 114). Null keeps texting off."
   type        = string
   default     = null
 }

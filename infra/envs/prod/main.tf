@@ -9,6 +9,8 @@ module "athletics" {
   alarm_email                  = var.alarm_email
   sms_origination_identity_arn = var.sms_origination_identity_arn
 
-  db_multi_az        = true
+  # Single availability zone (Hagel, 2026-10-09): about $25 a month less; RDS
+  # still keeps 14 days of backups and restores to a point in time.
+  db_multi_az        = false
   log_retention_days = 365
 }

@@ -18,10 +18,10 @@ infra/
 |---|---|
 | Site | One container image on **ECS Fargate (ARM64)**, 2 tasks, behind an **ALB** with an ACM certificate and **WAF** (AWS managed rules, per-IP rate limit). |
 | Network | VPC with 2 public subnets (ALB, tasks with public IPs and no inbound except from the ALB) and 2 private subnets (database). No NAT gateway. |
-| Database | **RDS PostgreSQL 17**, Multi-AZ, encrypted, SSL forced, 14-day backups, deletion protection. The master password lives only in RDS-managed Secrets Manager. |
+| Database | **RDS PostgreSQL 17**, single-AZ in production (DECISIONS 114), encrypted, SSL forced, 14-day backups, deletion protection. The master password lives only in RDS-managed Secrets Manager. |
 | Photos | Private, KMS-encrypted, versioned **S3** bucket; files are served by the app's `/media` route. |
 | Email | **SES** domain identity with DKIM and a configuration set (TLS required, bounces and complaints suppressed). |
-| Texts | **AWS End User Messaging**, set up like psd-eoc: a pool around a carrier-registered number, an opt-out list (AWS answers STOP), a HELP reply, and a configuration set. Created only once `sms_origination_identity_arn` is set. |
+| Texts | **AWS End User Messaging through psd-eoc's existing pool**, shared (DECISIONS 114). Athletics adds only its own configuration set and permission to send. eoc's opt-out list and STOP/HELP replies apply. Off until `sms_origination_identity_arn` is set. |
 | Jobs | **EventBridge Scheduler** runs the same image with `bun run job deliver-alerts` every 5 minutes. |
 | Secrets | `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALERTS_SECRET` are created empty; values are set by hand and never touch Terraform state. |
 | CI | ECR repository (immutable tags, scan on push) and a deploy role that only a GitHub `production` environment job in `psd401/psd-athletics` can assume. |
@@ -47,7 +47,7 @@ The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn'
 3. Plan and apply from CI (or a supervised session with scoped credentials, phase 6 decision 6.3). The first apply waits on the certificate. Add the `dns_records` output to psd401.net DNS: the site CNAME, the certificate validation and SES DKIM.
 4. Set the four secret values in Secrets Manager (`app_secret_names` output).
 5. Check whether the shared account already has SES production access (eoc sends email). If not, request it.
-6. For texts, register a number for athletics alerts in End User Messaging (toll-free verification or a 10DLC campaign), as eoc did for its own number. Then set `sms_origination_identity_arn`. eoc's number is registered for emergency notices, so athletics needs its own registration.
+6. For texts, set `sms_origination_identity_arn` to psd-eoc's pool ARN once its number is registered and live.
 7. Push a first image tagged `bootstrap`, or set `image_tag`, then run migrations as a one-off task (`bun run db:migrate`) with the `app_subnets` and `app_security_group` outputs.
 
 ## The app side

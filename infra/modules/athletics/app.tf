@@ -129,7 +129,7 @@ data "aws_iam_policy_document" "task" {
     content {
       sid       = "AlertTexts"
       actions   = ["sms-voice:SendTextMessage"]
-      resources = [aws_pinpointsmsvoicev2_pool.alerts[0].arn, aws_pinpointsmsvoicev2_configuration_set.alerts[0].arn]
+      resources = [var.sms_origination_identity_arn, aws_pinpointsmsvoicev2_configuration_set.alerts[0].arn]
     }
   }
   statement {
@@ -150,7 +150,7 @@ locals {
   site_url = "https://${var.domain_name}"
   sms_environment = local.sms_enabled ? [
     { name = "ALERTS_SMS", value = "eum" },
-    { name = "SMS_POOL_ARN", value = aws_pinpointsmsvoicev2_pool.alerts[0].arn },
+    { name = "SMS_POOL_ARN", value = var.sms_origination_identity_arn },
     { name = "SMS_CONFIGURATION_SET", value = aws_pinpointsmsvoicev2_configuration_set.alerts[0].name },
   ] : []
   container_environment = concat([

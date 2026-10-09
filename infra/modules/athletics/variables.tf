@@ -124,7 +124,7 @@ variable "alarm_email" {
 }
 
 variable "sms_origination_identity_arn" {
-  description = "Carrier-registered phone number (or sender ID) ARN for text alerts, from AWS End User Messaging registration (toll-free verification or a 10DLC campaign for athletics alerts). Null leaves texting off (QUESTIONS 27)."
+  description = "End User Messaging pool or phone-number ARN to send text alerts from: psd-eoc's existing carrier-registered identity, shared (DECISIONS 114). Null leaves texting off."
   type        = string
   default     = null
 }

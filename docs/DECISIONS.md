@@ -228,3 +228,10 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
    - **State:** a dedicated bucket, `psd-athletics-tofu-state-338414773271`, from `infra/bootstrap`, following prr's tofu-state bucket.
    - **Texts:** AWS End User Messaging, like eoc: pool, opt-out list, HELP reply, configuration set. Sends are one attempt, transactional. Texts end "Reply STOP to end." (AWS handles STOP), and a number AWS reports as opted out is marked stopped here.
    - **Not yet:** athletics needs its own carrier registration (toll-free verification or a 10DLC campaign). eoc's number is registered for emergency notices, so texting stays off until `sms_origination_identity_arn` is set.
+114. **Single-AZ database, and texts share psd-eoc's number** (Hagel, 2026-10-09).
+   - **Database:** RDS runs in one availability zone in production (about $25 a month less), with 14-day backups and point-in-time restore. That's a Checkov skip (CKV_AWS_157).
+   - **Texts:** athletics sends through eoc's existing End User Messaging pool, so it doesn't create its own pool, opt-out list or HELP keyword. A shared HELP keyword would replace eoc's reply. Athletics has its own configuration set, so its delivery events stay separate.
+   - **Risks raised and accepted:**
+     - eoc's toll-free registration describes PSD EOC staff emergency alerts, so carriers may filter athletics traffic on that number.
+     - One opt-out list per number: someone who texts STOP to a game alert also stops eoc's alerts on that number.
+   - **To revisit:** if either happens, a separate athletics number is a variable change plus its own registration.

@@ -1,7 +1,8 @@
 // Text alerts through AWS End User Messaging, as psd-eoc sends them
 // (DECISIONS 113): one wire attempt per message (SendTextMessage has no
-// idempotency token, so the outbox owns retries), transactional, from the
-// athletics pool. AWS answers STOP and HELP and keeps the opt-out list.
+// idempotency token, so the outbox owns retries), transactional, from
+// psd-eoc's shared pool (DECISIONS 114). AWS answers STOP and HELP and keeps
+// the opt-out list.
 
 import { PinpointSMSVoiceV2Client, SendTextMessageCommand } from "@aws-sdk/client-pinpoint-sms-voice-v2";
 
