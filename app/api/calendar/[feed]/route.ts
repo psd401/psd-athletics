@@ -19,8 +19,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ feed
   const school = (await listSchools(db)).find((s) => s.slug === slug);
   if (!school) return notFound();
   const filters = parseFilters(new URL(request.url).searchParams);
-  const games = filterGames(await listGames(db, { schoolId: school.id }), filters);
-  const sportName = filters.sport ? (games[0]?.sport ?? null) : null;
+  const all = await listGames(db, { schoolId: school.id });
+  const games = filterGames(all, filters);
+  // Name the sport from the whole schedule, so a filter with no games keeps it.
+  const sportName = filters.sport ? (all.find((g) => g.sportSlug === filters.sport)?.sport ?? null) : null;
 
   const body = calendar(games, { name: filterName(school.mascot, filters, sportName), siteUrl: SITE_URL, stamp: currentTime() });
   return new Response(body, {
