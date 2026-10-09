@@ -59,7 +59,7 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 
 - **WCAG 2.1 AA:** 4.5:1 text contrast, 44px targets, keyboard and screen reader support, real `<button>`/`<a>`/`<label>`, reduced motion respected. Every published photo needs an image description.
 - **Permissions live on the server, in one module,** shared by the web app and the MCP server. Coaches publish their own teams; ADs can edit or take down anything at their schools; only the district AD posts to official social accounts; agents never exceed the person who connected them.
-- **Every change is audited** (`AuditLog`) with an undo window. Agents propose; people publish.
+- **Every change is audited** (`AuditLog`) with an undo window, including changes made by a person's AI assistant over MCP, which can do exactly what that person can and nothing more (DECISIONS 112).
 - **Arbiter is the source of truth.** Never write to it. Never invent schedule data; show unknown values as unknown.
 - **Student privacy:** strip photo location data, follow directory-information rules for names, hold photos with opted-out jersey numbers, never use face recognition, never expose student contact, medical or eligibility data (including through MCP). No student records in the repo, fixtures, tests or logs.
 - **Secrets** never go in the repo or in `.env` files in synced folders: macOS Keychain locally, AWS Secrets Manager in the cloud (standards/04, rule 15a).

@@ -22,7 +22,7 @@ export default async function AssistantsPage({ searchParams }: { searchParams: S
         <PageHead
           eyebrow="Agents and access"
           title="Your AI assistants"
-          sub="An assistant you connect works as you and never more. It writes drafts; you read and publish them."
+          sub="An assistant you connect works as you and never more. Everything it does shows in Activity, where you can undo it for 30 minutes."
         />
         {saved ? (
           <div className="nx-banner nx-banner--success" role="status">
@@ -63,7 +63,7 @@ export default async function AssistantsPage({ searchParams }: { searchParams: S
           </p>
         </Card>
       </main>
-      <TrustFooter items={["Works as you, never more", "Drafts only; people publish", "Turn off any time"]} />
+      <TrustFooter items={["Works as you, never more", "Logged in Activity", "Turn off any time"]} />
     </>
   );
 }

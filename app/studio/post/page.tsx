@@ -32,7 +32,7 @@ export default async function PostPage({ searchParams }: { searchParams: Search 
     .orderBy(desc(s.feedPost.publishedAt))
     .limit(5);
   const name = (t: (typeof teams)[number]) => `${t.sport} · ${levelLabel[t.level]}`;
-  // Drafts an AI assistant wrote for this person's teams (SPEC §8: agents propose, people publish).
+  // Unpublished posts on this person's teams.
   const drafts = await ctx.db
     .select({ id: s.feedPost.id, kind: s.feedPost.kind, body: s.feedPost.body, teamId: s.feedPost.teamId })
     .from(s.feedPost)
@@ -123,7 +123,7 @@ export default async function PostPage({ searchParams }: { searchParams: Search 
         </Card>
 
         {drafts.length ? (
-          <Card title="Drafts from your assistant" subtitle="Read each one, then publish it to the team feed">
+          <Card title="Drafts" subtitle="Posts saved but not on the feed yet">
             <ul className={`nx-list ${styles.list}`}>
               {drafts.map((p) => (
                 <li key={p.id} className={styles.checkRow}>

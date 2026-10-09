@@ -1,5 +1,6 @@
 // The MCP server at /mcp (SPEC §8, standards/07): stateless streamable HTTP,
-// seven tools, each run as the signed-in person through the shared library.
+// seven tools, each run as the signed-in person through the shared library,
+// with exactly that person's access (DECISIONS 112).
 // Token verification happens before this (app/mcp/route.ts, requireMcpAuth).
 
 import { createMcpHandler, McpServer, type ToolAnnotations } from "@modelcontextprotocol/server";
@@ -17,10 +18,11 @@ import { contentPublish, draftsList, feedPost, rosterUpdate, scheduleGet, storyD
 const MAX_TEXT = 20_000;
 
 const READ: ToolAnnotations = { readOnlyHint: true, destructiveHint: false, openWorldHint: false };
-const DRAFT: ToolAnnotations = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
+const WRITE: ToolAnnotations = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
+/** Can remove things (undoable for 30 minutes in Activity). */
+const REMOVES: ToolAnnotations = { ...WRITE, destructiveHint: true };
 
 const uuid = z.string().uuid();
-const dryRun = z.boolean().optional().describe("Defaults to true: preview only. Set false to save the draft.");
 
 function result(value: unknown) {
   let text = JSON.stringify(value, null, 1);
@@ -70,16 +72,16 @@ export function buildServer(ctx: ToolContext): McpServer {
 
   server.registerTool(
     "psd_athletics_drafts_list",
-    { title: "Waiting for review", description: "Draft stories, unpublished roster entries and draft feed posts on the person's teams, with Studio links.", inputSchema: z.object({}), annotations: READ },
+    { title: "Not published yet", description: "Draft stories, unpublished roster entries and draft feed posts on the person's teams.", inputSchema: z.object({}), annotations: READ },
     run(() => draftsList(ctx)),
   );
 
   server.registerTool(
     "psd_athletics_story_draft",
     {
-      title: "Draft a story",
+      title: "Write a story",
       description:
-        "Create a draft story (team_id) or edit a draft (story_id). Never publishes. Use first name and last initial for athletes; don't invent facts. Preview first (dry_run defaults to true).",
+        "Create a story as a draft (team_id) or edit one (story_id). Publish it with psd_athletics_content_publish. Use first name and last initial for athletes; don't invent facts.",
       inputSchema: z.object({
         story_id: uuid.optional(),
         team_id: uuid.optional(),
@@ -87,9 +89,8 @@ export function buildServer(ctx: ToolContext): McpServer {
         title: z.string().min(1).max(120),
         summary: z.string().max(240).optional(),
         body: z.string().min(1).max(8000).describe("Plain text; a blank line starts a paragraph."),
-        dry_run: dryRun,
       }),
-      annotations: DRAFT,
+      annotations: WRITE,
     },
     run((args) => storyDraft(ctx, args)),
   );
@@ -97,9 +98,9 @@ export function buildServer(ctx: ToolContext): McpServer {
   server.registerTool(
     "psd_athletics_roster_update",
     {
-      title: "Propose roster changes",
+      title: "Edit the roster",
       description:
-        "Add roster entries (directory information only: first name and last initial, jersey, position, grade) or remove unpublished ones. New entries stay off the site until a coach publishes the roster. Preview first.",
+        "Add roster entries (directory information only: first name and last initial, jersey, position, grade) or remove entries. New entries show on the site once the roster is published (psd_athletics_content_publish, kind roster).",
       inputSchema: z.object({
         team_id: uuid,
         add: z
@@ -107,9 +108,8 @@ export function buildServer(ctx: ToolContext): McpServer {
           .max(50)
           .optional(),
         remove: z.array(uuid).max(50).optional(),
-        dry_run: dryRun,
       }),
-      annotations: DRAFT,
+      annotations: REMOVES,
     },
     run((args) => rosterUpdate(ctx, args)),
   );
@@ -117,10 +117,10 @@ export function buildServer(ctx: ToolContext): McpServer {
   server.registerTool(
     "psd_athletics_feed_post",
     {
-      title: "Draft a feed post",
-      description: "Draft a note or a score update for a team feed. A person publishes it in the Studio. Score updates are words; they never change the game's recorded score. Preview first.",
-      inputSchema: z.object({ team_id: uuid, kind: z.enum(["note", "score"]), body: z.string().min(1).max(500), game_id: uuid.optional(), dry_run: dryRun }),
-      annotations: DRAFT,
+      title: "Post to a team feed",
+      description: "Post a note or a score update to a team feed; it's live at once. Score updates are words; they never change the game's recorded score.",
+      inputSchema: z.object({ team_id: uuid, kind: z.enum(["note", "score"]), body: z.string().min(1).max(500), game_id: uuid.optional() }),
+      annotations: WRITE,
     },
     run((args) => feedPost(ctx, args)),
   );
@@ -128,10 +128,10 @@ export function buildServer(ctx: ToolContext): McpServer {
   server.registerTool(
     "psd_athletics_content_publish",
     {
-      title: "How to publish",
-      description: "Doesn't publish. Agents propose; people publish. Returns the Studio link where the person reads and publishes a story, roster or feed post, and whether they're allowed to.",
+      title: "Publish",
+      description: "Publish a story (id), a team's unpublished roster entries (team_id), or a draft feed post (id), if the person is allowed to. Undo in the Studio's Activity within 30 minutes.",
       inputSchema: z.object({ kind: z.enum(["story", "roster", "feed_post"]), id: uuid.optional(), team_id: uuid.optional() }),
-      annotations: READ,
+      annotations: { ...WRITE, idempotentHint: true },
     },
     run(async (args) => {
       if (args.kind === "roster") {

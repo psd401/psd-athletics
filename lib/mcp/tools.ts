@@ -1,8 +1,8 @@
 // The MCP tools (SPEC §8), as plain functions over the same library the
-// Studio uses, so permissions, validation and the audit log are shared.
-// Agents propose; people publish: every write here makes a draft, and
-// content_publish only says where the person publishes (DECISIONS 109).
-// No student contact, medical or eligibility data is ever returned.
+// Studio uses, so permissions, validation and the audit log are shared. An
+// assistant can do exactly what the signed-in person can, nothing more
+// (DECISIONS 112). No student contact, medical or eligibility data is ever
+// returned.
 
 import { and, desc, eq, inArray, isNull } from "drizzle-orm";
 
@@ -10,14 +10,14 @@ import { SITE_URL } from "../config/site";
 import type { Db } from "../db/client";
 import * as s from "../db/schema";
 import { listGames, type SchoolView, type TeamView } from "../data/queries";
-import { createPost } from "../feed/posts";
+import { createPost, publishPost } from "../feed/posts";
 import { can, type Actor, type Scope } from "../permissions";
 import { resultLabel } from "../photos/cards";
 import { memoryPhotoStorage } from "../photos/storage";
 import { byStart, levelLabel } from "../schedule/games";
-import { createStory, updateStory } from "../studio/stories";
+import { createStory, publishStory, updateStory } from "../studio/stories";
 import { PermissionError, ValidationError } from "../studio/errors";
-import { addRosterEntry, removeRosterEntry, rosterFields } from "../studio/team-content";
+import { addRosterEntry, publishRoster, removeRosterEntry, rosterFields } from "../studio/team-content";
 
 export interface ToolContext {
   db: Db;
@@ -55,9 +55,10 @@ export async function teamsList(ctx: ToolContext) {
     teams: myTeams(ctx).map((t) => {
       const sc = scope(t);
       const assistantCan = [
-        can(ctx.actor, "story.draft", sc) ? "draft stories" : null,
-        can(ctx.actor, "roster.edit", sc) ? "propose roster changes" : null,
-        can(ctx.actor, "feed.post", sc) ? "draft feed posts" : null,
+        can(ctx.actor, "story.draft", sc) ? "write stories" : null,
+        can(ctx.actor, "story.publish", sc) ? "publish stories" : null,
+        can(ctx.actor, "roster.edit", sc) ? "edit and publish the roster" : null,
+        can(ctx.actor, "feed.post", sc) ? "post to the team feed" : null,
       ].filter((x): x is string => x !== null);
       return {
         team_id: t.id,
@@ -65,8 +66,7 @@ export async function teamsList(ctx: ToolContext) {
         sport: t.sport,
         level: levelLabel[t.level],
         page: `${SITE_URL}/${schoolSlug(ctx, t)}/teams/${t.sportSlug}`,
-        assistant_can: assistantCan,
-        person_publishes: can(ctx.actor, "story.publish", sc),
+        can: assistantCan,
       };
     }),
   };
@@ -110,7 +110,7 @@ export async function scheduleGet(ctx: ToolContext, input: ScheduleInput) {
   };
 }
 
-/** What's waiting for the person to read and publish. */
+/** Unpublished stories, roster entries and feed posts on the person's teams. */
 export async function draftsList(ctx: ToolContext) {
   const teams = myTeams(ctx);
   const ids = teams.map((t) => t.id);
@@ -134,13 +134,13 @@ export async function draftsList(ctx: ToolContext) {
   const counts = new Map<string, number>();
   for (const r of roster) counts.set(r.teamId, (counts.get(r.teamId) ?? 0) + 1);
   return {
-    stories: stories.map((x) => ({ story_id: x.id, team: name(x.teamId), title: x.title, drafted_by_assistant: x.draftedByAgent, review_in_studio: `${SITE_URL}/studio/stories/${x.id}` })),
-    roster: [...counts.entries()].map(([teamId, n]) => ({ team: name(teamId), unpublished_entries: n, review_in_studio: `${SITE_URL}/studio/teams/${teamId}` })),
-    feed_posts: posts.map((p) => ({ post_id: p.id, team: name(p.teamId), kind: p.kind, body: p.body, review_in_studio: `${SITE_URL}/studio/post` })),
+    stories: stories.map((x) => ({ story_id: x.id, team: name(x.teamId), title: x.title, drafted_by_assistant: x.draftedByAgent, studio: `${SITE_URL}/studio/stories/${x.id}` })),
+    roster: [...counts.entries()].map(([teamId, n]) => ({ team_id: teamId, team: name(teamId), unpublished_entries: n, studio: `${SITE_URL}/studio/teams/${teamId}` })),
+    feed_posts: posts.map((p) => ({ post_id: p.id, team: name(p.teamId), kind: p.kind, body: p.body, studio: `${SITE_URL}/studio/post` })),
   };
 }
 
-// ---------------------------------------------------------------- drafts
+// ---------------------------------------------------------------- changes
 
 export interface StoryDraftInput {
   story_id?: string;
@@ -149,59 +149,44 @@ export interface StoryDraftInput {
   title: string;
   summary?: string;
   body: string;
-  dry_run?: boolean;
 }
 
+/** Create a story (a draft until published) or edit one. Editing a published story needs publish rights, as in the Studio. */
 export async function storyDraft(ctx: ToolContext, input: StoryDraftInput) {
-  const dryRun = input.dry_run !== false;
   if (input.story_id) {
     const [story] = await ctx.db.select().from(s.story).where(eq(s.story.id, input.story_id));
     if (!story?.teamId) throw new ValidationError("No story with that id. Call psd_athletics_drafts_list for ids.");
-    if (story.status === "published") throw new ValidationError("That story is published. A person edits published stories in the Studio.");
-    if (!can(ctx.actor, "story.draft", { schoolId: story.schoolId, teamId: story.teamId })) throw new PermissionError("You can't edit stories for this team.");
-    if (dryRun) return { dry_run: true, would: "update the draft story", story_id: story.id, title: input.title.trim(), note: "Call again with dry_run: false to save." };
     const saved = await updateStory(ctx, story.id, { title: input.title, summary: input.summary, body: input.body, gameId: input.game_id });
-    return { dry_run: false, story_id: saved.id, status: saved.status, review_in_studio: `${SITE_URL}/studio/stories/${saved.id}` };
+    return { story_id: saved.id, status: saved.status, studio: `${SITE_URL}/studio/stories/${saved.id}` };
   }
   const team = teamOf(ctx, input.team_id);
-  if (!can(ctx.actor, "story.draft", scope(team))) throw new PermissionError("You can't write stories for this team.");
-  if (!input.title.trim() || !input.body.trim()) throw new ValidationError("A story needs a title and a body.");
-  if (dryRun) return { dry_run: true, would: "create a draft story", team: teamName(ctx, team), title: input.title.trim(), note: "Call again with dry_run: false to save. It stays a draft until a person publishes it." };
   const saved = await createStory(ctx, { teamId: team.id, gameId: input.game_id ?? null, title: input.title, summary: input.summary, body: input.body });
-  return { dry_run: false, story_id: saved.id, status: saved.status, review_in_studio: `${SITE_URL}/studio/stories/${saved.id}` };
+  return { story_id: saved.id, status: saved.status, studio: `${SITE_URL}/studio/stories/${saved.id}`, next: "Publish with psd_athletics_content_publish." };
 }
 
 export interface RosterUpdateInput {
   team_id: string;
   add?: { display_name: string; jersey_number?: string; position?: string; grade?: number }[];
   remove?: string[];
-  dry_run?: boolean;
 }
 
-/** Directory information only (first name, last initial; jersey; position; grade). New rows stay unpublished. */
+/** Directory information only (first name, last initial; jersey; position; grade). New rows stay off the site until the roster is published. */
 export async function rosterUpdate(ctx: ToolContext, input: RosterUpdateInput) {
   const team = teamOf(ctx, input.team_id);
   if (!can(ctx.actor, "roster.edit", scope(team))) throw new PermissionError("You can't edit the roster for this team.");
   const add = (input.add ?? []).slice(0, MAX_PAGE).map((a) => ({ displayName: a.display_name, jerseyNumber: a.jersey_number, position: a.position, grade: a.grade ?? null }));
-  const checked = add.map((a) => rosterFields(a));
+  for (const a of add) rosterFields(a);
   const removeIds = (input.remove ?? []).slice(0, MAX_PAGE);
   const removing = removeIds.length ? await ctx.db.select().from(s.rosterEntry).where(inArray(s.rosterEntry.id, removeIds)) : [];
-  for (const r of removing) {
-    if (r.teamId !== team.id) throw new ValidationError("A roster entry belongs to another team.");
-    if (r.publishedAt) throw new ValidationError(`${r.displayName} is on the published roster. A person removes published entries in the Studio.`);
-  }
-  if (removing.length !== removeIds.length) throw new ValidationError("A roster entry id wasn't found. Call psd_athletics_drafts_list or check the Studio.");
-  if (input.dry_run !== false) {
-    return { dry_run: true, would_add: checked.map((c) => c.displayName), would_remove: removing.map((r) => r.displayName), note: "Call again with dry_run: false to save." };
-  }
+  if (removing.length !== removeIds.length) throw new ValidationError("A roster entry id wasn't found.");
+  if (removing.some((r) => r.teamId !== team.id)) throw new ValidationError("A roster entry belongs to another team.");
   for (const a of add) await addRosterEntry(ctx, team.id, a);
   for (const r of removing) await removeRosterEntry(ctx, r.id);
   return {
-    dry_run: false,
     added: add.length,
     removed: removing.length,
-    note: "New entries stay off the site until a coach publishes the roster in the Studio.",
-    review_in_studio: `${SITE_URL}/studio/teams/${team.id}`,
+    note: add.length ? "New entries show on the site once the roster is published (psd_athletics_content_publish with kind roster)." : undefined,
+    studio: `${SITE_URL}/studio/teams/${team.id}`,
   };
 }
 
@@ -210,37 +195,35 @@ export interface FeedPostInput {
   kind: "note" | "score";
   body: string;
   game_id?: string;
-  dry_run?: boolean;
 }
 
-/** A note or score update for the team feed. From an assistant it's always a draft. */
+/** A note or score update on the team feed, live at once. */
 export async function feedPost(ctx: ToolContext, input: FeedPostInput) {
   const team = teamOf(ctx, input.team_id);
-  if (!can(ctx.actor, "feed.post", scope(team))) throw new PermissionError("Only this team's coaches can post to its feed.");
-  if (input.dry_run !== false) return { dry_run: true, would: `draft a ${input.kind} for ${teamName(ctx, team)}`, body: input.body.trim(), note: "Call again with dry_run: false to save the draft." };
   // Photos never come through MCP (DECISIONS 109), so no storage is touched.
   const post = await createPost(ctx, memoryPhotoStorage(), { teamId: team.id, kind: input.kind, body: input.body, gameId: input.game_id ?? null });
-  return { dry_run: false, post_id: post.id, status: post.publishedAt ? "published" : "draft", review_in_studio: `${SITE_URL}/studio/post` };
+  return { post_id: post.id, status: post.publishedAt ? "published" : "draft", feed: `${SITE_URL}/${schoolSlug(ctx, team)}/feed` };
 }
 
 // ---------------------------------------------------------------- publish
 
 export type PublishInput = { kind: "story"; id: string } | { kind: "roster"; team_id: string } | { kind: "feed_post"; id: string };
 
-/** Never publishes. Returns the Studio page where the person reads and publishes, and whether they can. */
+/** Publish a story, a team's unpublished roster entries, or a draft feed post, when the person may. */
 export async function contentPublish(ctx: ToolContext, input: PublishInput) {
-  const why = "Agents propose; people publish. Open the link to read it and publish.";
   if (input.kind === "story") {
     const [story] = await ctx.db.select().from(s.story).where(eq(s.story.id, input.id));
     if (!story?.teamId) throw new ValidationError("No story with that id. Call psd_athletics_drafts_list for ids.");
-    return { published: false, why, publish_in_studio: `${SITE_URL}/studio/stories/${story.id}`, you_can_publish: can(ctx.actor, "story.publish", { schoolId: story.schoolId, teamId: story.teamId }) };
+    const live = await publishStory(ctx, story.id);
+    const slug = ctx.schools.find((x) => x.id === live.schoolId)?.slug ?? "";
+    return { published: true, kind: "story", url: `${SITE_URL}/${slug}/stories/${live.slug}` };
   }
   if (input.kind === "roster") {
     const team = teamOf(ctx, input.team_id);
-    return { published: false, why, publish_in_studio: `${SITE_URL}/studio/teams/${team.id}`, you_can_publish: can(ctx.actor, "roster.edit", scope(team)) };
+    const count = await publishRoster(ctx, team.id);
+    return { published: true, kind: "roster", entries: count, url: `${SITE_URL}/${schoolSlug(ctx, team)}/teams/${team.sportSlug}` };
   }
-  const [post] = await ctx.db.select({ teamId: s.feedPost.teamId }).from(s.feedPost).where(eq(s.feedPost.id, input.id));
-  if (!post) throw new ValidationError("No feed post with that id. Call psd_athletics_drafts_list for ids.");
+  const post = await publishPost(ctx, input.id);
   const team = teamOf(ctx, post.teamId);
-  return { published: false, why, publish_in_studio: `${SITE_URL}/studio/post?team=${team.id}`, you_can_publish: can(ctx.actor, "feed.post", scope(team)) };
+  return { published: true, kind: "feed_post", url: `${SITE_URL}/${schoolSlug(ctx, team)}/feed` };
 }

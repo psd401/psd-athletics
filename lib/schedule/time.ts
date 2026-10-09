@@ -3,15 +3,23 @@
 
 export const TIME_ZONE = "America/Los_Angeles";
 
+/** Real time when each ATHLETICS_NOW value was first read, per process. */
+const pinnedStarts = new Map<string, number>();
+
 /**
- * The current time. ATHLETICS_NOW pins it for tests and demos (Playwright
- * sets it to the fixture snapshot time); it is never set in production.
+ * The current time. ATHLETICS_NOW sets where the clock starts for tests and
+ * demos (Playwright sets it to the fixture snapshot time), and time moves on
+ * from there, so changes still get distinct times. It is never set in
+ * production.
  */
 export function currentTime(): Date {
   const pinned = process.env.ATHLETICS_NOW;
   if (pinned) {
     const d = new Date(pinned);
-    if (!Number.isNaN(d.getTime())) return d;
+    if (!Number.isNaN(d.getTime())) {
+      if (!pinnedStarts.has(pinned)) pinnedStarts.set(pinned, Date.now());
+      return new Date(d.getTime() + (Date.now() - pinnedStarts.get(pinned)!));
+    }
   }
   return new Date();
 }

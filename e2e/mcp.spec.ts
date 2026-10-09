@@ -62,7 +62,7 @@ test.describe("AI assistants over MCP", () => {
     await expect(page).toHaveURL(/\/sign-in\?/);
     await page.getByRole("button", { name: "[Dev] Girls Soccer Coach" }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Connect ${clientName}?`);
-    await expect(page.getByRole("main")).toContainText("Draft stories, propose roster changes and draft feed posts for Gig Harbor Girls Soccer · Varsity.");
+    await expect(page.getByRole("main")).toContainText("Write and publish stories, edit the roster and post to the team feed, as far as your role allows, for Gig Harbor Girls Soccer · Varsity.");
     expect(await axeViolations(page)).toEqual([]);
     await page.getByRole("button", { name: "Allow", exact: true }).click();
     await expect.poll(() => callback).toContain("code=");
@@ -84,9 +84,16 @@ test.describe("AI assistants over MCP", () => {
     const title = `Assistant draft (${info.project.name})`;
     const saved = await mcp(request, access_token, "tools/call", {
       name: "psd_athletics_story_draft",
-      arguments: { team_id: soccer.team_id, title, body: "Gig Harbor beat Capital 2–0.", dry_run: false },
+      arguments: { team_id: soccer.team_id, title, body: "Gig Harbor beat Capital 2–0." },
     });
-    expect(JSON.parse(saved.body.result.content[0].text)).toMatchObject({ status: "draft" });
+    const story = JSON.parse(saved.body.result.content[0].text);
+    expect(story).toMatchObject({ status: "draft" });
+    const published = await mcp(request, access_token, "tools/call", { name: "psd_athletics_content_publish", arguments: { kind: "story", id: story.story_id } });
+    const { url } = JSON.parse(published.body.result.content[0].text);
+    expect(url).toMatch(/\/ghh\/stories\//);
+    // It's live on the public site.
+    await page.goto(new URL(url).pathname);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
 
     // The coach sees the draft and the assistant in the Studio, and turns it off.
     await page.goto("/studio/stories");

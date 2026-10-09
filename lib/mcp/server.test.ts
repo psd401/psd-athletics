@@ -35,7 +35,7 @@ async function call(method: string, params: Record<string, unknown> = {}, c: Rec
 }
 
 describe("the MCP endpoint", () => {
-  it("lists seven tools with PSD names and read-only / destructive hints", async () => {
+  it("lists seven tools with PSD names and read-only / destructive hints on each", async () => {
     const { data } = await call("tools/list");
     const tools = data.result.tools as { name: string; annotations: Record<string, boolean> }[];
     expect(tools.map((t) => t.name).sort()).toEqual([
@@ -50,8 +50,9 @@ describe("the MCP endpoint", () => {
     for (const t of tools) {
       expect(typeof t.annotations.readOnlyHint, t.name).toBe("boolean");
       expect(typeof t.annotations.destructiveHint, t.name).toBe("boolean");
-      expect(t.annotations.destructiveHint, t.name).toBe(false);
     }
+    // Only the roster tool removes things.
+    expect(tools.filter((t) => t.annotations.destructiveHint).map((t) => t.name)).toEqual(["psd_athletics_roster_update"]);
     expect(tools.find((t) => t.name === "psd_athletics_story_draft")!.annotations.readOnlyHint).toBe(false);
     expect(tools.find((t) => t.name === "psd_athletics_schedule_get")!.annotations.readOnlyHint).toBe(true);
   });

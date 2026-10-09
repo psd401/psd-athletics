@@ -49,8 +49,7 @@ describe("psd_athletics_teams_list", () => {
           sport: "Girls Soccer",
           level: "Varsity",
           page: "https://athletics.psd401.net/ghh/teams/girls-soccer",
-          assistant_can: ["draft stories", "propose roster changes", "draft feed posts"],
-          person_publishes: true,
+          can: ["write stories", "publish stories", "edit and publish the roster", "post to the team feed"],
         },
       ],
     });
@@ -77,81 +76,60 @@ describe("psd_athletics_schedule_get", () => {
   });
 });
 
-describe("psd_athletics_story_draft", () => {
-  it("previews by default and writes nothing", async () => {
-    const preview = await storyDraft(ctx, { team_id: soccer, title: "Tides blank Capital", body: "Gig Harbor beat Capital 2–0." });
-    expect(preview).toMatchObject({ dry_run: true, would: "create a draft story", title: "Tides blank Capital" });
-    expect(await db.select().from(s.story)).toEqual([]);
-  });
-
-  it("saves a draft marked as drafted by the assistant, audited with the connection", async () => {
-    const saved = await storyDraft(ctx, { team_id: soccer, title: "Tides blank Capital", body: "Gig Harbor beat Capital 2–0.", dry_run: false });
-    expect(saved).toMatchObject({ dry_run: false, status: "draft", review_in_studio: expect.stringMatching(/\/studio\/stories\/[0-9a-f-]{36}$/) });
+describe("psd_athletics_story_draft and content_publish", () => {
+  it("writes a story as the coach, audited with the assistant's connection, and publishes it", async () => {
+    const saved = await storyDraft(ctx, { team_id: soccer, title: "Tides blank Capital", body: "Gig Harbor beat Capital 2–0." });
+    expect(saved).toMatchObject({ status: "draft", studio: expect.stringMatching(/\/studio\/stories\/[0-9a-f-]{36}$/) });
     const [row] = await db.select().from(s.story);
-    expect(row).toMatchObject({ status: "draft", draftedByAgent: true, publishedAt: null });
+    expect(row).toMatchObject({ draftedByAgent: true, publishedAt: null });
     const [log] = await db.select().from(s.auditLog).where(eq(s.auditLog.objectId, row!.id));
     expect(log!.agentConnectionId).toBe(ctx.actor.agentConnectionId);
+
+    const live = await contentPublish(ctx, { kind: "story", id: row!.id });
+    expect(live).toEqual({ published: true, kind: "story", url: "https://athletics.psd401.net/ghh/stories/tides-blank-capital" });
+    const edited = await storyDraft(ctx, { story_id: row!.id, title: "Tides blank Capital", body: "Gig Harbor beat Capital 2–0 on the road." });
+    expect(edited.status).toBe("published");
   });
 
-  it("won't touch other teams or published stories", async () => {
-    await expect(storyDraft(ctx, { team_id: football, title: "x", body: "y", dry_run: false })).rejects.toThrow(/can't write stories for this team/);
-    const [row] = await db.select().from(s.story);
-    await db.update(s.story).set({ status: "published", publishedAt: now }).where(eq(s.story.id, row!.id));
-    await expect(storyDraft(ctx, { story_id: row!.id, title: "Changed", body: "z", dry_run: false })).rejects.toThrow("That story is published. A person edits published stories in the Studio.");
+  it("never goes beyond the person", async () => {
+    await expect(storyDraft(ctx, { team_id: football, title: "x", body: "y" })).rejects.toThrow(/can't write stories for this team/);
+    const [draft] = await db.insert(s.story).values({ schoolId: "ghhs", teamId: football, title: "Football draft", slug: "football-draft", body: "b", authorId: "asst" }).returning();
+    // The football assistant can write but not publish (no publish rule for the team).
+    await expect(contentPublish(assistantCtx, { kind: "story", id: draft!.id })).rejects.toThrow(/publishing needs the head coach or an athletic director/);
   });
 });
 
 describe("psd_athletics_roster_update", () => {
-  it("adds unpublished entries and only removes unpublished ones", async () => {
-    const preview = await rosterUpdate(ctx, { team_id: soccer, add: [{ display_name: "Alex R.", jersey_number: "9" }] });
-    expect(preview).toMatchObject({ dry_run: true, would_add: ["Alex R."], would_remove: [] });
+  it("adds and removes roster entries; new ones go live when the roster is published", async () => {
     await expect(rosterUpdate(ctx, { team_id: soccer, add: [{ display_name: "Alexandra Rivera" }] })).rejects.toThrow("Use first name and last initial, like Alex R.");
-
-    const done = await rosterUpdate(ctx, { team_id: soccer, add: [{ display_name: "Alex R.", jersey_number: "9" }, { display_name: "Sam T." }], dry_run: false });
-    expect(done).toMatchObject({ dry_run: false, added: 2, removed: 0, note: "New entries stay off the site until a coach publishes the roster in the Studio." });
-    const rows = await db.select().from(s.rosterEntry).where(eq(s.rosterEntry.teamId, soccer));
+    const done = await rosterUpdate(ctx, { team_id: soccer, add: [{ display_name: "Alex R.", jersey_number: "9" }, { display_name: "Sam T." }] });
+    expect(done).toMatchObject({ added: 2, removed: 0 });
+    let rows = await db.select().from(s.rosterEntry).where(eq(s.rosterEntry.teamId, soccer));
     expect(rows.every((r) => r.publishedAt === null)).toBe(true);
-
-    await db.update(s.rosterEntry).set({ publishedAt: now }).where(eq(s.rosterEntry.displayName, "Sam T."));
+    expect(await contentPublish(ctx, { kind: "roster", team_id: soccer })).toMatchObject({ published: true, entries: 2 });
     const sam = rows.find((r) => r.displayName === "Sam T.")!;
-    await expect(rosterUpdate(ctx, { team_id: soccer, remove: [sam.id], dry_run: false })).rejects.toThrow("Sam T. is on the published roster. A person removes published entries in the Studio.");
+    expect(await rosterUpdate(ctx, { team_id: soccer, remove: [sam.id] })).toMatchObject({ removed: 1 });
+    rows = await db.select().from(s.rosterEntry).where(eq(s.rosterEntry.teamId, soccer));
+    expect(rows.map((r) => r.displayName)).toEqual(["Alex R."]);
   });
 
   it("is for people who can edit the roster", async () => {
-    await expect(rosterUpdate(assistantCtx, { team_id: football, add: [{ display_name: "Jo K." }], dry_run: false })).rejects.toThrow(/can't edit the roster/);
+    await expect(rosterUpdate(assistantCtx, { team_id: football, add: [{ display_name: "Jo K." }] })).rejects.toThrow(/can't edit the roster/);
   });
 });
 
 describe("psd_athletics_feed_post", () => {
-  it("saves the assistant's post as a draft for the person to publish", async () => {
-    const saved = await feedPost(assistantCtx, { team_id: football, kind: "note", body: "Bus leaves at 3:15.", dry_run: false });
-    expect(saved).toMatchObject({ status: "draft", review_in_studio: "https://athletics.psd401.net/studio/post" });
-    const [row] = await db.select().from(s.feedPost);
-    expect(row!.publishedAt).toBeNull();
+  it("posts to the team feed at once", async () => {
+    const saved = await feedPost(assistantCtx, { team_id: football, kind: "note", body: "Bus leaves at 3:15." });
+    expect(saved).toMatchObject({ status: "published", feed: "https://athletics.psd401.net/ghh/feed" });
+    await expect(feedPost(assistantCtx, { team_id: soccer, kind: "note", body: "Not my team." })).rejects.toThrow(/Only this team's coaches/);
   });
 });
 
 describe("psd_athletics_drafts_list", () => {
-  it("lists what's waiting for a person", async () => {
-    const out = await draftsList(ctx);
-    expect(out.stories.map((x) => x.title)).toEqual([]);
-    expect(out.roster).toEqual([{ team: "Gig Harbor Girls Soccer · Varsity", unpublished_entries: 1, review_in_studio: expect.stringContaining("/studio/teams/") }]);
-    expect((await draftsList(assistantCtx)).feed_posts.map((p) => p.body)).toEqual(["Bus leaves at 3:15."]);
-  });
-});
-
-describe("psd_athletics_content_publish", () => {
-  it("never publishes; it says where the person publishes and whether they can", async () => {
-    const [row] = await db.insert(s.story).values({ schoolId: "ghhs", teamId: soccer, title: "Draft", slug: "draft", body: "b", authorId: "coach" }).returning();
-    const out = await contentPublish(ctx, { kind: "story", id: row!.id });
-    expect(out).toEqual({
-      published: false,
-      why: "Agents propose; people publish. Open the link to read it and publish.",
-      publish_in_studio: `https://athletics.psd401.net/studio/stories/${row!.id}`,
-      you_can_publish: true,
-    });
-    const [after] = await db.select().from(s.story).where(eq(s.story.id, row!.id));
-    expect(after!.status).toBe("draft");
-    expect((await contentPublish(assistantCtx, { kind: "roster", team_id: football })).you_can_publish).toBe(false);
+  it("lists what isn't on the site yet", async () => {
+    const out = await draftsList(assistantCtx);
+    expect(out.stories.map((x) => x.title)).toEqual(["Football draft"]);
+    expect(out.feed_posts).toEqual([]);
   });
 });

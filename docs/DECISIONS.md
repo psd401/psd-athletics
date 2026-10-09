@@ -218,3 +218,8 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
    - **Not offered:** `upload_media` and `share_to_social` (docs/MCP.md).
 110. **Sign-in during an assistant's authorization:** the sign-in page verifies the signed request, signs the person in, and sends them back to the authorize endpoint (signature fields and a satisfied `prompt=login` removed). The authorize endpoint re-checks the client, redirect URI and PKCE. Better Auth's server-side sign-in hook didn't resume the flow for server actions, so this does it explicitly. Consent uses a small client component that posts to the consent endpoint and follows its redirect, as Better Auth's own client does.
 111. **A person publishes assistant drafts:** `publishPost` refuses agents, and the Studio post page lists "Drafts from your assistant" with Publish. Story drafts already show in Stories, and unpublished roster entries in the team editor.
+112. **An assistant has its person's full access** (Hagel, 2026-10-09: "The mcp should just have oauth so they can use it if they have access"). This supersedes the drafts-only parts of 109 and 111.
+   - **What changed:** writes no longer default to dry run. `psd_athletics_content_publish` publishes when the person may. Feed posts from an assistant go live at once. Roster removals follow the normal rule.
+   - **Gates:** OAuth (a psd401.net person signs in and allows the assistant) and `can()`.
+   - **Kept:** audit with the connection id, 30-minute undo, and turning an assistant off.
+   - **Also updated:** the CLAUDE.md non-negotiable "Agents propose; people publish" in this PR. Standards/07's "dry-run by default" for MCP-2/3 writes is set aside for this server by its owner.

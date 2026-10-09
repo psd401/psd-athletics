@@ -47,8 +47,7 @@ export default async function ConnectPage({ searchParams }: { searchParams: Prom
           <div className={styles.stack}>
             <h1 className={styles.title}>Connect {name}?</h1>
             <p className={styles.lede}>
-              {name} will work in the Athletics Studio as you, {person.name}. It can only do what you can, and it never publishes: it writes drafts for you to read
-              and publish.
+              {name} will work in the Athletics Studio as you, {person.name}. It can do what you can, nothing more, and everything it does is logged.
             </p>
             <div>
               <h2 className="nx-card__title">It can</h2>
@@ -56,7 +55,7 @@ export default async function ConnectPage({ searchParams }: { searchParams: Prom
                 <li>Read schedules and results.</li>
                 {mine.length ? (
                   <li>
-                    Draft stories, propose roster changes and draft feed posts for{" "}
+                    Write and publish stories, edit the roster and post to the team feed, as far as your role allows, for{" "}
                     {mine.map((t) => `${school(t.schoolId)} ${t.sport} · ${levelLabel[t.level]}`).join(", ")}.
                   </li>
                 ) : (
@@ -65,7 +64,7 @@ export default async function ConnectPage({ searchParams }: { searchParams: Prom
               </ul>
               <h2 className="nx-card__title">It can&apos;t</h2>
               <ul>
-                <li>Publish anything, post to official school accounts, or change the schedule.</li>
+                <li>Do anything your role can&apos;t, post to official school accounts, or change the schedule.</li>
                 <li>See student contact, medical or eligibility information.</li>
               </ul>
             </div>
@@ -74,7 +73,7 @@ export default async function ConnectPage({ searchParams }: { searchParams: Prom
           </div>
         </div>
       </main>
-      <TrustFooter items={["Works as you, never more", "Drafts only; people publish", "Logged and undoable"]} />
+      <TrustFooter items={["Works as you, never more", "Logged in Activity", "Undo for 30 minutes"]} />
     </div>
   );
 }
