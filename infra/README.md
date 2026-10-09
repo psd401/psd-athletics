@@ -1,13 +1,16 @@
 # infra/ — AWS for psd-athletics (Terraform)
 
-Terraform per `psd-dev-standards/standards/08-iac.md` v0.2 (psd401/psd-dev-standards#42). **Nothing here has been applied.** Agents never run `apply`; CI does, through an OIDC role, after a human approves the plan (standards/08 PR flow).
+Terraform per `psd-dev-standards/standards/08-iac.md` v0.2 (psd401/psd-dev-standards#42). **Applied 2026-10-09** (bootstrap and `envs/prod`), by Claude Code with Hagel approving each plan before its apply (DECISIONS 116). From here, CI applies through the OIDC role after a human approves the plan (standards/08 PR flow).
 
 ```
 infra/
-  modules/athletics/   the app: network, load balancer + WAF, ECS Fargate, RDS Postgres, S3, SES, secrets, schedules, alarms, CI role
+  bootstrap/           one-time: this app's state bucket (applied once by an administrator)
+  modules/athletics/   the app: network, load balancer + WAF, ECS Fargate, RDS Postgres, S3, SES, SMS, secrets, schedules, alarms, CI role
   envs/prod/           production root module (state, provider, tags, account guard)
   .tflint.hcl          tflint with the AWS ruleset
 ```
+
+**Account:** the district account shared with psd401-prr and psd-eoc, `338414773271`, in `us-west-2` (Hagel, 2026-10-09). The app has its own VPC, so it shares no subnets or route tables with those apps.
 
 ## What it builds (DECISIONS 107)
 
@@ -15,9 +18,10 @@ infra/
 |---|---|
 | Site | One container image on **ECS Fargate (ARM64)**, 2 tasks, behind an **ALB** with an ACM certificate and **WAF** (AWS managed rules, per-IP rate limit). |
 | Network | VPC with 2 public subnets (ALB, tasks with public IPs and no inbound except from the ALB) and 2 private subnets (database). No NAT gateway. |
-| Database | **RDS PostgreSQL 17**, Multi-AZ, encrypted, SSL forced, 14-day backups, deletion protection. The master password lives only in RDS-managed Secrets Manager. |
+| Database | **RDS PostgreSQL 17**, single-AZ in production (DECISIONS 114), encrypted, SSL forced, 14-day backups, deletion protection. The master password lives only in RDS-managed Secrets Manager. |
 | Photos | Private, KMS-encrypted, versioned **S3** bucket; files are served by the app's `/media` route. |
 | Email | **SES** domain identity with DKIM and a configuration set (TLS required, bounces and complaints suppressed). |
+| Texts | **AWS End User Messaging through psd-eoc's existing pool**, shared (DECISIONS 114). Athletics adds only its own configuration set and permission to send. eoc's opt-out list and STOP/HELP replies apply. Off until `sms_origination_identity_arn` is set. |
 | Jobs | **EventBridge Scheduler** runs the same image with `bun run job deliver-alerts` every 5 minutes. |
 | Secrets | `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `ALERTS_SECRET` are created empty; values are set by hand and never touch Terraform state. |
 | CI | ECR repository (immutable tags, scan on push) and a deploy role that only a GitHub `production` environment job in `psd401/psd-athletics` can assume. |
@@ -31,21 +35,27 @@ infra/
 
 The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn't exist yet, so CI doesn't run these. This repo can't add CI logic (CLAUDE.md).
 
-## Before the first apply (one time, by an administrator)
+## First apply (done 2026-10-09; kept as the record of how)
 
-1. Confirm the AWS account, and create the state bucket (versioned, encrypted, public access blocked) per QUESTIONS 26. Copy `envs/prod/backend.hcl.example` and `terraform.tfvars.example` and fill them in. They're git-ignored.
+1. Create the state bucket once:
+   1. In `infra/bootstrap`, run `terraform init` and `terraform apply` with local state. This creates `psd-athletics-tofu-state-338414773271`, following prr's tofu-state bucket.
+   2. Add a `backend "s3"` block pointing at that bucket (key `bootstrap/terraform.tfstate`).
+   3. Run `terraform init -migrate-state` so the bucket holds its own state.
+
+   Then copy `envs/prod/backend.hcl.example` and `terraform.tfvars.example` and fill them in. They're git-ignored.
 2. Set `create_github_oidc_provider = true` only if the account has no GitHub OIDC provider yet.
-3. Plan and apply from CI (or a supervised session with scoped credentials, phase 6 decision 6.3). The first apply waits on the certificate. Add the `dns_records` output to psd401.net DNS: the site CNAME, the certificate validation and SES DKIM.
+3. Plan and apply. psd401.net's public DNS is the Route 53 zone `Z2B9XR5HEMTG1R` in this account. Terraform adds the certificate-validation and SES DKIM records and the `athletics.psd401.net` alias, so the certificate validates in the same apply. Only names under `athletics.psd401.net` are created. Today that name resolves through the `*.psd401.net` wildcard; the explicit record overrides it for this name only. The district's internal (split-horizon) DNS also answers psd401.net on the district network, so it needs a matching `athletics` record (QUESTIONS 29).
 4. Set the four secret values in Secrets Manager (`app_secret_names` output).
-5. Request SES production access for the account. New accounts can only send to verified addresses.
-6. Push a first image tagged `bootstrap`, or set `image_tag`, then run migrations as a one-off task (`bun run db:migrate`) with the `app_subnets` and `app_security_group` outputs.
+5. Check whether the shared account already has SES production access (eoc sends email). If not, request it.
+6. For texts, set `sms_origination_identity_arn` to psd-eoc's pool ARN once its number is registered and live.
+7. Push a first image tagged `bootstrap`, or set `image_tag`, then run migrations as a one-off task (`bun run db:migrate`) with the `app_subnets` and `app_security_group` outputs.
 
 ## The app side
 
 - `Dockerfile`: Node 24 runs Next.js (as `bun run` does locally), bun installs and runs jobs, the RDS certificate bundle is included, and the user is `node` (uid 1000).
 - `GET /api/health` is the target group's health check. It's shallow and doesn't touch the database.
 - `PHOTO_STORAGE=s3` with `PHOTO_BUCKET` uses `lib/photos/s3-storage.ts`.
-- `ALERTS_EMAIL=ses` with `ALERTS_EMAIL_FROM` uses `lib/alerts/ses-sender.ts`.
+- `ALERTS_EMAIL=ses` with `ALERTS_EMAIL_FROM` uses `lib/alerts/ses-sender.ts`. `ALERTS_SMS=eum` with `SMS_POOL_ARN` uses `lib/alerts/eum-sender.ts` (single wire attempt, as eoc does). A number that texted STOP is marked stopped.
 - `DATABASE_HOST`/`DATABASE_NAME`/`DATABASE_SECRET_ARN` connect over verified TLS. The password is read from the RDS secret when a connection opens (`lib/db/postgres.ts`).
 - Verified locally (2026-10-09): the arm64 image builds. Against Postgres 17 in Docker, migrations and seed run (seed is idempotent) and `/ghh` serves from Postgres. `sharp` works in the image.
 - Not verified until AWS: the real Secrets Manager, S3 and SES calls (unit-tested with stand-in clients).
@@ -54,7 +64,7 @@ The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn'
 
 Deploys need a reusable workflow in `PSD401/.github` (build the arm64 image, push to ECR, register a task definition revision, run `bun run db:migrate` as a one-off task, update the service), because this repo can't add CI logic. The deploy role in `ci.tf` allows exactly those steps.
 
-## Not verified until the first apply
+## Not verified yet
 
 - That EventBridge Scheduler accepts a task definition ARN without a revision (it should run the latest revision CI registered).
 - That pushing to the KMS-encrypted ECR repository needs nothing beyond the deploy role's ECR permissions.

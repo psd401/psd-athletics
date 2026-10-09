@@ -6,6 +6,7 @@ import { randomUUID } from "node:crypto";
 
 import { devSignInEnabled } from "../auth/dev";
 import { maskContact } from "./contact";
+import { eumSender } from "./eum-sender";
 import { sesSender } from "./ses-sender";
 
 export interface OutgoingMessage {
@@ -54,8 +55,9 @@ const globalForSenders = globalThis as typeof globalThis & { __alertSenders?: Se
 
 /**
  * The app's senders. With local dev sign-in on, both channels log only. In
- * AWS, email goes through SES (ALERTS_EMAIL=ses). Otherwise nothing is
- * available, and sign-up says alerts start later.
+ * AWS, email goes through SES (ALERTS_EMAIL=ses) and texts through End User
+ * Messaging (ALERTS_SMS=eum). Otherwise nothing is available, and sign-up
+ * says alerts start later.
  */
 export function appSenders(): Senders {
   if (!globalForSenders.__alertSenders) {
@@ -64,10 +66,13 @@ export function appSenders(): Senders {
       const sms = logSender("sms");
       globalForSenders.__alertSenders = { email, sms, devLog: [email, sms] };
     } else if (process.env.ALERTS_EMAIL === "ses" && process.env.ALERTS_EMAIL_FROM) {
-      // Texting waits for a provider (QUESTIONS 27).
       globalForSenders.__alertSenders = {
         email: sesSender({ from: process.env.ALERTS_EMAIL_FROM, configurationSet: process.env.SES_CONFIGURATION_SET }),
-        sms: null,
+        // Texts once athletics has a carrier-registered number (infra/modules/athletics/sms.tf).
+        sms:
+          process.env.ALERTS_SMS === "eum" && process.env.SMS_POOL_ARN
+            ? eumSender({ poolArn: process.env.SMS_POOL_ARN, configurationSet: process.env.SMS_CONFIGURATION_SET })
+            : null,
       };
     } else {
       globalForSenders.__alertSenders = { email: null, sms: null };

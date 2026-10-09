@@ -23,6 +23,7 @@ resource "aws_db_parameter_group" "main" {
 }
 
 resource "aws_db_instance" "main" {
+  #checkov:skip=CKV_AWS_157:Multi-AZ is a variable; production runs single-AZ by the owner's choice to save cost (DECISIONS 114), with 14-day backups.
   identifier     = local.prefix
   engine         = "postgres"
   engine_version = "17"

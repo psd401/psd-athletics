@@ -122,3 +122,15 @@ variable "alarm_email" {
   type        = string
   default     = null
 }
+
+variable "sms_origination_identity_arn" {
+  description = "End User Messaging pool or phone-number ARN to send text alerts from: psd-eoc's existing carrier-registered identity, shared (DECISIONS 114). Null leaves texting off."
+  type        = string
+  default     = null
+}
+
+variable "route53_zone_id" {
+  description = "Public Route 53 hosted zone for the domain (psd401.net). When set, Terraform adds the site alias, certificate validation and SES DKIM records. Null leaves DNS to someone else (records are outputs)."
+  type        = string
+  default     = null
+}

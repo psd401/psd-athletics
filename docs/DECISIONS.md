@@ -223,3 +223,29 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
    - **Gates:** OAuth (a psd401.net person signs in and allows the assistant) and `can()`.
    - **Kept:** audit with the connection id, 30-minute undo, and turning an assistant off.
    - **Also updated:** the CLAUDE.md non-negotiable "Agents propose; people publish" in this PR. Standards/07's "dry-run by default" for MCP-2/3 writes is set aside for this server by its owner.
+113. **AWS account and texts** (Hagel, 2026-10-09).
+   - **Account:** the district account shared with psd401-prr and psd-eoc (338414773271), now the default `aws_account_id`. The app keeps its own VPC.
+   - **State:** a dedicated bucket, `psd-athletics-tofu-state-338414773271`, from `infra/bootstrap`, following prr's tofu-state bucket.
+   - **Texts:** AWS End User Messaging, like eoc: pool, opt-out list, HELP reply, configuration set. Sends are one attempt, transactional. Texts end "Reply STOP to end." (AWS handles STOP), and a number AWS reports as opted out is marked stopped here.
+   - **Not yet:** athletics needs its own carrier registration (toll-free verification or a 10DLC campaign). eoc's number is registered for emergency notices, so texting stays off until `sms_origination_identity_arn` is set.
+114. **Single-AZ database, and texts share psd-eoc's number** (Hagel, 2026-10-09).
+   - **Database:** RDS runs in one availability zone in production (about $25 a month less), with 14-day backups and point-in-time restore. That's a Checkov skip (CKV_AWS_157).
+   - **Texts:** athletics sends through eoc's existing End User Messaging pool, so it doesn't create its own pool, opt-out list or HELP keyword. A shared HELP keyword would replace eoc's reply. Athletics has its own configuration set, so its delivery events stay separate.
+   - **Risks raised and accepted:**
+     - eoc's toll-free registration describes PSD EOC staff emergency alerts, so carriers may filter athletics traffic on that number.
+     - One opt-out list per number: someone who texts STOP to a game alert also stops eoc's alerts on that number.
+   - **To revisit:** if either happens, a separate athletics number is a variable change plus its own registration.
+115. **Production AWS facts (checked 2026-10-09, read-only):**
+   - **Account:** 338414773271 (`psd401-prr-prod` SSO profile).
+   - **Texts:** psd-eoc's End User Messaging pool `pool-523bd2d550b44c329698f1400ba9032d` and its toll-free number are both ACTIVE. Opt-out list `psd-eoc-sms`.
+   - **Email:** SES production access is on (50,000 a day). `psd401.net` is already a verified identity.
+   - **CI access:** the GitHub OIDC provider already exists, so `create_github_oidc_provider` stays false.
+   - **DNS:** public psd401.net DNS is the Route 53 zone `Z2B9XR5HEMTG1R` (checked through public DNS-over-HTTPS). On the district network, on-prem split-horizon servers answer instead. That's what made the zone look unauthoritative at first. `athletics.psd401.net` currently resolves through the `*.psd401.net` wildcard (54.221.139.169, 18.233.124.95). Terraform now manages the certificate-validation, DKIM and site records in the zone, only under `athletics.psd401.net`. The pool ARN is the default `sms_origination_identity_arn` in envs/prod.
+116. **First production apply (Hagel approved each step, 2026-10-09).**
+   - **Bootstrap:** 8 resources (state bucket `psd-athletics-tofu-state-338414773271` and its KMS key). Its state then moved into the bucket (`bootstrap/terraform.tfstate`).
+   - **envs/prod:** 92 resources added, 0 changed, 0 destroyed. `athletics.psd401.net` now has its own Route 53 alias to the load balancer, so the `*.psd401.net` wildcard no longer answers for it.
+   - **Secrets:** `BETTER_AUTH_SECRET` and `ALERTS_SECRET` were generated straight into Secrets Manager and never printed.
+   - **Google sign-in:** ECS won't start a task while a referenced secret has no value. `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` hold the filler `unset-pending-tech-services` until Technology Services provides the client (QUESTIONS 17). Until then the Google button shows but fails at Google; nobody can sign in either way.
+   - **Image and database:** image `bootstrap` (commit 61fdc94) pushed to ECR; `bun run db:migrate` ran as a one-off task and exited 0.
+   - **Alarms:** no email subscription for now (Hagel).
+

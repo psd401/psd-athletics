@@ -10,7 +10,8 @@ import { ValidationError } from "../studio/errors";
 import { parseContact } from "./contact";
 import { confirmFollow, startFollow, stopFollow, stopToken } from "./follow";
 import { deliverOutbox, queueFinal, queueGameChange } from "./outbox";
-import { memorySender } from "./sender";
+import { OptedOutError } from "./eum-sender";
+import { memorySender, type AlertSender } from "./sender";
 
 let db: Db;
 let soccer: string;
@@ -172,5 +173,26 @@ describe("the outbox", () => {
     await queueGameChange(db, capital, { what: "is cancelled" }, at("2026-10-08T18:00:00Z"));
     const result = await deliverOutbox(db, { email: failing, sms: null }, at("2026-10-08T18:00:00Z"));
     expect(result.failed).toBeGreaterThanOrEqual(1);
+  });
+});
+
+describe("text messages", () => {
+  it("end with 'Reply STOP to end.' and a number AWS reports opted out is stopped", async () => {
+    const now = at("2026-10-08T18:00:00Z");
+    const sms = memorySender();
+    const started = await startFollow(db, { email: memorySender(), sms }, { contact: "253-555-0199", teamIds: [soccer], wantsChanges: true, wantsFinals: false }, now);
+    await confirmFollow(db, { followerId: started.followerId, code: started.code }, now);
+    await queueGameChange(db, capital, { what: "moved to the turf field" }, now);
+    const texts = memorySender();
+    await deliverOutbox(db, { email: memorySender(), sms: texts }, now);
+    const mine = texts.sent.find((m) => m.to === "+12535550199")!;
+    expect(mine.body.endsWith("Reply STOP to end.")).toBe(true);
+    expect(mine.body).not.toContain("/alerts/stop");
+
+    await queueGameChange(db, capital, { what: "moved back to the grass field" }, now);
+    const optedOut: AlertSender = { send: async () => { throw new OptedOutError(); } };
+    await deliverOutbox(db, { email: memorySender(), sms: optedOut }, now);
+    const [f] = await db.select().from(s.follower).where(eq(s.follower.id, started.followerId));
+    expect(f!.stoppedAt).not.toBeNull();
   });
 });

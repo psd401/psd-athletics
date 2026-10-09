@@ -1,6 +1,7 @@
 variable "aws_account_id" {
-  description = "The AWS account this environment lives in. Plans refuse to run against any other (QUESTIONS 26)."
+  description = "The AWS account this environment lives in: the district account shared with psd401-prr and psd-eoc (Hagel, 2026-10-09). Plans refuse to run against any other."
   type        = string
+  default     = "338414773271"
   validation {
     condition     = can(regex("^[0-9]{12}$", var.aws_account_id))
     error_message = "A 12-digit AWS account ID."
@@ -35,6 +36,18 @@ variable "permissions_boundary_arn" {
   description = "The account's deploy permissions boundary (standards/08, phase 6 plan), once it exists."
   type        = string
   default     = null
+}
+
+variable "route53_zone_id" {
+  description = "Public Route 53 zone for psd401.net (in this account)."
+  type        = string
+  default     = "Z2B9XR5HEMTG1R"
+}
+
+variable "sms_origination_identity_arn" {
+  description = "psd-eoc's End User Messaging pool or phone-number ARN, shared for text alerts (DECISIONS 114). Null keeps texting off."
+  type        = string
+  default     = "arn:aws:sms-voice:us-west-2:338414773271:pool/pool-523bd2d550b44c329698f1400ba9032d"
 }
 
 variable "alarm_email" {
