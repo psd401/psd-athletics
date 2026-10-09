@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Seahawks on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Big+Shoulders+Display:wght@700;800;900&amp;display=swap">
+<style>
+body{margin:0;background:#0D2726}
+a{color:#1F5C5A}a:hover{color:#0D2726}
+.m *{box-sizing:border-box}
+.disp{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.86;text-transform:uppercase}
+.cond{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.bigbtn{display:flex;align-items:center;justify-content:center;gap:10px;height:56px;border-radius:16px;font:700 17px/1 "Barlow",sans-serif;text-decoration:none;border:0;cursor:pointer}
+.bigbtn svg{width:20px;height:20px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;background:#E4EBEA}
+.seg button{height:44px;border:0;border-radius:11px;background:transparent;font:700 15px/1 "Barlow",sans-serif;color:#2E4242;cursor:pointer}
+.seg button.is-on{background:#fff;color:#0E1E1D;box-shadow:0 1px 3px rgba(0,40,26,.15)}
+.scores{display:flex;gap:10px;overflow-x:auto;padding:0 16px 6px;scroll-snap-type:x mandatory}
+.sc{flex:0 0 150px;scroll-snap-align:start;padding:14px;border-radius:16px;background:#fff;border:1px solid #D4DDDC;display:flex;flex-direction:column;gap:6px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quick a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:88px;border-radius:16px;background:#fff;border:1px solid #D4DDDC;color:#0E1E1D;text-decoration:none;font:600 13px/1.2 "Barlow",sans-serif;text-align:center}
+.quick svg{width:24px;height:24px;color:#194746}
+.tabbar{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.97);border-top:1px solid #D4DDDC;padding:8px 6px 26px}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:48px;justify-content:center;color:#5D7070;text-decoration:none;font:600 11px/1 "Barlow",sans-serif}
+.tabbar a[aria-current="page"]{color:#194746}
+.tabbar svg{width:22px;height:22px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+</style>
+</helmet>
+<div class="m" style="width: 390px; min-height: 2000px; background: #F2F5F5; color: #0E1E1D; font-family: Barlow, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="background: #194746; color: #fff; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #fff; display: grid; place-items: center"><img src="assets/logos/phs-p-logo.png" alt="Peninsula P logo" style="width: 34px; height: auto"></span>
+<span class="disp" style="font-size: 30px">Seahawks</span>
+<button type="button" aria-label="Alerts" style="margin-left: auto; width: 44px; height: 44px; border-radius: 12px; border: 0; background: rgba(255,255,255,.16); color: #fff; display: grid; place-items: center">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg></button>
+</header>
+
+<a href="#live" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fff; border-bottom: 1px solid #D4DDDC; text-decoration: none; color: #0E1E1D; min-height: 60px">
+<span class="tag" style="background: #E5383B; color: #fff"><span class="pulse" style="width: 6px; height: 6px; border-radius: 50%; background: #fff"></span>Live</span>
+<b style="font: 700 16px/1.2 Barlow, sans-serif; flex: 1">Girls Soccer vs Silas</b>
+<span style="font: 700 14px/1 Barlow, sans-serif; color: #194746">Watch</span>
+</a>
+
+<section style="margin: 16px; border-radius: 24px; background: #0D2726; color: #fff; padding: 22px 20px; position: relative; overflow: hidden">
+<img src="assets/photos/phs-helmet.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: .32">
+<svg viewBox="0 0 360 320" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<g fill="none" stroke="#B9BCC0" stroke-width="1.3" opacity=".22"><path d="M200 30 L300 90 L200 150"></path><path d="M230 30 L330 90 L230 150"></path><path d="M260 30 L360 90 L260 150"></path></g>
+</svg>
+<div style="position: relative; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; gap: 8px; align-items: center"><span class="tag" style="background: #B9BCC0; color: #0D2726">Fri · Home</span><span class="cond" style="font-size: 12px; color: #B3C2C1">Varsity Football</span></div>
+<h1 class="disp" style="margin: 0; font-size: 56px">vs North<br>Thurston</h1>
+<div style="display: flex; justify-content: space-between; align-items: flex-end">
+<div><span class="cond" style="font-size: 11px; color: #B9BCC0">Kickoff in</span><br><span class="disp" style="font-size: 44px; font-variant-numeric: tabular-nums">{{countText}}</span></div>
+<span style="font: 600 14px/1.4 Barlow, sans-serif; color: #B3C2C1; text-align: right">7:00 PM<br>Peninsula HS</span>
+</div>
+<a class="bigbtn" href="#tickets" style="background: #B9BCC0; color: #0D2726">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 0 0-6V6H3z"></path></svg>
+Buy tickets</a>
+</div>
+</section>
+
+<section style="padding: 4px 16px 0; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 class="disp" style="margin: 0; font-size: 32px">My teams</h2>
+<a href="#edit" style="font: 700 14px/1 Barlow, sans-serif; text-decoration: none">Edit</a>
+</div>
+<div class="seg" role="group" aria-label="When">
+<sc-for list="{{when}}" as="w" hint-placeholder-count="2"><button type="button" class="{{w.cls}}" aria-pressed="{{w.on}}" onClick="{{w.pick}}">{{w.label}}</button></sc-for>
+</div>
+<sc-for list="{{mine}}" as="t" hint-placeholder-count="3">
+<a href="PHS-Schedule.dc.html" style="display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid #D4DDDC; text-decoration: none; color: #0E1E1D; min-height: 76px">
+<span style="width: 52px; height: 56px; border-radius: 12px; background: #194746; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: none"><span class="cond" style="font-size: 11px">{{t.dow}}</span><span class="disp" style="font-size: 26px">{{t.dd}}</span></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0"><span class="cond" style="font-size: 11px; color: #45585A">{{t.team}}</span><b style="font: 700 17px/1.2 Barlow, sans-serif">{{t.opp}}</b><span style="font: 500 13px/1 Barlow, sans-serif; color: #45585A">{{t.time}}</span></span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#45585A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</a>
+</sc-for>
+</section>
+
+<section style="padding: 26px 0 0; display: flex; flex-direction: column; gap: 12px">
+<h2 class="disp" style="margin: 0 16px; font-size: 32px">Finals</h2>
+<div class="scores" role="list">
+<sc-for list="{{finals}}" as="f" hint-placeholder-count="4">
+<div class="sc" role="listitem">
+<span class="cond" style="font-size: 11px; color: #45585A">{{f.sport}}</span>
+<span class="disp" style="font-size: 36px">{{f.score}}</span>
+<span style="font: 600 14px/1.2 Barlow, sans-serif">{{f.opp}}</span>
+<span style="font: 500 12px/1 Barlow, sans-serif; color: #45585A">{{f.date}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="margin: 22px 16px 0; padding: 22px 20px; border-radius: 22px; background: #194746; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<div><span class="cond" style="font-size: 11px; color: #E2EAE9">2026 Fish Bowl</span><br><span class="disp" style="font-size: 34px">Champions</span></div>
+<span class="disp" style="font-size: 52px">37–8</span>
+</section>
+
+<section style="padding: 26px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 class="disp" style="margin: 0; font-size: 32px">Quick links</h2>
+<div class="quick">
+<a href="#tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 0 0-6V6H3z"></path></svg>Tickets</a>
+<a href="#watch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="m10 9 5 3-5 3z"></path></svg>Watch live</a>
+<a href="#register"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"></path><path d="M14 3v5h5M9 14l2 2 4-4"></path></svg>Register</a>
+<a href="#store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7z"></path><path d="M9 7a3 3 0 0 1 6 0"></path></svg>Store</a>
+<a href="#forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v6c0 4.5 3.2 7.8 7.5 9 4.3-1.2 7.5-4.5 7.5-9V6z"></path></svg>Health forms</a>
+<a href="mailto:filkinsr@psd401.net"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>Email the AD</a>
+</div>
+</section>
+
+<div style="flex: 1"></div>
+<nav class="tabbar" aria-label="Sections">
+<a href="#home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7v9H3z"></path><path d="M9 20v-6h6v6"></path></svg>Today</a>
+<a href="PHS-Schedule.dc.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>Schedule</a>
+<a href="PHS-Home.dc.html#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>Scores</a>
+<a href="PHS-Home.dc.html#teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"></path></svg>Teams</a>
+<a href="#more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>More</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { when: 'next' };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.forceUpdate(), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  renderVals() {
+    const kick = Date.parse('2026-10-10T02:00:00Z');
+    let left = Math.max(0, kick - Date.now());
+    const pad = (n) => String(n).padStart(2, '0');
+    const h = Math.floor(left / 3600000);
+    const m = Math.floor((left % 3600000) / 60000);
+    const s = Math.floor((left % 60000) / 1000);
+    const countText = left === 0 ? 'Now' : h + ':' + pad(m) + ':' + pad(s);
+    const next = [
+      { dow: 'Tue', dd: '13', team: 'Volleyball · Varsity', opp: 'vs Timberline', time: '7:15 PM · Home' },
+      { dow: 'Tue', dd: '13', team: 'Girls Soccer · Varsity', opp: 'vs Capital', time: '7:00 PM · Home' },
+      { dow: 'Thu', dd: '15', team: 'Volleyball · Varsity', opp: 'vs Lakes', time: '7:15 PM · Home' }
+    ];
+    const week = next.concat([
+      { dow: 'Thu', dd: '15', team: 'Girls Soccer · Varsity', opp: 'vs River Ridge', time: '4:30 PM · Home' }
+    ]);
+    const w = this.state.when;
+    const opts = [['next', 'Next up'], ['week', 'This week']];
+    return {
+      countText,
+      when: opts.map(([v, label]) => ({ label, on: w === v, cls: w === v ? 'is-on' : '', pick: () => this.setState({ when: v }) })),
+      mine: w === 'next' ? next.slice(0, 2) : week,
+      finals: [
+        { sport: 'Volleyball', score: 'L 0–3', opp: '@ Capital', date: 'Oct 7' },
+        { sport: 'Girls Soccer', score: 'W 2–1', opp: 'vs Timberline', date: 'Oct 6' },
+        { sport: 'Volleyball', score: 'W 3–0', opp: '@ River Ridge', date: 'Oct 5' },
+        { sport: 'Girls Soccer', score: 'W 8–0', opp: '@ Lincoln', date: 'Oct 1' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

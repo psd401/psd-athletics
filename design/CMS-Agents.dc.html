@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agents and MCP access</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.ag-two{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.ag-two > .wide{flex:3 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px}
+.ag-two > .narrow{flex:2 1 340px;min-width:0;display:flex;flex-direction:column;gap:24px}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="Agents and access" live="3 agents connected" meta="Both schools · 2026–27" user="AD"></x-import>
+<div class="studio-body">
+
+<div class="studio-nav">
+<x-import component-from-global-scope="Nexus.Sidebar" brand="Peninsula Athletics" tagline="Athletics office" items="{{nav}}"></x-import>
+</div>
+
+<main class="studio-main">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="studio-eyebrow">One door for every AI agent</span>
+<h1 class="studio-title">Agents and access</h1>
+<p class="studio-sub">Coaches can bring their own assistant. It connects through one MCP endpoint, signs in as the coach, and can only do what that coach's role allows.</p>
+</div>
+
+<div class="ag-two">
+<div class="wide">
+<x-import component-from-global-scope="Nexus.Card" title="What agents can do" subtitle="Tools on the Athletics Studio MCP server · never more than the person who connected it">
+<x-import component-from-global-scope="Nexus.DataTable" columns="{{toolCols}}" rows="{{tools}}" caption="MCP tools and who can grant them"></x-import>
+</x-import>
+
+<x-import component-from-global-scope="Nexus.AgentActivityLog" title="What agents did today" subtitle="Every read and change, in plain words · undo while the window is open" entries="{{log}}"></x-import>
+</div>
+
+<div class="narrow">
+<x-import component-from-global-scope="Nexus.PermissionRequest" title="Comms agent wants to post to Instagram" reason="It picked 6 photos from the Tides Girls Soccer album at Capital for the official account. Coaches publish on the site themselves; posting to a school account needs an athletic director." system="Official Tides Instagram (@GHTidePride)" scope="Post 1 carousel of 6 · this time only" allow-label="Allow once"></x-import>
+<div class="nx-hidden-list"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg> Never available to agents</b>Student contact details · Medical and eligibility records · Final Forms data · Editing Arbiter</div>
+
+<x-import component-from-global-scope="Nexus.Card" title="Connected agents" subtitle="Each acts as the person who connected it">
+<div class="nx-list">
+<x-import component-from-global-scope="Nexus.ListRow" title="Claude · head coach's laptop" subtitle="Girls Soccer · publishes as the coach · expires Nov 7" icon="agent" end="Active"></x-import>
+<x-import component-from-global-scope="Nexus.ListRow" title="Sync agent" subtitle="Built in · reads Arbiter · applies changes under your rules" icon="cloud" tone="flow" end="Watching"></x-import>
+<x-import component-from-global-scope="Nexus.ListRow" title="District communications agent" subtitle="Both schools · drafts hub stories and social posts" icon="agent" tone="attention" end="Asking"></x-import>
+</div>
+</x-import>
+
+<x-import component-from-global-scope="Nexus.Card" title="Connect an agent" subtitle="Paste into any MCP-capable assistant">
+<x-import component-from-global-scope="Nexus.CodeBlock" code="{{config}}"></x-import>
+<p class="studio-sub" style="font-size: 13px; line-height: 18px; margin-top: 12px">Sign-in uses your psd401.net Google account. Access ends when your coaching assignment ends.</p>
+</x-import>
+</div>
+</div>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm">Export audit log</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon="plus">Connect a new agent</x-import>
+</x-import>
+</main>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      nav: [
+        { label: 'Today', icon: 'home', href: 'CMS-Today.dc.html' },
+        { label: 'Waiting for me', icon: 'clock', count: 1, urgent: true },
+        { section: 'Schools' },
+        { label: 'Gig Harbor Tides', icon: 'users', sub: '7 fall teams' },
+        { label: 'Peninsula Seahawks', icon: 'users', sub: '8 fall teams' },
+        { section: 'Program' },
+        { label: 'Photos and media', icon: 'folder', href: 'CMS-Media-Review.dc.html' },
+        { label: 'Schedule sync', icon: 'cloud', href: 'CMS-Schedule-Sync.dc.html' },
+        { label: 'People and roles', icon: 'users', href: 'CMS-People-Roles.dc.html' },
+        { label: 'Agents and access', icon: 'agent', current: true, sub: '1 request' },
+        { label: 'Settings', icon: 'gear' }
+      ],
+      toolCols: [
+        { key: 'tool', label: 'Tool' },
+        { key: 'does', label: 'What it does' },
+        { key: 'access', label: 'Access' },
+        { key: 'who', label: 'Who can grant it' }
+      ],
+      tools: [
+        { id: 1, tool: 'list_teams', does: 'Teams and levels the person coaches', access: 'Read', who: 'Everyone' },
+        { id: 2, tool: 'get_schedule', does: 'Games, times, sites, results, streams', access: 'Read', who: 'Everyone' },
+        { id: 3, tool: 'draft_story', does: 'Create or edit a story or recap draft', access: 'Draft', who: 'Coaches' },
+        { id: 4, tool: 'update_roster', does: 'Edit roster rows, directory info only', access: 'Draft', who: 'Coaches' },
+        { id: 5, tool: 'upload_media', does: 'Add photos to an album after opt-out checks', access: 'Draft', who: 'Coaches, photographers' },
+        { id: 6, tool: 'post_update', does: 'Post a score or note to a team feed', access: 'Change', who: 'Coaches, for their teams' },
+        { id: 7, tool: 'publish', does: 'Put a draft live on a page', access: 'Change', who: 'Coaches for their teams; ADs for any' },
+        { id: 8, tool: 'share_to_social', does: 'Post to an official school account', access: 'Change', who: 'Athletic directors, per use' },
+        { id: 9, tool: 'update_schedule', does: 'Not offered: Arbiter stays the source', access: '—', who: 'No one' }
+      ],
+      log: [
+        { id: 1, day: 'Today', time: '7:56 PM', state: 'waiting', kind: 'permission', verb: 'Asked to post', object: '6 photos to @GHTidePride', scope: 'Official account', by: 'District communications agent' },
+        { id: 2, day: 'Today', time: '7:12 PM', state: 'done', kind: 'change', verb: 'Published', object: 'Capital recap', scope: 'Girls Soccer team page', by: 'Head coach via Claude', undoUntil: '7:42 PM' },
+        { id: 7, day: 'Today', time: '6:44 PM', state: 'done', kind: 'change', verb: 'Drafted', object: 'Capital recap, 148 words', scope: 'Draft', by: 'Head coach via Claude' },
+        { id: 3, day: 'Today', time: '6:42 PM', state: 'done', kind: 'change', verb: 'Moved', object: 'Peninsula football @ River Ridge to Thu, Oct 15', scope: 'Live · by rule', by: 'League-match rule', undoUntil: '7:12 PM' },
+        { id: 4, day: 'Today', time: '6:42 PM', state: 'done', kind: 'message', verb: 'Texted', object: 'Peninsula football followers, one message', scope: 'Alerts', by: 'League-match rule' },
+        { id: 5, day: 'Today', time: '6:41 PM', state: 'done', kind: 'read', verb: 'Read', object: 'fall schedules for both schools', scope: 'Arbiter' },
+        { id: 6, day: 'Today', time: '5:10 PM', state: 'done', kind: 'change', verb: 'Added', object: 'tonight’s game card for Girls Soccer', scope: 'Team page', by: 'Game-day rule', undoUntil: '9:30 PM' }
+      ],
+      config: '{\n  "mcpServers": {\n    "psd-athletics": {\n      "url": "https://athletics.psd401.net/mcp",\n      "auth": "oauth"\n    }\n  }\n}',
+      trust: ['Agents act as the person who connected them', 'coaches answer for their teams', 'every action logged']
+    };
+  }
+}
+</script>
+</body>
+</html>

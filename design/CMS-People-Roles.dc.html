@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>People and roles</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="People and roles" live="3 coaches onboarding" meta="Both schools · 2026–27" user="AD"></x-import>
+<div class="studio-body">
+
+<div class="studio-nav">
+<x-import component-from-global-scope="Nexus.Sidebar" brand="Peninsula Athletics" tagline="District athletics office" items="{{nav}}"></x-import>
+</div>
+
+<main class="studio-main">
+<div style="display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="studio-eyebrow">Who can do what</span>
+<h1 class="studio-title">People and roles</h1>
+<p class="studio-sub">Coaches are responsible for their own teams and publish without waiting. Athletic directors can edit or take down anything at their schools.</p>
+</div>
+<x-import component-from-global-scope="Nexus.SegmentedControl" label="School" value="Both" options="{{schools}}"></x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.Card" title="Roles" subtitle="Set once for the district · people get a role per team">
+<x-import component-from-global-scope="Nexus.DataTable" columns="{{roleCols}}" rows="{{roles}}" caption="What each role can do"></x-import>
+</x-import>
+
+<x-import component-from-global-scope="Nexus.Card" title="People" subtitle="Signed in with psd401.net Google accounts · teams come from coaching assignments">
+<x-import component-from-global-scope="Nexus.DataTable" columns="{{peopleCols}}" rows="{{people}}" caption="People with access"></x-import>
+</x-import>
+
+<div class="studio-grid2">
+<x-import component-from-global-scope="Nexus.Card" title="Coach onboarding" subtitle="Every new coach gets the same five steps · about 15 minutes">
+<x-import component-from-global-scope="Nexus.WorkSteps" steps="{{onboard}}"></x-import>
+<p class="studio-sub" style="font-size: 13px; line-height: 18px; margin-top: 12px">Stuck? Coaches ask the Studio assistant how to do anything, any time. It answers from the district's own guide.</p>
+</x-import>
+<x-import component-from-global-scope="Nexus.Card" title="Move what's already out there" subtitle="The agent copies existing pages for a person to review · nothing goes live on its own">
+<x-import component-from-global-scope="Nexus.SourceTrail" sources="{{sources}}"></x-import>
+</x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm">Export access list</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon="plus">Invite winter coaches</x-import>
+</x-import>
+</main>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      nav: [
+        { label: 'Today', icon: 'home', href: 'CMS-Today.dc.html' },
+        { label: 'Waiting for me', icon: 'clock', count: 2, urgent: true },
+        { section: 'Program' },
+        { label: 'Photos and media', icon: 'folder', href: 'CMS-Media-Review.dc.html' },
+        { label: 'Schedule sync', icon: 'cloud', href: 'CMS-Schedule-Sync.dc.html' },
+        { label: 'People and roles', icon: 'users', current: true, sub: '3 onboarding' },
+        { label: 'Agents and access', icon: 'agent', href: 'CMS-Agents.dc.html' },
+        { label: 'Settings', icon: 'gear' }
+      ],
+      schools: ['Both', 'Gig Harbor', 'Peninsula'],
+      roleCols: [
+        { key: 'role', label: 'Role' },
+        { key: 'publish', label: 'Publishes' },
+        { key: 'photos', label: 'Photos' },
+        { key: 'extra', label: 'Also' }
+      ],
+      roles: [
+        { id: 1, role: 'District athletic director', publish: 'Any page at both schools', photos: 'Takes down anything', extra: 'Posts to official school social accounts' },
+        { id: 2, role: 'School athletic director', publish: 'Any page at their school', photos: 'Takes down at their school', extra: 'Sets rules for their coaches' },
+        { id: 3, role: 'Athletic secretary', publish: 'Forms, contacts, school pages', photos: 'Upload to school albums', extra: 'Manages invitations' },
+        { id: 4, role: 'Head coach', publish: 'Their team pages, stories, feed', photos: 'Publishes their albums', extra: 'Responsible for their team’s content' },
+        { id: 5, role: 'Assistant coach', publish: 'Drafts; head coach can allow publishing', photos: 'Upload and publish if allowed', extra: 'Sideline posting' },
+        { id: 6, role: 'Volunteer photographer', publish: 'Nothing', photos: 'Uploads held for the coach', extra: 'No access to rosters' },
+        { id: 7, role: 'AI agent', publish: 'Drafts as the person who connected it', photos: 'Same as that person', extra: 'Every action logged and undoable' }
+      ],
+      peopleCols: [
+        { key: 'name', label: 'Name' },
+        { key: 'role', label: 'Role' },
+        { key: 'scope', label: 'Teams' },
+        { key: 'status', label: 'Status' }
+      ],
+      people: [
+        { id: 1, name: 'Ross Filkins', role: 'School athletic director', scope: 'Peninsula · all teams', status: 'Active' },
+        { id: 2, name: 'Angie Wehmeier', role: 'Athletic secretary', scope: 'Peninsula', status: 'Active' },
+        { id: 3, name: 'Carly Fries-Geldermann', role: 'Athletic secretary', scope: 'Gig Harbor', status: 'Active' },
+        { id: 4, name: '[Head coach]', role: 'Head coach', scope: 'Gig Harbor · Girls Soccer', status: 'Active' },
+        { id: 5, name: '[Head coach]', role: 'Head coach', scope: 'Peninsula · Volleyball', status: 'Onboarding · 3 of 5' },
+        { id: 6, name: '[Volunteer]', role: 'Volunteer photographer', scope: 'Gig Harbor · Football', status: 'Invited' }
+      ],
+      onboard: [
+        { label: 'Sign in with your psd401.net Google account', state: 'done' },
+        { label: 'Confirm your teams from your coaching assignment', state: 'done' },
+        { label: 'Add your bio and photo', state: 'done' },
+        { label: 'Post your first update with the agent', state: 'active' },
+        { label: 'Set up sideline posting on your phone', state: 'pending' }
+      ],
+      sources: [
+        { name: 'ghh.psd401.net athletics', detail: 'Coaches table and cut policies · monthly updates Mar 2025 to May 2026 · awards 2022–23 to 2025–26', icon: 'doc', status: 'connected', statusLabel: 'Ready to review' },
+        { name: 'phs.psd401.net athletics', detail: 'Contacts, forms, insurance, awards, Letter in Community Service', icon: 'doc', status: 'connected', statusLabel: 'Ready to review' },
+        { name: 'tidesathletics.com and peninsulaathletics.com', detail: 'Team pages and rosters on the current PlayOn sites', icon: 'link', status: 'waiting', statusLabel: 'Needs an export' }
+      ],
+      trust: ['Access ends with the coaching assignment', 'roles reviewed each season', 'every change logged']
+    };
+  }
+}
+</script>
+</body>
+</html>

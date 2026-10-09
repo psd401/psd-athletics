@@ -1,36 +1,51 @@
-# template-nextjs-app
+# psd-athletics
 
-PSD401 template for Next.js applications. Start every new Next.js repo from this template — never from scratch ([01-repo-lifecycle.md](https://github.com/PSD401/psd-dev-standards)).
+The athletics platform for Peninsula School District.
 
-## What this template gives you
+| Surface | URL | For |
+|---|---|---|
+| District hub | `athletics.psd401.net` | Families and community, both schools |
+| Gig Harbor High School (Tides) | `athletics.psd401.net/ghh` | Tides families |
+| Peninsula High School (Seahawks) | `athletics.psd401.net/phs` | Seahawks families |
+| Athletics Studio | `athletics.psd401.net/studio` | Coaches, athletic directors, athletic secretaries |
 
-- **Next.js 16 (App Router) + React 19 + TypeScript** — `strict` and `noUncheckedIndexedAccess` on.
-- **Vitest 4 + Testing Library** with one real, behavior-asserting example test (`components/counter.test.tsx`). PSD CI fails repos with zero tests by design — keep at least one real test at all times.
-- **ESLint (flat config)** — `next/core-web-vitals`, `next/typescript`, and the PSD test-quality rules (`vitest/expect-expect`, no `.only`, no `.skip`).
-- **PSD CI wiring** — `.github/workflows/` call the org reusable workflows (`reusable-psd-ci`, `reusable-claude-review`, `reusable-license-check`). No CI logic lives in this repo.
-- **Dependabot** — weekly GitHub Actions + npm updates, minor/patch grouped.
-- **MIT LICENSE, CLAUDE.md, AGENTS.md** — required in every PSD repo.
+It becomes the official athletics site for both schools, replacing the athletics pages on the school sites and the PlayOn sites. Coaches run their own team pages, stories, photos and feeds in Athletics Studio, and their AI assistants can work there as them through an MCP server. Schedules sync from Arbiter.
 
-## First 10 minutes
+## Status
 
-1. **Rename**: update `name` in `package.json`, the `<h1>` in `app/page.tsx`, and `metadata` in `app/layout.tsx`. Naming: lowercase-kebab; prefix `psd-` for district-specific tools.
-2. **Set repo custom properties**: `tier` (default `c-experiment`), `owner`, `lifecycle: active` — a repo is born governed or not born.
-3. **Add topics** for discovery (e.g. `nextjs`, `student-facing`).
-4. **Review CLAUDE.md**: fill in the architecture map for your app; prune anything that doesn't apply. It is kept under 100 lines — treat it like code.
-5. **Install and verify green**: `bun install && bun run test && bun run lint && bun run typecheck` (bun is the PSD JS runtime rule; `bun.lock` is committed).
-6. Replace `components/counter.tsx` and its test with your first real component — do not delete the test without replacing it.
+Design approved October 8, 2026. The app isn't built yet: this repo holds the build spec, the approved screens, the brand assets, seed data and the Next.js template the app grows from.
 
-## Commands
+- Build spec: [docs/SPEC.md](docs/SPEC.md)
+- Brand and visual system: [docs/BRAND.md](docs/BRAND.md)
+- Approved screens: [design/](design/README.md) (live canvas: https://claude.ai/artifact/Uuc9DFFqqM3S8rYXWWMpRR, private to the owner)
+- First prompt for Claude Code: [docs/KICKOFF.md](docs/KICKOFF.md)
+- Decisions and open questions: [docs/DECISIONS.md](docs/DECISIONS.md), [docs/QUESTIONS.md](docs/QUESTIONS.md)
 
-| Task | Command |
-|------|---------|
-| Install | `bun install` |
-| Dev server | `bun run dev` |
-| Build | `bun run build` |
-| Test | `bun run test` |
-| Lint | `bun run lint` |
-| Typecheck | `bun run typecheck` |
+## Run it
+
+```bash
+bun install
+bun run dev        # http://localhost:3000
+bun run test
+bun run lint
+bun run typecheck
+bun run build
+```
+
+## Layout
+
+| Path | What's in it |
+|---|---|
+| `app/`, `components/` | The Next.js app (still the template starter) |
+| `design/` | The 18 approved screens as `.dc.html` source, logos, photos with credits |
+| `docs/` | Spec, brand, kickoff prompt, decisions, questions |
+| `fixtures/` | Real fall 2026 games, records and school facts, as of October 8, 2026 |
+| `vendor/nexus/` | Read-only copy of the Nexus design system web package, from `psd-dev-standards` |
+
+## Standards
+
+This repo follows [psd-dev-standards](https://github.com/psd401/psd-dev-standards): Tier A (`a-production`), started from `template-nextjs-app`, bun, CI through the org reusable workflows, MIT licensed. Agent instructions are in [CLAUDE.md](CLAUDE.md).
 
 ## Owner
 
-Technology Services, Peninsula School District. See [SECURITY.md](https://github.com/PSD401/.github) (inherited from the org `.github` repo) for contact.
+Kris Hagel (@krishagel), Technology Services, Peninsula School District. Security contact: see [SECURITY.md](https://github.com/psd401/.github/blob/main/SECURITY.md), inherited from the org `.github` repo.

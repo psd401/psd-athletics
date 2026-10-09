@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Recap with the agent</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.ed-wrap{display:flex;flex-wrap:wrap;align-items:stretch;flex:1}
+.ed-canvas{flex:999 1 620px;min-width:0;padding:32px 40px 24px;display:flex;flex-direction:column;gap:20px}
+.ed-panel{flex:1 1 360px;max-width:420px;border-left:1px solid var(--line);background:var(--surface-raised);display:flex;flex-direction:column}
+.draft p{margin:0 0 16px;font:400 18px/28px var(--font-display);color:var(--ink)}
+.preview-story{border-radius:16px;overflow:hidden;background:#011430;color:#fff}
+@media (max-width:1100px){.ed-panel{max-width:none;border-left:0;border-top:1px solid var(--line)}.ed-canvas{padding:24px 16px}}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="Capital recap" live="Draft · only you can see it" meta="Girls Soccer · Varsity" user="HC"></x-import>
+<div class="ed-wrap">
+
+<main class="ed-canvas">
+<x-import component-from-global-scope="Nexus.Breadcrumbs" items="{{crumbs}}"></x-import>
+<div style="display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 class="studio-title">Capital recap <span style="color: var(--accent)">· draft</span></h1>
+<p class="studio-sub">Girls Soccer · Varsity · Tue, Oct 6 · won 2–0 at Capital</p>
+</div>
+<div class="studio-row">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm" icon="eye">Preview on a phone</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm" icon="doc">Save draft</x-import>
+</div>
+</div>
+
+<div class="studio-row">
+<x-import component-from-global-scope="Nexus.ContextChip" name="Source" value="Arbiter final, 2–0" source="confirmed" icon="cloud" confirmed="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Readers" value="Families on phones" source="from your request" icon="users"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Names" value="First name, last initial" source="confirmed" icon="shield" confirmed="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Length" value="About 150 words" source="from your request" icon="edit"></x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.StatusStrip" items="{{strip}}" change="Agent drafted 148 words and one headline"></x-import>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div class="nx-card" style="flex: 3 1 480px; min-width: 0; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div class="nx-card__head"><div><h3 class="nx-card__title">Story <span class="nx-badge nx-badge--info nx-badge--plain">Provisional</span></h3><div class="nx-card__sub">Agent draft · edit anything, the agent keeps your changes</div></div><span class="nx-own-tag">Agent</span></div>
+<x-import component-from-global-scope="Nexus.TextField" label="Headline" default-value="Tides blank Capital 2–0 to stay perfect in league" help="49 characters · fits on one line on a phone"></x-import>
+<x-import component-from-global-scope="Nexus.FileDrop" title="Add a game photo">JPG or PNG. Only photos of athletes whose families allow photo release.</x-import>
+<div class="draft">
+<p>Gig Harbor stayed perfect in league play Tuesday night with a 2–0 win at Capital, the Tides’ third straight shutout.</p>
+<div class="nx-suggest" style="margin: 0 0 16px; padding: 12px 14px; border-radius: 10px"><span class="nx-suggest__tag">Needs you</span> <span style="font: 400 15px/22px var(--font-sans)">Add who scored and one moment families should remember. I left this blank so no athlete is named without you.</span></div>
+<p>The Tides are 5–2 overall and 3–0 in league play, and have outscored their last three opponents 13–0.</p>
+<p>Next up: Mount Tahoma visits Gig Harbor on Thursday at 7:30 PM. <del class="nx-del">Come early.</del> <ins class="nx-ins">Tickets are on GoFan, and the game streams on the NFHS Network.</ins></p>
+</div>
+</div>
+
+<div style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="Nexus.Card" title="Where it appears" subtitle="Changes apply when you publish">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Nexus.Switch" label="Girls Soccer team page" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Tides home page, Stories" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="District hub, Peninsula Athletics"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Text a link to team followers"></x-import>
+</div>
+</x-import>
+<div class="nx-card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<span class="studio-eyebrow">How families will see it</span>
+<div class="preview-story">
+<div style="height: 132px; background: #022C66; display: flex; align-items: flex-start; padding: 10px"><span style="font: 600 11px/1 var(--font-sans); color: #9FC2E6; background: rgba(1,20,48,.6); padding: 5px 9px; border-radius: 999px">Photo goes here</span></div>
+<div style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px">
+<span style="font: 600 11px/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; color: #8DC8F0">Girls Soccer · Oct 6</span>
+<span style="font: 800 24px/1.05 Impact, 'Arial Narrow', sans-serif; text-transform: uppercase">Tides blank Capital 2–0 to stay perfect in league</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm">Versions</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon-end="arrow">Publish to 2 pages</x-import>
+</x-import>
+</main>
+
+<aside class="ed-panel" aria-label="Write with the agent">
+<div style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px">
+<span style="font: 500 20px/26px var(--font-display)">Write with the agent</span>
+<span class="studio-sub" style="font-size: 13px; line-height: 18px">It drafts from Arbiter and your notes. You publish.</span>
+</div>
+<div style="flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="Nexus.AgentMessage" author="You" time="6:43 PM">Write up the Capital game for the team page. Keep it short, families read it on their phones.</x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Studio agent" agent="{{yes}}" time="6:43 PM">
+<p style="margin: 0 0 10px">One choice changes the story: how should athletes be named?</p>
+<x-import component-from-global-scope="Nexus.ChoiceChips" label="How should athletes be named?" value="First name, last initial" options="{{names}}"></x-import>
+</x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Studio agent" agent="{{yes}}" time="6:44 PM">
+<x-import component-from-global-scope="Nexus.WorkSteps" steps="{{steps}}"></x-import>
+<p style="margin: 10px 0 0">The draft is ready. I didn't name anyone or pick a photo, and I haven't published it.</p>
+</x-import>
+<x-import component-from-global-scope="Nexus.ToolCallCard" name="arbiter.get_game" summary="Read the final score and venue for Oct 6" status="done" access="read" duration="0.8s" inputs="{{toolIn}}" result="Gig Harbor 2, Capital 0 · final · away"></x-import>
+</div>
+<div style="padding: 16px 20px 20px; border-top: 1px solid var(--line)">
+<x-import component-from-global-scope="Nexus.Composer" placeholder="Make it shorter, add a quote, or point at a sentence…" hint="Your edits always win over the agent's"></x-import>
+</div>
+</aside>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      yes: true,
+      crumbs: [{ label: 'Today', href: 'CMS-Today.dc.html' }, { label: 'Stories and recaps', href: '#stories' }, { label: 'Capital recap' }],
+      strip: ['Final score from Arbiter', 'Season 5–2, league 3–0'],
+      trust: ['Draft only', 'not published', 'no texts sent'],
+      names: ['First name, last initial', 'No names', 'Decide per story'],
+      steps: [
+        { label: 'Read the Oct 6 final from Arbiter', state: 'done' },
+        { label: 'Checked the season record: 5–2, league 3–0', state: 'done' },
+        { label: 'Drafted 148 words and a headline', state: 'done' }
+      ],
+      toolIn: { team: 'GHHS Girls Soccer · Varsity', date: '2026-10-06' }
+    };
+  }
+}
+</script>
+</body>
+</html>

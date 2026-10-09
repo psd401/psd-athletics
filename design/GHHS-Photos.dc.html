@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tides photo hub</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Big+Shoulders+Display:wght@700;800;900&amp;display=swap">
+<style>
+body{margin:0;background:#F2F6FB}
+a{color:#0457D1}a:hover{color:#022C66}
+.gh{--abyss:#011430;--navy:#022C66;--deep:#01204D;--sky:#69ABE0;--foam:#EAF3FC;--paper:#F2F6FB;--ink:#0B1A33;--muted:#4C5D77;--line:#D4DFEC;font-family:"Barlow",system-ui,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;position:relative}
+.gh *{box-sizing:border-box}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.disp{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.86;text-transform:uppercase}
+.cond{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.mast nav{display:flex;gap:2px;flex-wrap:wrap}
+.mast nav a{display:inline-flex;align-items:center;height:44px;padding:0 14px;border-radius:10px;color:#E4EEF9;text-decoration:none;font:600 15px/1 "Barlow",sans-serif}
+.mast nav a:hover,.mast nav a[aria-current="page"]{background:rgba(105,171,224,.18);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:12px;border:0;font:700 15px/1 "Barlow",sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-sky{background:var(--sky);color:var(--abyss)}
+.btn-sky:hover{background:#A8D0EF;color:var(--abyss)}
+.btn-line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.45)}
+.btn-line:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:#06408F;color:#fff}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost:hover{background:var(--foam);color:var(--ink)}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.tag-w{background:#022C66;color:#fff}
+.tag-o{background:#E6EDF5;color:#33445E}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font:700 14px/1 "Barlow",sans-serif;cursor:pointer}
+.chip:hover{border-color:#9DB2CC}
+.chip.is-on{background:var(--navy);border-color:var(--navy);color:#fff}
+.ph{position:relative;overflow:hidden;background:var(--navy);display:flex;align-items:flex-end;justify-content:flex-start}
+.ph .lbl{position:absolute;left:12px;top:12px;font:600 11px/1 "Barlow",sans-serif;color:#B9D3EE;background:rgba(1,20,48,.6);padding:5px 9px;border-radius:999px}
+.p1{background:#022C66}
+.p2{background:#0A3B80}
+.p3{background:#01204D}
+.p4{background:#1B4E8C}
+.p5{background:#123A6E}
+.p6{background:#2A5C99}
+.ph::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(105,171,224,.10) 0 2px,transparent 2px 22px);pointer-events:none}
+.ph.real::after{display:none}
+.ph img.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.albums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.album{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:10px 10px 16px;text-align:left;cursor:pointer;font:inherit;color:inherit;transition:transform .15s,box-shadow .15s}
+.album:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(2,44,102,.12)}
+.album .cover{aspect-ratio:4/3;border-radius:14px}
+.album .stack{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:4px;aspect-ratio:4/3;border-radius:14px;overflow:hidden}
+.album .stack .ph:first-child{grid-row:1 / span 2}
+.feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.post{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.post .ph{aspect-ratio:1/1}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(1,10,26,.94);display:flex;flex-direction:column;color:#fff}
+.lb-body{flex:1;display:flex;flex-wrap:wrap;gap:24px;padding:24px 40px;min-height:0}
+.lb-stage{flex:999 1 640px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.lb-frame{flex:1;min-height:420px;border-radius:18px}
+.lb-side{flex:1 1 300px;max-width:380px;display:flex;flex-direction:column;gap:16px}
+.strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.strip button{flex:0 0 92px;height:66px;border-radius:10px;border:2px solid transparent;padding:0;cursor:pointer;overflow:hidden}
+.strip button.is-on{border-color:var(--sky)}
+.strip .ph{width:100%;height:100%}
+.navbtn{width:52px;height:52px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;cursor:pointer}
+.navbtn:hover{background:rgba(255,255,255,.22)}
+.sideact{display:flex;align-items:center;gap:10px;height:48px;padding:0 16px;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;text-decoration:none;font:600 15px/1 "Barlow",sans-serif;border:0;cursor:pointer;width:100%}
+.sideact:hover{background:rgba(255,255,255,.14);color:#fff}
+.sideact svg{width:18px;height:18px}
+@media (max-width:1060px){.albums{grid-template-columns:1fr 1fr}.feed{grid-template-columns:1fr 1fr}.hero-grid{grid-template-columns:1fr !important}}
+@media (max-width:640px){.wrap{padding:0 16px}.mast nav{display:none}.albums,.feed{grid-template-columns:1fr}.lb-body{padding:16px}.lb-side{max-width:none}}
+</style>
+</helmet>
+<div class="gh">
+
+<div style="background: #011430; color: #A9BDD8; font: 500 13px/1 Barlow, sans-serif">
+<div class="wrap" style="display: flex; align-items: center; gap: 20px; height: 40px">
+<a href="Main.dc.html" style="color: #D9E7F7; text-decoration: none">Peninsula Athletics</a>
+<span style="opacity: .4">|</span>
+<a href="PHS-Feed-Mobile.dc.html" style="color: #D9E7F7; text-decoration: none">Peninsula Seahawks photos</a>
+</div>
+</div>
+<header class="mast" style="background: #022C66">
+<div class="wrap" style="display: flex; align-items: center; gap: 24px; height: 80px">
+<a href="GHHS-Home.dc.html" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #fff">
+<img src="assets/logos/ghhs-gh-logo.png" alt="Gig Harbor GH logo" style="width: 58px; height: auto">
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="cond" style="font-size: 11px; color: #69ABE0; letter-spacing: .2em">Gig Harbor</span><span class="disp" style="font-size: 34px">Tides</span></span>
+</a>
+<nav aria-label="Tides Athletics" style="margin-left: 16px">
+<a href="GHHS-Home.dc.html#teams">Teams</a><a href="GHHS-Home.dc.html#week">Schedule</a><a href="GHHS-Home.dc.html#results">Scores</a><a href="GHHS-Home.dc.html#stories">News</a><a href="#top" aria-current="page">Photos</a><a href="GHHS-Home.dc.html#fan">Fan Zone</a>
+</nav>
+<a class="btn btn-sky" href="#follow" style="margin-left: auto; height: 44px">Follow a team</a>
+</div>
+</header>
+
+<section style="background: #011430; color: #fff" id="top">
+<div class="wrap hero-grid" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 48px; padding-top: 72px; padding-bottom: 72px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<span class="cond" style="font-size: 14px; color: #69ABE0; letter-spacing: .18em">Tides photos</span>
+<h1 class="disp" style="margin: 0; font-size: 112px">Every team.<br>Every game.<br>One place.</h1>
+<p style="margin: 0; max-width: 480px; font: 500 18px/1.55 Barlow, sans-serif; color: #C7D6EA">Photos come straight from Tides coaches, filed by team and game. No accounts to follow, no app to download, nothing to sign in to.</p>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<a class="btn btn-sky" href="#albums">Browse albums</a>
+<a class="btn btn-line" href="#follow">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg>
+Get new albums by email</a>
+</div>
+</div>
+<button type="button" onClick="{{openPotw}}" style="border: 0; padding: 0; background: none; cursor: pointer; text-align: left; color: #fff" aria-label="Open the photo of the week">
+<div class="ph p2 real" style="aspect-ratio: 16 / 10; border-radius: 24px; padding: 24px">
+<img class="cover" src="assets/photos/ghhs-volleyball.jpg" alt="Tides volleyball players together on the home court after a win">
+<span class="lbl" style="z-index: 1">Photo of the week</span>
+<div style="position: relative; z-index: 1; display: flex; flex-direction: column; gap: 8px; background: rgba(1,20,48,.75); padding: 16px 18px; border-radius: 14px; backdrop-filter: blur(8px)">
+<span class="cond" style="font-size: 12px; color: #69ABE0">Photo of the week · Volleyball</span>
+<span style="font: 700 20px/1.25 Barlow, sans-serif">Four straight: the sweep of Mount Tahoma, Oct 7</span>
+</div>
+</div>
+</button>
+</div>
+</section>
+
+<section class="wrap" id="albums" style="padding-top: 56px; padding-bottom: 24px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="cond" style="font-size: 14px; color: #4C5D77; letter-spacing: .16em">Fall 2026 · {{albumCount}}</span>
+<h2 class="disp" style="margin: 0; font-size: 80px; color: #022C66">Game albums</h2>
+</div>
+<div class="chips" role="group" aria-label="Filter by team">
+<sc-for list="{{teams}}" as="t" hint-placeholder-count="5">
+<button type="button" class="chip {{t.cls}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div class="albums">
+<sc-for list="{{albums}}" as="a" hint-placeholder-count="8">
+<button type="button" class="album" onClick="{{a.open}}" aria-label="Open {{a.title}} album">
+<div class="stack">
+<div class="ph {{a.c1}} {{a.realCls}}"><sc-if value="{{a.hasImg}}" hint-placeholder-val="{{false}}"><img class="cover" src="{{a.img}}" alt="{{a.alt}}"></sc-if><sc-if value="{{a.noImg}}" hint-placeholder-val="{{true}}"><span class="lbl">[Photo]</span></sc-if></div>
+<div class="ph {{a.c2}}"></div>
+<div class="ph {{a.c3}}"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 0 6px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<span class="cond" style="font-size: 12px; color: #4C5D77">{{a.team}}</span>
+<span class="tag {{a.resCls}}">{{a.result}}</span>
+</div>
+<span style="font: 700 18px/1.2 Barlow, sans-serif">{{a.title}}</span>
+<span style="font: 500 13px/1.3 Barlow, sans-serif; color: #4C5D77">{{a.date}} · {{a.count}} photos</span>
+</div>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="cond" style="font-size: 14px; color: #4C5D77; letter-spacing: .16em">Instead of a dozen team Instagrams</span>
+<h2 class="disp" style="margin: 0; font-size: 80px; color: #022C66">From the sidelines</h2>
+</div>
+<p style="margin: 0; max-width: 420px; font: 400 16px/1.5 Barlow, sans-serif; color: #4C5D77">Quick posts from coaches during the week. Each one lives on its team page too, so nothing gets lost in a feed.</p>
+</div>
+<div class="feed">
+<article class="post">
+<div class="ph p1 real"><img class="cover" src="assets/photos/ghhs-volleyball.jpg" alt="Tides volleyball team on the home court"></div>
+<div style="padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<span class="cond" style="font-size: 12px; color: #4C5D77">Volleyball · Wed</span>
+<p style="margin: 0; font: 500 16px/1.45 Barlow, sans-serif">Swept Mount Tahoma 3–0 for our fourth straight win.</p>
+<span style="font: 600 13px/1 Barlow, sans-serif; color: #4C5D77">Volleyball coaching staff</span>
+</div>
+</article>
+<article class="post">
+<div class="ph p4"><span class="lbl">[Photo]</span></div>
+<div style="padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<span class="cond" style="font-size: 12px; color: #4C5D77">Girls Soccer · Tue</span>
+<p style="margin: 0; font: 500 16px/1.45 Barlow, sans-serif">2–0 at Capital. Three league games, thirteen goals, none allowed. Home tonight at 7:30.</p>
+<span style="font: 600 13px/1 Barlow, sans-serif; color: #4C5D77">Girls Soccer coaching staff</span>
+</div>
+</article>
+<article class="post">
+<div class="ph p3 real"><img class="cover" src="assets/photos/ghhs-friday-night.jpg" alt="Leading a cheer from the track at a home football game"></div>
+<div style="padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<span class="cond" style="font-size: 12px; color: #4C5D77">Football · Today</span>
+<p style="margin: 0; font: 500 16px/1.45 Barlow, sans-serif">Kickoff at Central Kitsap, 7:00 PM Friday. See you in Silverdale.</p>
+<span style="font: 600 13px/1 Barlow, sans-serif; color: #4C5D77">Football coaching staff</span>
+</div>
+</article>
+</div>
+</section>
+
+<section style="background: #fff; border-top: 1px solid #D4DFEC" id="follow">
+<div class="wrap" style="padding-top: 48px; padding-bottom: 56px; display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: center">
+<div style="flex: 1 1 480px; display: flex; flex-direction: column; gap: 10px">
+<h2 class="disp" style="margin: 0; font-size: 48px; color: #022C66">Families stay in charge of their kids' photos</h2>
+<p style="margin: 0; font: 400 16px/1.55 Barlow, sans-serif; color: #4C5D77">Only coaching staff can post. Families who opted out of photo release are flagged before anything goes up, and location data is stripped from every file. Want a photo down? Tap Report on it and it's hidden right away while the athletics office takes a look.</p>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<a class="btn btn-navy" href="#release">Photo release choices</a>
+<a class="btn btn-ghost" href="#submit">Send us a photo you took</a>
+</div>
+</div>
+</section>
+
+<sc-if value="{{lbOpen}}" hint-placeholder-val="{{false}}">
+<div class="lb" role="dialog" aria-modal="true" aria-label="{{lb.title}} photos">
+<div style="display: flex; align-items: center; gap: 16px; padding: 18px 40px; border-bottom: 1px solid rgba(255,255,255,.12)">
+<span class="cond" style="font-size: 13px; color: #69ABE0">{{lb.team}}</span>
+<b style="font: 700 18px/1.2 Barlow, sans-serif">{{lb.title}}</b>
+<span style="font: 500 14px/1 Barlow, sans-serif; color: #A9BDD8">Photo {{lb.n}} of {{lb.count}}</span>
+<button type="button" class="navbtn" style="margin-left: auto; width: 44px; height: 44px" onClick="{{closeLb}}" aria-label="Close">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+</div>
+<div class="lb-body">
+<div class="lb-stage">
+<div style="flex: 1; display: flex; align-items: center; gap: 14px; min-height: 0">
+<button type="button" class="navbtn" onClick="{{prev}}" aria-label="Previous photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></button>
+<div class="ph lb-frame {{lb.cls}} {{lb.realCls}}" style="flex: 1"><sc-if value="{{lb.hasImg}}" hint-placeholder-val="{{false}}"><img class="cover" src="{{lb.img}}" alt="{{lb.alt}}" style="object-fit: contain; background: #000"></sc-if><sc-if value="{{lb.noImg}}" hint-placeholder-val="{{true}}"><span class="lbl">[Full-size photo {{lb.n}}]</span></sc-if></div>
+<button type="button" class="navbtn" onClick="{{next}}" aria-label="Next photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></button>
+</div>
+<div class="strip" role="list" aria-label="All photos in this album">
+<sc-for list="{{thumbs}}" as="th" hint-placeholder-count="8">
+<button type="button" class="{{th.cls}}" onClick="{{th.pick}}" aria-label="Photo {{th.n}}"><div class="ph {{th.tone}}"></div></button>
+</sc-for>
+</div>
+</div>
+<aside class="lb-side">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 18px; border-radius: 16px; background: rgba(255,255,255,.06)">
+<span class="cond" style="font-size: 12px; color: #69ABE0">{{lb.date}} · {{lb.result}}</span>
+<p style="margin: 0; font: 500 16px/1.5 Barlow, sans-serif; color: #DCE9F7">[Caption written by the coach, or drafted by the agent and approved.]</p>
+<span style="font: 500 13px/1.4 Barlow, sans-serif; color: #A9BDD8">Image description for screen readers: [alt text, required before posting]</span>
+</div>
+<button type="button" class="sideact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Download full size</button>
+<button type="button" class="sideact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path></svg>Share this photo</button>
+<button type="button" class="sideact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path></svg>Email me new {{lb.team}} albums</button>
+<button type="button" class="sideact" style="background: transparent; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V4h12l-2 4 2 4H4"></path></svg>Report this photo</button>
+<span style="font: 500 13px/1.45 Barlow, sans-serif; color: #A9BDD8">Posted by the {{lb.team}} coaching staff · Photo by [photographer credit]</span>
+</aside>
+</div>
+</div>
+</sc-if>
+
+<footer style="background: #011430; color: #9FB3CE; padding: 40px 0">
+<div class="wrap" style="display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font: 500 14px/1.5 Barlow, sans-serif">
+<span><b class="disp" style="font-size: 28px; color: #fff">Roll Tides</b><br>Gig Harbor High School · 5101 Rosedale St NW, Gig Harbor, WA 98335</span>
+<a href="Main.dc.html" style="color: #E2EDF9">Part of Peninsula Athletics</a>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { team: 'all', open: -1, photo: 0 };
+  }
+  renderVals() {
+    const tones = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'];
+    const VB = 'assets/photos/ghhs-volleyball.jpg';
+    const FN = 'assets/photos/ghhs-friday-night.jpg';
+    const FB = 'assets/photos/ghhs-fishbowl-crowd.jpg';
+    const RN = 'assets/photos/ghhs-runners.jpg';
+    const all = [
+      { team: 'Volleyball', title: 'vs Mount Tahoma', date: 'Wed, Oct 7', result: 'W 3–0', count: 36, img: VB, alt: 'Tides volleyball players together on the home court' },
+      { team: 'Girls Soccer', title: '@ Capital', date: 'Tue, Oct 6', result: 'W 2–0', count: 28 },
+      { team: 'Volleyball', title: 'vs Silas', date: 'Mon, Oct 5', result: 'W 3–0', count: 22, img: VB, alt: 'Tides volleyball players together on the home court' },
+      { team: 'Football', title: '@ Lincoln', date: 'Fri, Oct 2', result: 'W 31–28', count: 64 },
+      { team: 'Girls Soccer', title: 'vs Silas', date: 'Thu, Oct 1', result: 'W 3–0', count: 30 },
+      { team: 'Football', title: 'vs Bellarmine Prep', date: 'Fri, Sep 25', result: 'W 20–0', count: 58, img: FN, alt: 'A cheer from the track on a Friday night at home' },
+      { team: 'Football', title: 'The Fish Bowl vs Peninsula', date: 'Sat, Sep 19', result: 'L 8–37', count: 81, img: FB, alt: 'The Tides student section in Columbia blue at the Fish Bowl' },
+      { team: 'Cross Country', title: 'Tides runners', date: '[Meet and date]', result: 'Meet', count: 40, img: RN, alt: 'Tides runners in wave singlets celebrating at a meet' }
+    ];
+    const t = this.state.team;
+    const albums = all.map((a, i) => ({ ...a, i })).filter((a) => t === 'all' || a.team === t).map((a) => ({
+      ...a,
+      c1: tones[a.i % 6], c2: tones[(a.i + 2) % 6], c3: tones[(a.i + 4) % 6],
+      hasImg: !!a.img, noImg: !a.img, realCls: a.img ? 'real' : '', img: a.img || '', alt: a.alt || '',
+      resCls: a.result[0] === 'W' ? 'tag-w' : 'tag-o',
+      open: () => this.setState({ open: a.i, photo: 0 })
+    }));
+    const topts = [['all', 'All teams'], ['Football', 'Football'], ['Girls Soccer', 'Girls Soccer'], ['Volleyball', 'Volleyball'], ['Cross Country', 'Cross Country']];
+    const teams = topts.map(([v, label]) => ({ label, on: t === v, cls: t === v ? 'is-on' : '', pick: () => this.setState({ team: v }) }));
+    const o = this.state.open;
+    const cur = o >= 0 ? all[o] : all[0];
+    const p = this.state.photo;
+    const shown = 10;
+    const thumbs = [];
+    for (let k = 0; k < shown; k++) {
+      thumbs.push({ n: k + 1, tone: tones[(o + k) % 6], cls: k === p ? 'is-on' : '', pick: () => this.setState({ photo: k }) });
+    }
+    return {
+      albumCount: albums.length + ' albums',
+      teams, albums,
+      lbOpen: o >= 0,
+      lb: { team: cur.team, title: cur.title, date: cur.date, result: cur.result, count: cur.count, n: p + 1, cls: tones[(o + p) % 6], hasImg: !!cur.img && p === 0, noImg: !(cur.img && p === 0), realCls: cur.img && p === 0 ? 'real' : '', img: cur.img || '', alt: cur.alt || '' },
+      thumbs,
+      openPotw: () => this.setState({ open: 0, photo: 0 }),
+      closeLb: () => this.setState({ open: -1 }),
+      prev: () => this.setState({ photo: (p + shown - 1) % shown }),
+      next: () => this.setState({ photo: (p + 1) % shown })
+    };
+  }
+}
+</script>
+</body>
+</html>

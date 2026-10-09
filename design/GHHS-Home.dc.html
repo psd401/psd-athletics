@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gig Harbor Tides Athletics</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Big+Shoulders+Display:wght@700;800;900&amp;display=swap">
+<style>
+body{margin:0;background:#F2F6FB}
+a{color:#0457D1}a:hover{color:#022C66}
+.gh{--abyss:#011430;--navy:#022C66;--deep:#01204D;--sky:#69ABE0;--volt:#046DFF;--foam:#EAF3FC;--paper:#F2F6FB;--ink:#0B1A33;--muted:#4C5D77;--line:#D4DFEC;--live:#E5383B;font-family:"Barlow",system-ui,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+.gh *{box-sizing:border-box}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.disp{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.86;text-transform:uppercase;letter-spacing:-.005em}
+.cond{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.util{background:var(--abyss);color:#A9BDD8;font:500 13px/1 "Barlow",sans-serif}
+.util a{color:#D9E7F7;text-decoration:none}
+.util a:hover{color:#fff}
+.mast{background:var(--navy);position:relative;z-index:20}
+.mast nav{display:flex;gap:2px;flex-wrap:wrap}
+.mast nav a,.mast nav button{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 14px;border-radius:10px;border:0;background:transparent;color:#E4EEF9;text-decoration:none;font:600 15px/1 "Barlow",sans-serif;cursor:pointer}
+.mast nav a:hover,.mast nav button:hover,.mast nav button[aria-expanded="true"]{background:rgba(141,200,240,.16);color:#fff}
+.mega{position:absolute;left:0;right:0;top:100%;background:#fff;box-shadow:0 30px 60px rgba(1,20,48,.28);border-top:3px solid var(--sky)}
+.mega-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 320px;gap:40px;padding:36px 0 40px}
+.mega-grid a{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E6EDF5;color:var(--ink);text-decoration:none;font:600 16px/1.2 "Barlow",sans-serif}
+.mega-grid a:hover{color:var(--volt)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:12px;border:0;font:700 15px/1 "Barlow",sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-sky{background:var(--sky);color:var(--abyss)}
+.btn-sky:hover{background:#B5DCF6;color:var(--abyss)}
+.btn-line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.45)}
+.btn-line:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:#06408F;color:#fff}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost:hover{background:var(--foam);color:var(--ink)}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.ticker{background:#000E22;color:#fff;overflow:hidden}
+.ticker-track{display:flex;gap:44px;padding-left:28px;white-space:nowrap;animation:tick 52s linear infinite}
+.tk{display:inline-flex;align-items:center;gap:10px;font:500 15px/1 "Barlow",sans-serif;color:#C7D6EA}
+.tk b{color:#fff}
+.tk-tonight{background:#FFE7A3;color:#4A3300}
+.tk-final{background:#69ABE0;color:#011430}
+.tk-next{background:#fff;color:#011430}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-360px)}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+.waves{animation:drift 18s linear infinite}
+@media (prefers-reduced-motion:reduce){.ticker-track,.pulse,.waves{animation:none}}
+.hero{background:var(--abyss);color:#fff;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:48px;padding:88px 0 96px;position:relative}
+.count{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:560px}
+.count div{background:rgba(141,200,240,.1);border:1px solid rgba(141,200,240,.25);border-radius:16px;padding:16px 12px 12px;text-align:center}
+.count b{display:block;font:900 64px/0.9 "Big Shoulders Display",sans-serif;font-variant-numeric:tabular-nums}
+.count span{font:600 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--sky)}
+.glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.sec{padding:96px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font:700 14px/1 "Barlow",sans-serif;cursor:pointer}
+.chip:hover{border-color:#9DB2CC}
+.chip.is-on{background:var(--navy);border-color:var(--navy);color:#fff}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.game{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:16px;transition:transform .15s,box-shadow .15s}
+.game:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(2,44,102,.1)}
+.stamp{width:64px;height:68px;border-radius:14px;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.stamp.away{background:var(--foam);color:var(--navy)}
+.act{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none;font:600 13px/1 "Barlow",sans-serif}
+.act:hover{background:var(--foam);color:var(--ink)}
+.act svg{width:16px;height:16px}
+.results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.res{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.res-score{display:flex;justify-content:space-between;align-items:baseline;font:900 40px/1 "Big Shoulders Display",sans-serif}
+.form{display:flex;gap:6px}
+.form i{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font:700 13px/1 "Barlow Condensed",sans-serif;font-style:normal}
+.form .w{background:var(--navy);color:#fff}
+.form .l{background:#fff;color:var(--navy);box-shadow:inset 0 0 0 1.5px #9DB2CC}
+.teams{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.team{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-height:176px;padding:22px;border-radius:20px;background:var(--navy);color:#fff;text-decoration:none;overflow:hidden;transition:transform .15s}
+.team:hover{transform:translateY(-3px);color:#fff}
+.team:nth-child(3n+2){background:var(--deep)}
+.team:nth-child(4n){background:#0A3B80}
+.team .arrow{width:40px;height:40px;border-radius:50%;background:var(--sky);color:var(--abyss);display:grid;place-items:center}
+.story-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px}
+.photo{position:relative;border-radius:20px;overflow:hidden;background:var(--navy);display:flex;align-items:flex-end}
+.photo img.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.heroshot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32;pointer-events:none}
+.photo .ph{position:absolute;top:14px;left:14px;font:600 12px/1 "Barlow",sans-serif;color:#9FC2E6;background:rgba(1,20,48,.6);padding:6px 10px;border-radius:999px}
+.titles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(141,200,240,.22);border-radius:24px;overflow:hidden}
+.titles > div{background:var(--abyss);padding:32px;display:flex;flex-direction:column;gap:10px}
+.fan{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fan a{display:flex;flex-direction:column;gap:12px;padding:24px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--ink);text-decoration:none;min-height:164px}
+.fan a:hover{border-color:var(--volt);color:var(--ink)}
+.fan .ico{width:44px;height:44px;border-radius:12px;background:var(--foam);color:var(--navy);display:grid;place-items:center}
+.fan .ico svg{width:22px;height:22px}
+.sponsors{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.sponsors div{height:96px;border-radius:14px;border:1.5px dashed #B7C7DB;display:grid;place-items:center;color:#6A7C95;font:600 13px/1 "Barlow",sans-serif;background:#fff}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font:600 14px/1 "Barlow",sans-serif;color:#DCE9F7}
+.field input,.field select{height:52px;border-radius:12px;border:1.5px solid rgba(141,200,240,.4);background:rgba(255,255,255,.06);padding:0 16px;font:500 16px "Barlow",sans-serif;color:#fff}
+.foot{background:var(--abyss);color:#9FB3CE;padding:72px 0 40px}
+.foot a{color:#E2EDF9;text-decoration:none}
+.foot a:hover{color:#fff;text-decoration:underline}
+.form3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.alerts2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:center;position:relative}
+@media (max-width:1060px){
+.hero-grid,.story-grid,.form3,.alerts2{grid-template-columns:1fr}
+.games{grid-template-columns:1fr 1fr}
+.results,.teams,.fan{grid-template-columns:1fr 1fr}
+.titles{grid-template-columns:1fr 1fr}
+.sponsors{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mega-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+.wrap{padding:0 16px}
+.mast nav,.util-links{display:none}
+.games,.results,.teams,.fan,.titles{grid-template-columns:1fr}
+.count b{font-size:44px}
+.sec{padding:64px 0}
+.hero-grid{padding:48px 0 56px}
+.sponsors{grid-template-columns:1fr 1fr}
+.foot-grid{grid-template-columns:1fr !important}
+}
+</style>
+</helmet>
+<div class="gh">
+
+<div class="util">
+<div class="wrap" style="display: flex; align-items: center; gap: 20px; height: 40px">
+<a href="Main.dc.html" style="display: inline-flex; align-items: center; gap: 8px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+Peninsula Athletics</a>
+<span style="opacity: .4">|</span>
+<a href="PHS-Home.dc.html">Peninsula Seahawks</a>
+<div class="util-links" style="margin-left: auto; display: flex; gap: 20px; align-items: center">
+<a href="#tickets">Tickets</a><a href="#watch">Watch live</a><a href="#register">Register</a><a href="#store">Sideline Store</a>
+<button type="button" style="background: none; border: 0; color: #D9E7F7; font: 600 13px/1 Barlow, sans-serif; cursor: pointer; height: 40px">EN · ES</button>
+</div>
+</div>
+</div>
+
+<header class="mast">
+<div class="wrap" style="display: flex; align-items: center; gap: 24px; height: 88px">
+<a href="#top" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #fff">
+<img src="assets/logos/ghhs-gh-logo.png" alt="Gig Harbor GH logo" style="width: 64px; height: auto">
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span class="cond" style="font-size: 12px; color: #69ABE0; letter-spacing: .2em">Gig Harbor</span>
+<span class="disp" style="font-size: 40px; line-height: .9">Tides</span>
+</span>
+</a>
+<nav aria-label="Tides Athletics" style="margin-left: 16px">
+<button type="button" aria-expanded="{{menuOpen}}" onClick="{{toggleMenu}}">Teams
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>
+<a href="#week">Schedule</a>
+<a href="#results">Scores</a>
+<a href="#stories">News</a>
+<a href="GHHS-Photos.dc.html">Photos</a>
+<a href="#fan">Fan Zone</a>
+<a href="#tradition">Tradition</a>
+<a href="#forms">Forms</a>
+</nav>
+<a class="btn btn-sky" href="#alerts" style="margin-left: auto; height: 44px">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg>
+Follow a team</a>
+</div>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<div class="mega">
+<div class="wrap mega-grid">
+<div><div class="cond" style="font-size: 13px; color: #4C5D77; margin-bottom: 8px">Fall</div>
+<a href="GHHS-Football.dc.html">Football <span>→</span></a><a href="#gsoc">Girls Soccer <span>→</span></a><a href="#vb">Volleyball <span>→</span></a><a href="#ten">Boys Tennis <span>→</span></a><a href="#xc">Cross Country <span>→</span></a><a href="#swim">Girls Swim &amp; Dive <span>→</span></a><a href="#wp">Boys Water Polo <span>→</span></a></div>
+<div><div class="cond" style="font-size: 13px; color: #4C5D77; margin-bottom: 8px">Winter</div>
+<a href="#bb">Basketball <span>→</span></a><a href="#wr">Wrestling <span>→</span></a><a href="#bowl">Girls Bowling <span>→</span></a><a href="#dance">Dance <span>→</span></a><a href="#cheer">Cheer <span>→</span></a><a href="#bswim">Boys Swim &amp; Dive <span>→</span></a><a href="#flag">Girls Flag Football <span>→</span></a></div>
+<div><div class="cond" style="font-size: 13px; color: #4C5D77; margin-bottom: 8px">Spring</div>
+<a href="#base">Baseball <span>→</span></a><a href="#fp">Fastpitch <span>→</span></a><a href="#bsoc">Boys Soccer <span>→</span></a><a href="#tf">Track &amp; Field <span>→</span></a><a href="#golf">Golf <span>→</span></a><a href="#lax">Girls Lacrosse <span>→</span></a><a href="#gwp">Girls Water Polo <span>→</span></a><a href="#gten">Girls Tennis <span>→</span></a></div>
+<div style="background: #EAF3FC; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="cond" style="font-size: 13px; color: #022C66">Tonight at home</span>
+<span class="disp" style="font-size: 34px; color: #022C66">Girls Soccer vs Mount Tahoma</span>
+<span style="font: 600 15px/1.3 Barlow, sans-serif">7:30 PM · Varsity</span>
+<a class="btn btn-navy" href="GHHS-GameDay-Mobile.dc.html" style="height: 44px; border: 0; justify-content: center">Game-day info</a>
+</div>
+</div>
+</div>
+</sc-if>
+</header>
+
+<div class="ticker" role="region" aria-label="Scores">
+<div style="display: flex; align-items: center; height: 54px">
+<span class="cond" style="flex: none; height: 100%; display: flex; align-items: center; gap: 10px; padding: 0 22px 0 40px; background: #69ABE0; color: #011430; font-weight: 700; letter-spacing: .14em">Scoreboard</span>
+<div style="overflow: hidden; flex: 1">
+<div class="ticker-track">
+<sc-for list="{{ticker}}" as="t" hint-placeholder-count="6">
+<span class="tk"><span class="tag {{t.cls}}">{{t.state}}</span><b>{{t.lead}}</b>{{t.text}}</span>
+</sc-for>
+</div>
+</div>
+</div>
+</div>
+
+<section class="hero" id="top" aria-label="Next game">
+<img class="heroshot" src="assets/photos/ghhs-friday-night.jpg" alt="">
+<svg class="waves" viewBox="0 0 1800 700" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: 125%; height: 100%">
+<g fill="none" stroke="#69ABE0" stroke-width="1.4" opacity=".22">
+<path d="M0 420 C 90 390, 180 450, 270 420 S 450 390, 540 420 S 720 450, 810 420 S 990 390, 1080 420 S 1260 450, 1350 420 S 1530 390, 1620 420 S 1800 450, 1890 420"></path>
+<path d="M0 452 C 90 422, 180 482, 270 452 S 450 422, 540 452 S 720 482, 810 452 S 990 422, 1080 452 S 1260 482, 1350 452 S 1530 422, 1620 452 S 1800 482, 1890 452"></path>
+<path d="M0 484 C 90 454, 180 514, 270 484 S 450 454, 540 484 S 720 514, 810 484 S 990 454, 1080 484 S 1260 514, 1350 484 S 1530 454, 1620 484 S 1800 514, 1890 484"></path>
+<path d="M0 516 C 90 486, 180 546, 270 516 S 450 486, 540 516 S 720 546, 810 516 S 990 486, 1080 516 S 1260 546, 1350 516 S 1530 486, 1620 516 S 1800 546, 1890 516"></path>
+<path d="M0 548 C 90 518, 180 578, 270 548 S 450 518, 540 548 S 720 578, 810 548 S 990 518, 1080 548 S 1260 578, 1350 548 S 1530 518, 1620 548 S 1800 578, 1890 548"></path>
+<path d="M0 580 C 90 550, 180 610, 270 580 S 450 550, 540 580 S 720 610, 810 580 S 990 550, 1080 580 S 1260 610, 1350 580 S 1530 550, 1620 580 S 1800 610, 1890 580"></path>
+<path d="M0 612 C 90 582, 180 642, 270 612 S 450 582, 540 612 S 720 642, 810 612 S 990 582, 1080 612 S 1260 642, 1350 612 S 1530 582, 1620 612 S 1800 642, 1890 612"></path>
+<path d="M0 644 C 90 614, 180 674, 270 644 S 450 614, 540 644 S 720 674, 810 644 S 990 614, 1080 644 S 1260 674, 1350 644 S 1530 614, 1620 644 S 1800 674, 1890 644"></path>
+</g>
+</svg>
+<span class="disp" aria-hidden="true" style="position: absolute; right: -20px; top: 10px; font-size: 300px; color: transparent; -webkit-text-stroke: 2px rgba(141,200,240,.1); white-space: nowrap; pointer-events: none">Roll Tides</span>
+<div class="wrap hero-grid">
+<div style="display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+<span class="tag" style="background: #69ABE0; color: #011430">Varsity Football</span>
+<span class="cond" style="font-size: 14px; color: #A9C8E8">Game 6 · League · Away</span>
+</div>
+<h1 class="disp" style="margin: 0; font-size: 128px">Friday night<br>in Silverdale.</h1>
+<div style="display: flex; align-items: center; gap: 22px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span class="disp" style="font-size: 44px">Tides</span>
+<span class="cond" style="font-size: 13px; color: #69ABE0">3–2 · League 2–0</span>
+</div>
+<span class="disp" style="font-size: 32px; color: #69ABE0">at</span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span class="disp" style="font-size: 44px">Central Kitsap</span>
+<span class="cond" style="font-size: 13px; color: #69ABE0">Fri, Oct 9 · 7:00 PM kickoff</span>
+</div>
+</div>
+<div class="count" role="timer" aria-label="Time until kickoff">
+<div><b>{{cd.d}}</b><span>Days</span></div>
+<div><b>{{cd.h}}</b><span>Hours</span></div>
+<div><b>{{cd.m}}</b><span>Min</span></div>
+<div><b>{{cd.s}}</b><span>Sec</span></div>
+</div>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<a class="btn btn-sky" href="#directions">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+Directions to Central Kitsap HS</a>
+<a class="btn btn-line" href="#watch">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="m10 9 5 3-5 3z"></path></svg>
+Watch on NFHS Network</a>
+<a class="btn btn-line" href="GHHS-Football.dc.html">Team page</a>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div class="glass" style="padding: 28px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span class="tag" style="background: #FFE7A3; color: #4A3300">Tonight · at home</span>
+<span class="cond" style="font-size: 13px; color: #A9C8E8">7:30 PM</span>
+</div>
+<span class="disp" style="font-size: 52px">Girls Soccer<br>vs Mount Tahoma</span>
+<div style="display: flex; gap: 22px; flex-wrap: wrap; font: 500 15px/1.4 Barlow, sans-serif; color: #C7D6EA">
+<span><b style="color: #fff">5–2</b> overall</span>
+<span><b style="color: #fff">3–0</b> league · 1st</span>
+<span><b style="color: #fff">13–0</b> last three</span>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+<a class="btn btn-sky" href="#tickets" style="height: 46px">Tickets</a>
+<a class="btn btn-line" href="GHHS-GameDay-Mobile.dc.html" style="height: 46px">Game-day info</a>
+</div>
+</div>
+<div class="glass" style="padding: 22px 24px; display: flex; align-items: center; gap: 16px">
+<span style="width: 48px; height: 48px; border-radius: 12px; background: rgba(141,200,240,.18); display: grid; place-items: center; flex: none">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#69ABE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+<span style="font: 500 15px/1.45 Barlow, sans-serif; color: #C7D6EA"><b style="color: #fff">Volleyball has won four straight.</b> Swept Mount Tahoma last night, 3–0.</span>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="week">
+<div class="wrap">
+<div class="sec-head">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="cond" style="font-size: 14px; color: #4C5D77; letter-spacing: .16em">Oct 8 – Oct 16 · Synced from Arbiter</span>
+<h2 class="disp" style="margin: 0; font-size: 88px; color: #022C66">This week</h2>
+</div>
+<div class="chips" role="group" aria-label="Filter games">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" class="chip {{f.cls}}" aria-pressed="{{f.on}}" onClick="{{f.pick}}">{{f.label}}</button>
+</sc-for>
+</div>
+</div>
+<div class="games">
+<sc-for list="{{games}}" as="g" hint-placeholder-count="6">
+<article class="game">
+<div style="display: flex; gap: 16px; align-items: center">
+<div class="stamp {{g.stampCls}}"><span class="cond" style="font-size: 12px">{{g.dow}}</span><span class="disp" style="font-size: 34px">{{g.dd}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<span class="cond" style="font-size: 13px; color: #4C5D77">{{g.sport}} · {{g.level}}</span>
+<span style="font: 700 21px/1.15 Barlow, sans-serif">{{g.opp}}</span>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap">
+<span style="font: 700 17px/1 'Barlow Condensed', sans-serif; letter-spacing: .04em">{{g.time}} · {{g.where}}</span>
+<sc-if value="{{g.tonight}}" hint-placeholder-val="{{false}}"><span class="tag" style="background: #FFE7A3; color: #4A3300"><span class="dot pulse" style="background: #4A3300; width: 6px; height: 6px"></span>Tonight</span></sc-if>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; padding-top: 14px; border-top: 1px solid #E3EAF3">
+<sc-if value="{{g.home}}" hint-placeholder-val="{{true}}"><a class="act" href="#tickets">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 0 0-6V6H3z"></path></svg>Tickets</a></sc-if>
+<a class="act" href="#watch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="m10 9 5 3-5 3z"></path></svg>Watch</a>
+<a class="act" href="#directions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>Map</a>
+<a class="act" href="#cal" aria-label="Add to calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4M12 13v4M10 15h4"></path></svg></a>
+</div>
+</article>
+</sc-for>
+</div>
+<div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px">
+<a class="btn btn-navy" href="#full">Full Tides schedule</a>
+<a class="btn btn-ghost" href="#cal">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>
+Subscribe to the Tides calendar</a>
+</div>
+</div>
+</section>
+
+<section class="sec" id="results" style="padding-top: 0">
+<div class="wrap">
+<div class="sec-head">
+<h2 class="disp" style="margin: 0; font-size: 72px; color: #022C66">Latest finals</h2>
+<a href="#scores" style="font: 700 16px/1 Barlow, sans-serif; text-decoration: none">All scores →</a>
+</div>
+<div class="results">
+<sc-for list="{{results}}" as="r" hint-placeholder-count="8">
+<div class="res">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span class="cond" style="font-size: 12px; color: #4C5D77">{{r.sport}}</span>
+<span class="tag" style="background: #022C66; color: #fff; height: 22px">W</span>
+</div>
+<div class="res-score"><span style="color: #022C66">{{r.us}}</span><span style="font-size: 22px; color: #8597B0">–</span><span style="color: #8597B0">{{r.them}}</span></div>
+<span style="font: 600 15px/1.3 Barlow, sans-serif">{{r.opp}}</span>
+<span style="font: 500 13px/1 Barlow, sans-serif; color: #4C5D77">{{r.date}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section class="sec" style="padding-top: 0" aria-label="Season form">
+<div class="wrap form3">
+<a href="GHHS-Football.dc.html" style="background: #022C66; color: #fff; text-decoration: none; border-radius: 24px; padding: 30px; display: flex; flex-direction: column; gap: 18px">
+<span class="cond" style="font-size: 13px; color: #69ABE0">Football · Varsity</span>
+<div style="display: flex; align-items: baseline; gap: 14px"><span class="disp" style="font-size: 96px">3–2</span><span style="font: 600 15px/1.3 Barlow, sans-serif; color: #C7D6EA">League 2–0<br>2nd</span></div>
+<div class="form" aria-label="Last five: loss, win, loss, win, win"><i class="l">L</i><i class="w">W</i><i class="l">L</i><i class="w">W</i><i class="w">W</i></div>
+<span style="font: 500 14px/1.4 Barlow, sans-serif; color: #C7D6EA">Next: Fri @ Central Kitsap</span>
+</a>
+<a href="#vb" style="background: #fff; color: #0B1A33; text-decoration: none; border-radius: 24px; padding: 30px; display: flex; flex-direction: column; gap: 18px; border: 1px solid #D4DFEC">
+<span class="cond" style="font-size: 13px; color: #4C5D77">Volleyball · Varsity</span>
+<div style="display: flex; align-items: baseline; gap: 14px"><span class="disp" style="font-size: 96px; color: #022C66">6–3</span><span style="font: 600 15px/1.3 Barlow, sans-serif; color: #4C5D77">Four<br>straight</span></div>
+<div class="form" aria-label="Last four: all wins"><i class="w">W</i><i class="w">W</i><i class="w">W</i><i class="w">W</i></div>
+<span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Next: Tue @ Central Kitsap</span>
+</a>
+<a href="#gsoc" style="background: #fff; color: #0B1A33; text-decoration: none; border-radius: 24px; padding: 30px; display: flex; flex-direction: column; gap: 18px; border: 1px solid #D4DFEC">
+<span class="cond" style="font-size: 13px; color: #4C5D77">Girls Soccer · Varsity</span>
+<div style="display: flex; align-items: baseline; gap: 14px"><span class="disp" style="font-size: 96px; color: #022C66">5–2</span><span style="font: 600 15px/1.3 Barlow, sans-serif; color: #4C5D77">League 3–0<br>1st</span></div>
+<div class="form" aria-label="Last three: all wins"><i class="w">W</i><i class="w">W</i><i class="w">W</i></div>
+<span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Next: tonight vs Mount Tahoma</span>
+</a>
+</div>
+</section>
+
+<section class="sec" id="stories" style="background: #fff">
+<div class="wrap">
+<div class="sec-head">
+<h2 class="disp" style="margin: 0; font-size: 88px; color: #022C66">Stories</h2>
+<a href="#news" style="font: 700 16px/1 Barlow, sans-serif; text-decoration: none">All news →</a>
+</div>
+<div class="story-grid">
+<a class="photo" href="#story1" style="min-height: 520px; text-decoration: none; color: #fff">
+<img class="cover" src="assets/photos/ghhs-volleyball.jpg" alt="Tides volleyball players smiling together on the home court">
+<div style="position: relative; padding: 36px; display: flex; flex-direction: column; gap: 14px; background: #011430; width: 100%">
+<span class="cond" style="font-size: 13px; color: #69ABE0">Volleyball · Oct 7 · Recap</span>
+<span class="disp" style="font-size: 60px">Four straight: Tides sweep Mount Tahoma</span>
+<span style="font: 500 16px/1.5 Barlow, sans-serif; color: #C7D6EA">Gig Harbor is 6–3 after back-to-back home sweeps of Silas and Mount Tahoma.</span>
+</div>
+</a>
+<div style="display: flex; flex-direction: column; gap: 20px">
+<a href="#story2" style="display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 18px; text-decoration: none; color: #0B1A33; align-items: center">
+<span class="photo" style="height: 140px"><img class="cover" src="assets/photos/ghhs-friday-night.jpg" alt="Leading a cheer from the track at a home football game"></span>
+<span style="display: flex; flex-direction: column; gap: 8px"><span class="cond" style="font-size: 12px; color: #4C5D77">Football · Oct 2</span><span style="font: 700 22px/1.2 Barlow, sans-serif">Tides edge Lincoln 31–28 on the road to stay unbeaten in league</span></span>
+</a>
+<a href="#story3" style="display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 18px; text-decoration: none; color: #0B1A33; align-items: center">
+<span class="photo" style="height: 140px"><span class="ph" style="font-size: 10px">[Photo]</span></span>
+<span style="display: flex; flex-direction: column; gap: 8px"><span class="cond" style="font-size: 12px; color: #4C5D77">Girls Soccer · Oct 6</span><span style="font: 700 22px/1.2 Barlow, sans-serif">Thirteen goals, none allowed: girls soccer stays perfect in league</span></span>
+</a>
+<a href="#monthly" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 20px; background: #EAF3FC; text-decoration: none; color: #0B1A33">
+<span class="cond" style="font-size: 12px; color: #022C66">From the athletics office</span>
+<span style="font: 700 20px/1.25 Barlow, sans-serif">October athletics update</span>
+<span style="font: 500 15px/1.45 Barlow, sans-serif; color: #4C5D77">The monthly update, now a real page instead of a PDF. Read it on your phone in two minutes.</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="teams">
+<div class="wrap">
+<div class="sec-head">
+<h2 class="disp" style="margin: 0; font-size: 88px; color: #022C66">Teams</h2>
+<div class="chips" role="tablist" aria-label="Season">
+<sc-for list="{{seasons}}" as="s" hint-placeholder-count="3">
+<button type="button" role="tab" class="chip {{s.cls}}" aria-selected="{{s.on}}" onClick="{{s.pick}}">{{s.label}}</button>
+</sc-for>
+</div>
+</div>
+<div class="teams" role="tabpanel">
+<sc-for list="{{teams}}" as="tm" hint-placeholder-count="8">
+<a class="team" href="{{tm.href}}">
+<span class="disp" style="font-size: 40px">{{tm.name}}</span>
+<span style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px">
+<span style="font: 500 14px/1.35 Barlow, sans-serif; color: #B9D3EE">{{tm.meta}}</span>
+<span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+</span>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section class="sec hero" id="tradition" aria-label="Tradition">
+<img class="heroshot" src="assets/photos/ghhs-runners.jpg" alt="" style="opacity: .22; object-position: center 30%">
+<div class="wrap" style="position: relative; display: flex; flex-direction: column; gap: 40px">
+<div class="sec-head" style="margin: 0">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span class="cond" style="font-size: 14px; color: #69ABE0; letter-spacing: .18em">Home of the Tides since 1979</span>
+<h2 class="disp" style="margin: 0; font-size: 104px">Built on titles</h2>
+</div>
+<a class="btn btn-line" href="#hof">Records &amp; Hall of Fame</a>
+</div>
+<div class="titles">
+<div><span class="disp" style="font-size: 104px; color: #69ABE0">11</span><span style="font: 700 19px/1.25 Barlow, sans-serif">Track &amp; field state titles</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #A9C2DE">Including boys and girls 3A in 2018</span></div>
+<div><span class="disp" style="font-size: 104px; color: #69ABE0">2013</span><span style="font: 700 19px/1.25 Barlow, sans-serif">Nike Cross Nationals champions</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #A9C2DE">Boys cross country</span></div>
+<div><span class="disp" style="font-size: 104px; color: #69ABE0">3 in 4</span><span style="font: 700 19px/1.25 Barlow, sans-serif">Boys XC 4A state titles</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #A9C2DE">2011 · 2013 · 2014</span></div>
+<div><span class="disp" style="font-size: 104px; color: #69ABE0">3 straight</span><span style="font: 700 19px/1.25 Barlow, sans-serif">Girls XC 4A state titles</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #A9C2DE">2005 · 2006 · 2007</span></div>
+<div><span class="disp" style="font-size: 104px; color: #69ABE0">’97 ’17</span><span style="font: 700 19px/1.25 Barlow, sans-serif">Baseball state champions</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #A9C2DE">1997 · 2017</span></div>
+<div><span class="disp" style="font-size: 104px; color: #69ABE0">3 straight</span><span style="font: 700 19px/1.25 Barlow, sans-serif">Water polo state titles</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #A9C2DE">[Years to confirm]</span></div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="fan">
+<div class="wrap">
+<div class="sec-head">
+<h2 class="disp" style="margin: 0; font-size: 88px; color: #022C66">Fan Zone</h2>
+<p style="margin: 0; max-width: 420px; font: 400 17px/1.5 Barlow, sans-serif; color: #4C5D77">Everything a Tides family needs, one tap away. No digging through PDFs.</p>
+</div>
+<div class="fan">
+<a href="#tickets"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 0 0-6V6H3z"></path></svg></span><span style="font: 700 19px/1.2 Barlow, sans-serif">Tickets</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Digital tickets on GoFan</span></a>
+<a href="#watch"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="m10 9 5 3-5 3z"></path></svg></span><span style="font: 700 19px/1.2 Barlow, sans-serif">Watch live</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Home games on the NFHS Network</span></a>
+<a href="#store"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7z"></path><path d="M9 7a3 3 0 0 1 6 0"></path></svg></span><span style="font: 700 19px/1.2 Barlow, sans-serif">Sideline Store</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Official Tides gear</span></a>
+<a href="#register" id="forms"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"></path><path d="M14 3v5h5M9 14l2 2 4-4"></path></svg></span><span style="font: 700 19px/1.2 Barlow, sans-serif">Register to play</span><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Final Forms, physicals, ASB</span></a>
+</div>
+</div>
+</section>
+
+<section class="sec hero" id="alerts" style="padding: 80px 0">
+<div class="wrap alerts2">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span class="cond" style="font-size: 14px; color: #69ABE0; letter-spacing: .16em">Tide Pride alerts</span>
+<h2 class="disp" style="margin: 0; font-size: 80px">Know the moment a game moves.</h2>
+<p style="margin: 0; font: 400 17px/1.55 Barlow, sans-serif; color: #C7D6EA">Pick your teams. When Arbiter changes a time, field or date, you get one text. Final scores too, if you want them.</p>
+</div>
+<form style="display: flex; flex-direction: column; gap: 16px" aria-label="Follow Tides teams">
+<div class="field"><label for="gh-team">Teams</label>
+<select id="gh-team"><option>Girls Soccer · Varsity</option><option>Football · Varsity</option><option>Volleyball · Varsity</option><option>Every Tides game</option></select></div>
+<div class="field"><label for="gh-phone">Mobile number or email</label>
+<input id="gh-phone" type="text" placeholder="(253) 555-0123"></div>
+<button type="button" class="btn btn-sky" style="height: 52px">Start alerts</button>
+</form>
+</div>
+</section>
+
+<section class="sec" aria-label="Partners">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 28px">
+<div class="sec-head" style="margin: 0">
+<h2 class="disp" style="margin: 0; font-size: 56px; color: #022C66">Tide Pride partners</h2>
+<a href="#sponsor" style="font: 700 16px/1 Barlow, sans-serif; text-decoration: none">Become a sponsor →</a>
+</div>
+<div class="sponsors">
+<div>[Sponsor logo]</div><div>[Sponsor logo]</div><div>[Sponsor logo]</div><div>[Sponsor logo]</div><div>[Sponsor logo]</div><div>[Booster club]</div>
+</div>
+</div>
+</section>
+
+<footer class="foot">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 44px">
+<div class="foot-grid" style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span class="disp" style="font-size: 52px; color: #fff">Roll Tides</span>
+<span style="font: 400 15px/1.55 Barlow, sans-serif">Gig Harbor High School Athletics<br>5101 Rosedale St NW, Gig Harbor, WA 98335</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; font: 500 15px/1.4 Barlow, sans-serif">
+<span class="cond" style="font-size: 12px; color: #6F86A6">Athletics office</span>
+<span style="color: #fff">Carly Fries-Geldermann</span>
+<span>Athletic Secretary</span>
+<span>[Athletic director]</span>
+<a href="#coaches">Coach directory</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; font: 500 15px/1.4 Barlow, sans-serif">
+<span class="cond" style="font-size: 12px; color: #6F86A6">Families</span>
+<a href="#register">Final Forms registration</a>
+<a href="#physical">Physicals (MyWIAA)</a>
+<a href="#pay">Bookkeeper payments</a>
+<a href="#transport">Self-transportation form</a>
+<a href="#awards">Annual awards</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; font: 500 15px/1.4 Barlow, sans-serif">
+<span class="cond" style="font-size: 12px; color: #6F86A6">Follow</span>
+<a href="#instagram">Instagram @GHTidePride</a>
+<a href="#x">X @GHTidePride</a>
+<a href="#psl">Puget Sound League</a>
+<a href="Main.dc.html">Peninsula Athletics</a>
+</div>
+</div>
+<p style="margin: 0; padding-top: 28px; border-top: 1px solid #12305A; font: 400 13px/1.6 Barlow, sans-serif; color: #6F86A6">Peninsula School District does not discriminate in any programs or activities on the basis of sex, race, creed, religion, color, national origin, age, veteran or military status, sexual orientation, gender expression or identity, disability, or the use of a trained dog guide or service animal. <a href="#notice">Full notice</a></p>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { filter: 'all', season: 'fall', menuOpen: false };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.forceUpdate(), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  renderVals() {
+    const kick = Date.parse('2026-10-10T02:00:00Z');
+    let left = Math.max(0, kick - Date.now());
+    const pad = (n) => String(n).padStart(2, '0');
+    const d = Math.floor(left / 86400000); left -= d * 86400000;
+    const h = Math.floor(left / 3600000); left -= h * 3600000;
+    const m = Math.floor(left / 60000); left -= m * 60000;
+    const s = Math.floor(left / 1000);
+    const all = [
+      { dow: 'Thu', dd: '8', sport: 'Girls Soccer', level: 'Varsity', opp: 'vs Mount Tahoma', time: '7:30 PM', home: true, tonight: true },
+      { dow: 'Fri', dd: '9', sport: 'Football', level: 'Varsity', opp: '@ Central Kitsap', time: '7:00 PM', home: false },
+      { dow: 'Tue', dd: '13', sport: 'Girls Soccer', level: 'Varsity', opp: '@ Bellarmine Prep', time: '7:00 PM', home: false },
+      { dow: 'Tue', dd: '13', sport: 'Volleyball', level: 'Varsity', opp: '@ Central Kitsap', time: '7:15 PM', home: false },
+      { dow: 'Thu', dd: '15', sport: 'Girls Soccer', level: 'Varsity', opp: 'vs North Thurston', time: '3:30 PM', home: true },
+      { dow: 'Thu', dd: '15', sport: 'Volleyball', level: 'Varsity', opp: 'vs Bellarmine Prep', time: '7:15 PM', home: true },
+      { dow: 'Fri', dd: '16', sport: 'Football', level: 'Varsity', opp: 'vs Silas', time: '7:00 PM', home: true }
+    ];
+    const f = this.state.filter;
+    const games = all
+      .filter((g) => f === 'all' || (f === 'home' && g.home) || (f === 'away' && !g.home) || (f === 'fb' && g.sport === 'Football'))
+      .map((g) => ({ ...g, tonight: !!g.tonight, where: g.home ? 'Home' : 'Away', stampCls: g.home ? '' : 'away' }));
+    const fopts = [['all', 'All games'], ['home', 'Home'], ['away', 'Away'], ['fb', 'Football']];
+    const filters = fopts.map(([v, label]) => ({ label, on: f === v, cls: f === v ? 'is-on' : '', pick: () => this.setState({ filter: v }) }));
+    const teamsBy = {
+      fall: [
+        { name: 'Football', meta: '3–2 · League 2–0', href: 'GHHS-Football.dc.html' },
+        { name: 'Girls Soccer', meta: '5–2 · League 3–0', href: '#gsoc' },
+        { name: 'Volleyball', meta: '6–3 · Won 4 straight', href: '#vb' },
+        { name: 'Boys Tennis', meta: 'Varsity · JV', href: '#ten' },
+        { name: 'Cross Country', meta: 'Boys · Girls', href: '#xc' },
+        { name: 'Girls Swim & Dive', meta: 'Varsity', href: '#swim' },
+        { name: 'Boys Water Polo', meta: 'Varsity · JV', href: '#wp' }
+      ],
+      winter: [
+        { name: 'Basketball', meta: 'Boys · Girls', href: '#bb' },
+        { name: 'Wrestling', meta: 'Boys · Girls', href: '#wr' },
+        { name: 'Girls Bowling', meta: 'Varsity', href: '#bowl' },
+        { name: 'Dance', meta: 'Competition', href: '#dance' },
+        { name: 'Cheer', meta: 'Sideline · Competition', href: '#cheer' },
+        { name: 'Boys Swim & Dive', meta: 'Varsity', href: '#bswim' },
+        { name: 'Girls Flag Football', meta: 'Varsity', href: '#flag' }
+      ],
+      spring: [
+        { name: 'Baseball', meta: 'State champs 1997 · 2017', href: '#base' },
+        { name: 'Fastpitch', meta: 'Varsity · JV', href: '#fp' },
+        { name: 'Boys Soccer', meta: 'Varsity · JV', href: '#bsoc' },
+        { name: 'Track & Field', meta: '11 state titles', href: '#tf' },
+        { name: 'Golf', meta: 'Boys · Girls', href: '#golf' },
+        { name: 'Girls Lacrosse', meta: 'Varsity', href: '#lax' },
+        { name: 'Girls Water Polo', meta: 'Varsity', href: '#gwp' },
+        { name: 'Girls Tennis', meta: 'Varsity · JV', href: '#gten' }
+      ]
+    };
+    const sopts = [['fall', 'Fall'], ['winter', 'Winter'], ['spring', 'Spring']];
+    const seasons = sopts.map(([v, label]) => ({ label, on: this.state.season === v, cls: this.state.season === v ? 'is-on' : '', pick: () => this.setState({ season: v }) }));
+    const tick = [
+      { state: '7:30 PM', cls: 'tk-tonight', lead: 'Girls Soccer', text: 'vs Mount Tahoma, tonight' },
+      { state: 'Final', cls: 'tk-final', lead: 'Volleyball 3', text: 'Mount Tahoma 0' },
+      { state: 'Final', cls: 'tk-final', lead: 'Girls Soccer 2', text: '@ Capital 0' },
+      { state: 'Final', cls: 'tk-final', lead: 'Volleyball 3', text: 'Silas 0' },
+      { state: 'Final', cls: 'tk-final', lead: 'Football 31', text: '@ Lincoln 28' },
+      { state: 'Fri', cls: 'tk-next', lead: 'Football', text: '@ Central Kitsap, 7:00 PM' }
+    ];
+    return {
+      cd: { d: pad(d), h: pad(h), m: pad(m), s: pad(s) },
+      filters, games,
+      seasons, teams: teamsBy[this.state.season],
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
+      ticker: tick.concat(tick),
+      results: [
+        { sport: 'Volleyball', us: '3', them: '0', opp: 'vs Mount Tahoma', date: 'Wed, Oct 7' },
+        { sport: 'Girls Soccer', us: '2', them: '0', opp: '@ Capital', date: 'Tue, Oct 6' },
+        { sport: 'Volleyball', us: '3', them: '0', opp: 'vs Silas', date: 'Mon, Oct 5' },
+        { sport: 'Football', us: '31', them: '28', opp: '@ Lincoln', date: 'Fri, Oct 2' },
+        { sport: 'Girls Soccer', us: '3', them: '0', opp: 'vs Silas', date: 'Thu, Oct 1' },
+        { sport: 'Volleyball', us: '3', them: '1', opp: '@ Lincoln', date: 'Thu, Oct 1' },
+        { sport: 'Girls Soccer', us: '8', them: '0', opp: '@ Lakes', date: 'Tue, Sep 29' },
+        { sport: 'Volleyball', us: '3', them: '0', opp: '@ Peninsula', date: 'Tue, Sep 29' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

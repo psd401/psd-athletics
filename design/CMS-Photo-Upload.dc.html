@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Coach adds a game album</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.shots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.shot{display:flex;flex-direction:column;gap:8px}
+.shot .img{position:relative;aspect-ratio:4/3;border-radius:var(--radius-md);background:var(--surface-sunken);border:1px solid var(--line);overflow:hidden}
+.shot .img::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,var(--line) 0 1px,transparent 1px 18px);opacity:.7}
+.shot .img span{position:absolute;left:8px;top:8px;z-index:1;font:600 11px/1 var(--font-sans);color:var(--ink-subtle);background:var(--surface-raised);padding:4px 7px;border-radius:var(--radius-sm)}
+.shot.picked .img{outline:2px solid var(--flow);outline-offset:2px}
+.shot.held .img{outline:2px dashed var(--attention);outline-offset:2px}
+.shot.held .img::before{content:"";position:absolute;inset:0;background:var(--attention-soft);opacity:.55;z-index:1}
+.shot .meta{display:flex;align-items:center;justify-content:space-between;gap:6px;font:400 12px/16px var(--font-sans);color:var(--ink-muted)}
+@media (max-width:1100px){.shots{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.shots{grid-template-columns:1fr 1fr}}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="New album" live="Draft · not posted" meta="Girls Soccer · Varsity" user="HC"></x-import>
+<div class="studio-body">
+
+<div class="studio-nav">
+<x-import component-from-global-scope="Nexus.Sidebar" brand="Gig Harbor Tides" tagline="Girls Soccer · head coach" items="{{nav}}"></x-import>
+</div>
+
+<main class="studio-main">
+<div style="display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="studio-eyebrow">Photos and media</span>
+<h1 class="studio-title">@ Capital, Oct 6 <span style="color: var(--accent)">· draft album</span></h1>
+<p class="studio-sub">86 photos in. The agent picked 24 and held 2. You decide what posts.</p>
+</div>
+<div class="studio-row">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm" icon="upload">Add more photos</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm" icon="eye">Preview album</x-import>
+</div>
+</div>
+
+<div class="studio-row">
+<x-import component-from-global-scope="Nexus.ContextChip" name="Game" value="@ Capital · won 2–0" source="matched by photo time to Arbiter" icon="cal" confirmed="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Credit" value="[Team photographer]" source="from the upload" icon="user"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Photo release" value="Opt-outs checked" source="district rule" icon="shield" confirmed="{{yes}}"></x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.StatusStrip" items="{{strip}}" change="Agent picked 24 of 86 photos"></x-import>
+
+<x-import component-from-global-scope="Nexus.Banner" tone="attention" title="2 photos held for photo release" icon="shield">Jersey #12 is in both, and that athlete's family opted out of photo release. They won't post unless you remove them from the album or the family changes their choice in Final Forms.</x-import>
+
+<x-import component-from-global-scope="Nexus.Card" title="Agent's picks" subtitle="Sharp, varied moments · drag to reorder · click to swap one out">
+<div class="shots">
+<sc-for list="{{shots}}" as="s" hint-placeholder-count="12">
+<div class="shot {{s.cls}}">
+<div class="img"><span>{{s.label}}</span></div>
+<div class="meta"><span>{{s.time}}</span><span class="nx-badge {{s.badgeCls}}">{{s.badge}}</span></div>
+</div>
+</sc-for>
+</div>
+</x-import>
+
+<div class="studio-grid2">
+<x-import component-from-global-scope="Nexus.Card" title="Image descriptions" subtitle="Required for every photo · the agent drafts, you check">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Nexus.TextArea" label="Photo 7" default-value="Two Tides players in white jerseys celebrate a goal near the Capital bench." help="Screen readers read this aloud. Keep it to what is in the photo."></x-import>
+<div class="studio-row" style="justify-content: space-between"><span class="studio-sub">22 of 22 described</span><x-import component-from-global-scope="Nexus.Badge" tone="success">Ready</x-import></div>
+</div>
+</x-import>
+<x-import component-from-global-scope="Nexus.Card" title="Where it goes" subtitle="Coaches publish their own team's albums">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Nexus.Switch" label="Girls Soccer team page and Tides photo hub" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Post one photo to the team feed" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Email followers that a new album is up" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Suggest 6 photos for the official Tides Instagram"></x-import>
+</div>
+</x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm">Save draft</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon-end="arrow">Publish 22 photos</x-import>
+</x-import>
+</main>
+
+<aside class="studio-rail" aria-label="Photo agent">
+<div style="padding: 20px 20px 12px; border-bottom: 1px solid var(--line)">
+<x-import component-from-global-scope="Nexus.AgentStatusLine" state="done" now="Album ready for your review" sub="86 photos read · nothing posted"></x-import>
+</div>
+<div style="flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="Nexus.AgentMessage" author="You" time="7:52 PM">Here are the Capital photos from our team photographer. Pick the good ones.</x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Studio agent" agent="{{yes}}" time="7:53 PM">
+<x-import component-from-global-scope="Nexus.WorkSteps" steps="{{steps}}"></x-import>
+<p style="margin: 10px 0 0">I matched every photo to the Capital game by its timestamp and picked 24. I held 2 because of a photo-release opt-out. I haven't posted anything.</p>
+</x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Studio agent" agent="{{yes}}" time="7:53 PM">
+<p style="margin: 0 0 10px">One choice changes the caption: who should the album thank?</p>
+<x-import component-from-global-scope="Nexus.ChoiceChips" label="Album caption" value="Credit the photographer" options="{{cap}}"></x-import>
+</x-import>
+</div>
+<div style="padding: 16px 20px 20px; border-top: 1px solid var(--line)">
+<x-import component-from-global-scope="Nexus.Composer" placeholder="Swap a photo, write a caption, or ask for fewer…" hint="Faces are never identified. The agent only reads jersey numbers."></x-import>
+</div>
+</aside>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const times = ['7:04 PM', '7:09 PM', '7:12 PM', '7:18 PM', '7:22 PM', '7:31 PM', '7:36 PM', '7:44 PM', '7:51 PM', '7:58 PM', '8:06 PM', '8:12 PM'];
+    const shots = times.map((t, i) => {
+      const held = i === 3 || i === 9;
+      return {
+        label: 'Photo ' + (i + 1),
+        time: t,
+        cls: held ? 'held' : 'picked',
+        badge: held ? 'Held · #12' : (i === 6 ? 'Cover' : 'Picked'),
+        badgeCls: held ? 'nx-badge--attention' : (i === 6 ? 'nx-badge--success' : 'nx-badge--flow')
+      };
+    });
+    return {
+      theme: this.props.theme ?? 'nexus',
+      yes: true,
+      nav: [
+        { label: 'Today', icon: 'home', href: 'CMS-Today.dc.html' },
+        { label: 'Waiting for me', icon: 'clock', count: 1, urgent: true },
+        { section: 'Girls Soccer' },
+        { label: 'Team page', icon: 'doc' },
+        { label: 'Schedule', icon: 'cal', sub: 'Synced 6:41 PM' },
+        { label: 'Roster', icon: 'users' },
+        { label: 'Stories and recaps', icon: 'edit', href: 'CMS-Story-Editor.dc.html' },
+        { label: 'Photos and media', icon: 'folder', current: true, sub: '1 draft album' },
+        { label: 'Team partners', icon: 'link' }
+      ],
+      strip: ['86 photos uploaded', 'Location data removed from all 86', 'Image descriptions drafted for 22'],
+      shots,
+      trust: ['Draft until you publish', '2 photos held for opt-outs', 'location data removed'],
+      steps: [
+        { label: 'Matched 86 photos to Oct 6 @ Capital', state: 'done' },
+        { label: 'Removed location data from 86 files', state: 'done' },
+        { label: 'Set aside 31 blurry or near-duplicate shots', state: 'done' },
+        { label: 'Checked jersey numbers against 1 opt-out', state: 'done' },
+        { label: 'Drafted 22 image descriptions', state: 'done' }
+      ],
+      cap: ['Credit the photographer', 'Thank the fans who traveled', 'Let me write it']
+    };
+  }
+}
+</script>
+</body>
+</html>

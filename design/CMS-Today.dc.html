@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Studio today</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="Today" live="Arbiter synced 6:41 PM" meta="Gig Harbor High · 2026–27" user="HC"></x-import>
+<div class="studio-body">
+
+<div class="studio-nav">
+<x-import component-from-global-scope="Nexus.Sidebar" brand="Gig Harbor Tides" tagline="Girls Soccer · head coach" items="{{nav}}"></x-import>
+</div>
+
+<main class="studio-main">
+<div style="display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="studio-eyebrow">Thursday, October 8 · game day</span>
+<h1 class="studio-title">Tonight vs Mount Tahoma</h1>
+<p class="studio-sub">Girls Soccer · Varsity · 7:30 PM at home. Your team page and the Tides home page already show it.</p>
+</div>
+<div class="studio-row">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm" icon="eye">View team page</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm" icon="share">Share game card</x-import>
+</div>
+</div>
+
+<div class="studio-row">
+<x-import component-from-global-scope="Nexus.ContextChip" name="Team" value="Girls Soccer · Varsity, JV" source="from your coaching assignment" icon="users"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Publishes to" value="Team page and Tides home" source="district default" icon="link"></x-import>
+<x-import component-from-global-scope="Nexus.ContextChip" name="Names" value="First name, last initial" source="district rule" icon="shield" confirmed="{{yes}}"></x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.StatusStrip" items="{{strip}}" change="Agent added tonight's game card to your team page"></x-import>
+
+<div class="studio-grid2">
+<div class="nx-decision">
+<span class="nx-eyebrow">Stories · drafted 6:44 PM</span>
+<h3 class="nx-decision__title">Publish the Capital recap</h3>
+<p class="nx-decision__why">I wrote 148 words from Arbiter's final score (2–0) and your two practice notes. No athlete is named until you add names.</p>
+<div class="nx-decision__rec"><span class="nx-decision__rec-label">Your decision</span><span class="nx-decision__conf">Reaches<b>Team page · Tides home</b></span></div>
+<div class="nx-decision__actions">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" icon="edit">Open the draft</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary">Not now</x-import>
+</div>
+<span class="nx-decision__undo">Unpublish any time · nothing posted to social</span>
+</div>
+<div class="nx-decision nx-decision--needs">
+<span class="nx-eyebrow">Schedule · from Arbiter 6:41 PM</span>
+<h3 class="nx-decision__title">Confirm Thursday's new start time</h3>
+<p class="nx-decision__why">Arbiter moved the North Thurston game on Oct 15 from 7:00 PM to 3:30 PM. Families who follow the team will get one text when you confirm.</p>
+<div class="nx-decision__rec"><span class="nx-decision__rec-label">Needs you</span><span class="nx-decision__conf">Games changed<b>1</b></span></div>
+<div class="nx-decision__actions">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" icon="check">Confirm and notify</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary">See the change</x-import>
+</div>
+<span class="nx-decision__undo">If you wait: the site shows the new time with an Updated tag, but no text goes out</span>
+</div>
+</div>
+
+<div class="studio-grid2">
+<x-import component-from-global-scope="Nexus.Card" title="Coming up" subtitle="Varsity · synced from Arbiter">
+<div class="nx-list">
+<x-import component-from-global-scope="Nexus.ListRow" title="Tonight vs Mount Tahoma" subtitle="7:30 PM · Home · stream linked" icon="cal" tone="flow" end="Live card"></x-import>
+<x-import component-from-global-scope="Nexus.ListRow" title="@ Bellarmine Prep" subtitle="Tue, Oct 13 · 7:00 PM · Away" icon="bus" end="Directions set"></x-import>
+<x-import component-from-global-scope="Nexus.ListRow" title="vs North Thurston" subtitle="Thu, Oct 15 · 3:30 PM · Home" icon="clock" tone="attention" end="Time changed"></x-import>
+<x-import component-from-global-scope="Nexus.ListRow" title="@ Timberline" subtitle="Tue, Oct 20 · 7:00 PM · Away" icon="bus" end="Directions set"></x-import>
+</div>
+</x-import>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div class="studio-grid2" style="gap: 16px">
+<x-import component-from-global-scope="Nexus.Card">
+<x-import component-from-global-scope="Nexus.StatTile" label="Record" value="5–2" delta="League 3–0" delta-tone="flow" context="1st in league · as of Oct 6"></x-import>
+</x-import>
+<x-import component-from-global-scope="Nexus.Card">
+<x-import component-from-global-scope="Nexus.StatTile" label="Last three games" value="13–0" delta="3 shutouts" delta-tone="flow" context="Goals for and against · Sep 29 to Oct 6"></x-import>
+</x-import>
+</div>
+<x-import component-from-global-scope="Nexus.Card" title="Team page checklist" subtitle="What families see at athletics.psd401.net/ghh">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div class="studio-row" style="justify-content: space-between"><span>Schedule and results</span><x-import component-from-global-scope="Nexus.Badge" tone="success">Synced</x-import></div>
+<div class="studio-row" style="justify-content: space-between"><span>Roster</span><x-import component-from-global-scope="Nexus.Badge" tone="success">Published</x-import></div>
+<div class="studio-row" style="justify-content: space-between"><span>Coach bio and photo</span><x-import component-from-global-scope="Nexus.Badge" tone="warning">Missing</x-import></div>
+<div class="studio-row" style="justify-content: space-between"><span>Team photo</span><x-import component-from-global-scope="Nexus.Badge" tone="warning">Missing</x-import></div>
+<div class="studio-row" style="justify-content: space-between"><span>Team partners</span><x-import component-from-global-scope="Nexus.Badge" tone="info">Add logos</x-import></div>
+</div>
+</x-import>
+</div>
+</div>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon-end="arrow">Review the Capital recap</x-import>
+</x-import>
+</main>
+
+<aside class="studio-rail" aria-label="Your assistant">
+<div style="padding: 20px 20px 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px">
+<x-import component-from-global-scope="Nexus.AgentStatusLine" state="idle" now="Ready when you are" sub="Watching Arbiter for changes to your games"></x-import>
+</div>
+<div style="flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Studio agent" agent="{{yes}}" time="6:44 PM">
+<p style="margin: 0 0 10px">Tonight's game card is live on your team page. I drafted the Capital recap and found one schedule change. I have not published anything.</p>
+<x-import component-from-global-scope="Nexus.WorkSteps" steps="{{steps}}"></x-import>
+</x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="You" time="6:47 PM">Can you remind families that next Thursday is a 3:30 start?</x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Studio agent" agent="{{yes}}" time="6:47 PM">
+<p style="margin: 0 0 10px">I can add a note to the team page and send one text to followers once you confirm the new time. One choice changes the message:</p>
+<x-import component-from-global-scope="Nexus.ChoiceChips" label="When should the reminder go out?" value="Monday 8 AM" options="{{when}}"></x-import>
+</x-import>
+</div>
+<div style="padding: 16px 20px 20px; border-top: 1px solid var(--line)">
+<x-import component-from-global-scope="Nexus.Composer" placeholder="Ask for a recap, a schedule note, or a roster change…" hint="Nothing publishes until you approve it"></x-import>
+</div>
+</aside>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      yes: true,
+      nav: [
+        { label: 'Today', icon: 'home', current: true, href: 'CMS-Today.dc.html' },
+        { label: 'Waiting for me', icon: 'clock', count: 2, urgent: true },
+        { section: 'Girls Soccer' },
+        { label: 'Team page', icon: 'doc' },
+        { label: 'Schedule', icon: 'cal', sub: 'Synced 6:41 PM' },
+        { label: 'Roster', icon: 'users' },
+        { label: 'Stories and recaps', icon: 'edit', count: 1, href: 'CMS-Story-Editor.dc.html' },
+        { label: 'Photos and media', icon: 'folder', href: 'CMS-Photo-Upload.dc.html' },
+        { label: 'Team partners', icon: 'link' },
+        { section: 'Program' },
+        { label: 'Schedule sync', icon: 'cloud', href: 'CMS-Schedule-Sync.dc.html' },
+        { label: 'Agents and access', icon: 'agent', href: 'CMS-Agents.dc.html' },
+        { label: 'Settings', icon: 'gear' }
+      ],
+      strip: ['Arbiter synced 6:41 PM', 'Varsity and JV schedules current', 'NFHS stream linked for tonight'],
+      trust: ['Drafts only until you publish', 'roster names stay on your team page', 'nothing posted to social'],
+      steps: [
+        { label: 'Read the Girls Soccer schedule from Arbiter', state: 'done' },
+        { label: 'Added tonight’s game card to 2 pages', state: 'done' },
+        { label: 'Drafted the Capital recap, 148 words', state: 'done' },
+        { label: 'Waiting on you for 2 decisions', state: 'active' }
+      ],
+      when: ['Monday 8 AM', 'Right after I confirm', 'Let me write it']
+    };
+  }
+}
+</script>
+</body>
+</html>

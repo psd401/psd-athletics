@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AD media oversight</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+.mr-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:1100px){.mr-stats{grid-template-columns:1fr 1fr}}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="Photos and media" live="1 family report open" meta="Both schools · 2026–27" user="AD"></x-import>
+<div class="studio-body">
+
+<div class="studio-nav">
+<x-import component-from-global-scope="Nexus.Sidebar" brand="Peninsula Athletics" tagline="District athletics office" items="{{nav}}"></x-import>
+</div>
+
+<main class="studio-main">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="studio-eyebrow">One home for every team's pictures</span>
+<h1 class="studio-title">Photos and media</h1>
+<p class="studio-sub">Coaches post their own albums and feed posts. You see everything across both schools, and you can take anything down.</p>
+</div>
+
+<div class="mr-stats">
+<x-import component-from-global-scope="Nexus.Card"><x-import component-from-global-scope="Nexus.StatTile" label="Albums this week" value="9" delta="+4 vs last week" delta-tone="flow" context="Both schools"></x-import></x-import>
+<x-import component-from-global-scope="Nexus.Card"><x-import component-from-global-scope="Nexus.StatTile" label="Fall teams posting" value="11 of 15" delta="4 not yet" delta-tone="attention" context="7 Tides · 8 Seahawks teams"></x-import></x-import>
+<x-import component-from-global-scope="Nexus.Card"><x-import component-from-global-scope="Nexus.StatTile" label="Held for opt-outs" value="5" delta="caught before posting" delta-tone="flow" context="Jersey-number check"></x-import></x-import>
+<x-import component-from-global-scope="Nexus.Card"><x-import component-from-global-scope="Nexus.StatTile" label="Family reports" value="1" delta="open" delta-tone="attention" context="Hidden while you review"></x-import></x-import>
+</div>
+
+<div class="studio-grid2">
+<div class="nx-decision nx-decision--needs">
+<span class="nx-eyebrow">Family report · 6:58 PM</span>
+<h3 class="nx-decision__title">A parent asked to take down one photo</h3>
+<p class="nx-decision__why">From the Peninsula Volleyball album at Capital. The photo came down the moment it was reported. The coach has been told.</p>
+<div class="nx-decision__rec"><span class="nx-decision__rec-label">Your decision</span><span class="nx-decision__conf">Visible to the public<b>No</b></span></div>
+<div class="nx-decision__actions">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" icon="check">Keep it down</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary">Restore it</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="quiet">Hand to the coach</x-import>
+</div>
+<span class="nx-decision__undo">The family hears back either way · logged</span>
+</div>
+<div class="nx-decision">
+<span class="nx-eyebrow">Official channels · 7:55 PM</span>
+<h3 class="nx-decision__title">Post 6 photos to the official Tides Instagram</h3>
+<p class="nx-decision__why">The Girls Soccer coach suggested them from the Capital album. Same photos and alt text as the site; the caption links back to the album.</p>
+<div class="nx-decision__rec"><span class="nx-decision__rec-label">Recommended</span><span class="nx-decision__conf">Account<b>@GHTidePride</b></span></div>
+<div class="nx-decision__actions">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" icon="eye">Review the 6</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="secondary">Not this one</x-import>
+</div>
+<span class="nx-decision__undo">Only athletic directors post to school accounts</span>
+</div>
+</div>
+
+<x-import component-from-global-scope="Nexus.Card" title="Team social accounts" subtitle="Unofficial accounts teams started on their own · example rows until the real inventory is in">
+<x-import component-from-global-scope="Nexus.DataTable" columns="{{acctCols}}" rows="{{accts}}" caption="Team social accounts and their wind-down plan"></x-import>
+</x-import>
+
+<div class="studio-grid2">
+<x-import component-from-global-scope="Nexus.Card" title="Today" subtitle="Media activity across both schools">
+<x-import component-from-global-scope="Nexus.ActivityTimeline" events="{{events}}"></x-import>
+</x-import>
+<x-import component-from-global-scope="Nexus.Card" title="Media rules" subtitle="Apply to every team at both schools">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Nexus.Switch" label="Coaches publish albums without review" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Hold photos that show an opted-out jersey number" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Hide a photo the moment a family reports it" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Accept parent-submitted photos, held for the coach" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Allow likes and comments on the team feed"></x-import>
+</div>
+</x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm">Export media log</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon-end="arrow">Review the family report</x-import>
+</x-import>
+</main>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      yes: true,
+      nav: [
+        { label: 'Today', icon: 'home', href: 'CMS-Today.dc.html' },
+        { label: 'Waiting for me', icon: 'clock', count: 2, urgent: true },
+        { section: 'Schools' },
+        { label: 'Gig Harbor Tides', icon: 'users', sub: '7 fall teams' },
+        { label: 'Peninsula Seahawks', icon: 'users', sub: '8 fall teams' },
+        { section: 'Program' },
+        { label: 'Photos and media', icon: 'folder', current: true, sub: '1 report' },
+        { label: 'Schedule sync', icon: 'cloud', href: 'CMS-Schedule-Sync.dc.html' },
+        { label: 'People and roles', icon: 'users', href: 'CMS-People-Roles.dc.html' },
+        { label: 'Agents and access', icon: 'agent', href: 'CMS-Agents.dc.html' },
+        { label: 'Settings', icon: 'gear' }
+      ],
+      acctCols: [
+        { key: 'team', label: 'Team' },
+        { key: 'acct', label: 'Account' },
+        { key: 'status', label: 'Status' },
+        { key: 'plan', label: 'Plan' }
+      ],
+      accts: [
+        { id: 1, team: 'Tides Girls Soccer', acct: '[Instagram handle]', status: 'Active', plan: 'Bio links to the team feed now; archive after the season' },
+        { id: 2, team: 'Tides Volleyball', acct: '[Instagram handle]', status: 'Active', plan: 'Coach posts on the site first; account stays read-only' },
+        { id: 3, team: 'Seahawks Football', acct: '[Instagram handle]', status: 'Quiet since Sep', plan: 'Archive; point followers to the Hawks feed' },
+        { id: 4, team: 'Seahawks Cross Country', acct: '[Instagram handle]', status: 'Unknown owner', plan: 'Find the owner, then archive' }
+      ],
+      events: [
+        { time: '7:55 PM', what: 'Suggested 6 photos for @GHTidePride', who: 'Tides Girls Soccer', needsYou: true },
+        { time: '7:53 PM', what: 'Drafted the Capital album, 2 held', who: 'Tides Girls Soccer' },
+        { time: '6:58 PM', what: 'Family report, photo hidden', who: 'Seahawks Volleyball', needsYou: true },
+        { time: '4:10 PM', what: 'Posted a preview to the team feed', who: 'Seahawks Football' }
+      ],
+      trust: ['Coaches are responsible for their posts', 'reported photos hide right away', 'every takedown is logged']
+    };
+  }
+}
+</script>
+</body>
+</html>

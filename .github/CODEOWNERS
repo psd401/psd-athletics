@@ -1,0 +1,8 @@
+# Agent configuration and CI are code: changes need owner review
+# (psd-dev-standards standards/02 "Hygiene" and standards/04 rule 13).
+/.github/       @krishagel
+/.claude/       @krishagel
+/.mcp.json      @krishagel
+/CLAUDE.md      @krishagel
+/AGENTS.md      @krishagel
+/vendor/nexus/  @krishagel
