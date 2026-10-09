@@ -12,8 +12,8 @@
     {
       "idx": 1,
       "version": "7",
-      "when": 1791525809951,
-      "tag": "0001_roster_publish_and_directory_opt_out",
+      "when": 1791550106049,
+      "tag": "0001_roster_publish",
       "breakpoints": true
     }
   ]

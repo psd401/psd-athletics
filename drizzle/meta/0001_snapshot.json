@@ -1,5 +1,5 @@
 {
-  "id": "af7699ea-8078-483e-9c45-b9962342554a",
+  "id": "2677e8d2-26d2-4aa1-813c-58980b2a2776",
   "prevId": "92a4436e-a841-433e-88c6-7bc344b3446c",
   "version": "7",
   "dialect": "postgresql",
@@ -1963,13 +1963,6 @@
         },
         "photo_release_opt_out": {
           "name": "photo_release_opt_out",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "directory_opt_out": {
-          "name": "directory_opt_out",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
