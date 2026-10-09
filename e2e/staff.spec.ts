@@ -6,7 +6,7 @@ test.describe("coaches and staff", () => {
   test("shows the office and every sport's coach card, and passes axe", async ({ page }) => {
     await page.goto("/phs/staff");
     await expect(page).toHaveTitle("Coaches & staff · Seahawks Athletics");
-    await expect(page.locator('a[aria-current="page"]')).toHaveText("Coaches");
+    await expect(page.locator('header a[aria-current="page"]')).toHaveText("Coaches");
     await expect(page.getByRole("heading", { name: "Ross Filkins" })).toBeVisible();
     // No office or coach email addresses or phone numbers on the page (DECISIONS 65).
     await expect(page.locator('a[href^="mailto:"], a[href^="tel:"]')).toHaveCount(0);

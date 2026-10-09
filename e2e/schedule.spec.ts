@@ -7,7 +7,7 @@ test.describe("school schedule", () => {
     await page.goto("/phs/schedule");
     await expect(page).toHaveTitle("Schedule · Seahawks Athletics");
     // The masthead nav is hidden on phones, so check the markup rather than visibility.
-    await expect(page.locator('a[aria-current="page"]')).toHaveText("Schedule");
+    await expect(page.locator('header a[aria-current="page"]')).toHaveText("Schedule");
     await expect(page.getByText("27 of 27 games")).toBeVisible();
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);

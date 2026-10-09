@@ -51,7 +51,7 @@ test.describe("Gig Harbor home, desktop menu", () => {
 
   test("opens the Teams menu and closes it with Escape", async ({ page }) => {
     await page.goto("/ghh");
-    const teams = page.getByRole("button", { name: "Teams" });
+    const teams = page.getByRole("button", { name: "Teams", exact: true });
     await teams.click();
     await expect(teams).toHaveAttribute("aria-expanded", "true");
     await expect(page.getByRole("heading", { name: "Winter", level: 2 })).toBeVisible();
