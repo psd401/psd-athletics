@@ -101,3 +101,8 @@ export function formatTime(time: string): string {
   const hour = h % 12 === 0 ? 12 : h % 12;
   return `${hour}:${String(m).padStart(2, "0")} ${suffix}`;
 }
+
+/** How far the app's clock (possibly pinned by ATHLETICS_NOW) is from the real one, in ms. */
+export function clockOffsetMs(now: Date): number {
+  return now.getTime() - Date.now();
+}

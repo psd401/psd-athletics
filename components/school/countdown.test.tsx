@@ -1,0 +1,54 @@
+import { act, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { Countdown, remaining } from "./countdown";
+
+describe("remaining", () => {
+  it("splits the time left into days, hours, minutes and seconds", () => {
+    const start = Date.parse("2026-10-10T02:00:00Z");
+    expect(remaining(start, Date.parse("2026-10-09T02:00:00Z"))).toEqual({ started: false, d: 1, h: 0, m: 0, s: 0 });
+    expect(remaining(start, Date.parse("2026-10-09T23:58:30Z"))).toEqual({ started: false, d: 0, h: 2, m: 1, s: 30 });
+    expect(remaining(start, start)).toEqual({ started: true, d: 0, h: 0, m: 0, s: 0 });
+  });
+});
+
+describe("Countdown", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-10T01:59:58Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("ticks down and switches to Live at the start time", () => {
+    render(
+      <Countdown startsAt="2026-10-10T02:00:00Z" clockOffsetMs={0} initialNow={Date.parse("2026-10-10T01:59:58Z")} label="Time until kickoff" />,
+    );
+    const timer = screen.getByRole("timer", { name: "Time until kickoff" });
+    expect(timer).toHaveTextContent("00Days00Hours00Min02Sec");
+
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.getByRole("timer")).toHaveTextContent("01Sec");
+
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.queryByRole("timer")).not.toBeInTheDocument();
+    expect(screen.getByText("Live")).toBeInTheDocument();
+  });
+
+  it("applies the server clock offset", () => {
+    // The server's clock is a day behind the browser's.
+    render(
+      <Countdown startsAt="2026-10-10T02:00:00Z" clockOffsetMs={-86_400_000} initialNow={Date.parse("2026-10-09T01:59:58Z")} label="t" />,
+    );
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.getByRole("timer")).toHaveTextContent("01Days00Hours00Min01Sec");
+  });
+});

@@ -51,3 +51,11 @@ Choices made while building, newest last. Each entry says what was decided, why,
 30. **Afternoon games today are tagged "Today", evening games "Tonight"** (5 PM and later, or no listed time). The hero tag is Live/Tonight/Today when it applies, otherwise "Home" or "Next up".
 31. **Small layout changes from the comp:** the hero school names scale with the viewport (clamp to 10vw) so "Seahawks" fits its half; the hero clips the center slash; on phones each game's title row spans the full card width instead of the 72px time column.
 32. **Images in `public/` are served as-is** (`images.unoptimized`). They're already web-sized; on-the-fly resizing needs sharp and a hosting decision, revisited in Phase 5. Photos and logos are copies of `design/assets/` (credits in `design/assets/photos/CREDITS.md`).
+
+## 2026-10-08 — School home template (PLAN task 2.2)
+
+33. **`/ghh` and `/phs` are one route, `app/[school]`,** limited to those two slugs. Per-school words and images live in `lib/schools/content.ts` (copy from both comps); everything else comes from the database and the theme tokens. Peninsula's own layout (`PHS-Home.dc.html`) is task 2.5.
+34. **The hero headline is written from the game** ("Friday night at Central Kitsap."), since the comp's "in Silverdale" needs the away venue's city, which we don't have. The countdown flips to Live at the listed start time (SPEC §4); the browser's countdown carries the server's clock offset so a pinned demo clock stays consistent.
+35. **Team names aren't links yet.** The Teams menu and the season tiles open the Teams section at that season until team pages exist (2.4). The "Game-day info", "All scores", "Records & Hall of Fame", "Become a sponsor" and team-page buttons are left out for the same reason (DECISIONS 28). Fan Zone cards without a confirmed link say "Link coming soon".
+36. **Season form cards** show varsity teams with at least one final, the marquee sport first, then the most recently played, three at most. The record is the published one when the fixture has it, otherwise counted from the finals.
+37. **The Peninsula logo sits on a white tile in the masthead**, because its green fill disappears on the school green (docs/BRAND.md).

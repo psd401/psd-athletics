@@ -1,0 +1,1219 @@
+/* School home, shared by both schools (design/GHHS-Home.dc.html). Every
+   color is a semantic --ath-* token, so the same rules render the Gig Harbor
+   and Peninsula themes. */
+
+.page {
+  background: var(--ath-paper);
+  color: var(--ath-ink);
+}
+
+/* ---------------------------------------------------------- utility bar */
+
+.util {
+  background: var(--ath-ground);
+  color: var(--ath-on-ground-subtle);
+  font: 500 13px/1 var(--ath-font-text);
+}
+
+.utilIn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-height: var(--space-10);
+}
+
+[data-school] .util a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  color: var(--ath-on-ground-muted);
+  text-decoration: none;
+}
+
+[data-school] .util a:hover {
+  color: var(--ath-on-ground);
+}
+
+.util svg {
+  width: 14px;
+  height: 14px;
+}
+
+.utilSep {
+  opacity: 0.4;
+}
+
+.utilEnd {
+  margin-left: auto;
+}
+
+/* ---------------------------------------------------------- masthead */
+
+.mast {
+  background: var(--ath-brand);
+  position: relative;
+  z-index: var(--z-header);
+}
+
+.mastIn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: 88px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+[data-school] .brand {
+  color: var(--ath-on-ground);
+}
+
+.brandLogo {
+  width: 64px;
+  height: auto;
+}
+
+.brandTile {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: var(--ath-white);
+  display: grid;
+  place-items: center;
+}
+
+.brandTile img {
+  width: 46px;
+  height: auto;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brandSchool {
+  font-size: 12px;
+  color: var(--ath-accent);
+  letter-spacing: 0.2em;
+}
+
+.brandMascot {
+  font-size: 40px;
+  line-height: 0.9;
+}
+
+.nav {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  margin: 0 0 0 var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+[data-school] .nav a,
+.nav button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch-min);
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  border: 0;
+  background: transparent;
+  color: var(--ath-on-ground-muted);
+  text-decoration: none;
+  font: 600 15px/1 var(--ath-font-text);
+  cursor: pointer;
+}
+
+[data-school] .nav a:hover,
+.nav button:hover,
+.nav button[aria-expanded="true"] {
+  background: var(--ath-brand-deep);
+  color: var(--ath-on-ground);
+}
+
+.nav svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mega {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--ath-surface);
+  box-shadow: 0 30px 60px rgba(1, 20, 48, 0.28);
+  border-top: 3px solid var(--ath-accent);
+}
+
+.megaGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-10);
+  padding: 36px 0 var(--space-10);
+}
+
+.megaTitle {
+  margin: 0 0 var(--space-2);
+  font-size: 13px;
+  color: var(--ath-muted);
+}
+
+.megaList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-school] .megaList a {
+  display: flex;
+  justify-content: space-between;
+  min-height: var(--touch-min);
+  align-items: center;
+  border-bottom: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+  text-decoration: none;
+  font: 600 16px/1.2 var(--ath-font-text);
+}
+
+[data-school] .megaList a:hover {
+  color: var(--ath-link);
+}
+
+/* ---------------------------------------------------------- buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-window);
+  border: 0;
+  font: 700 15px/1 var(--ath-font-text);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+[data-school] .btnAccent {
+  background: var(--ath-accent);
+  color: var(--ath-on-accent);
+}
+
+[data-school] .btnAccent:hover {
+  background: var(--ath-tint);
+  color: var(--ath-ink);
+}
+
+[data-school] .btnLine {
+  background: transparent;
+  color: var(--ath-on-ground);
+  box-shadow: inset 0 0 0 1.5px var(--ath-on-ground-subtle);
+}
+
+[data-school] .btnLine:hover {
+  background: var(--ath-brand-deep);
+}
+
+[data-school] .btnBrand {
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+[data-school] .btnBrand:hover {
+  background: var(--ath-brand-hover);
+}
+
+.followBtn {
+  margin-left: auto;
+  min-height: var(--touch-min);
+}
+
+/* ---------------------------------------------------------- hero */
+
+.hero {
+  background: var(--ath-ground);
+  color: var(--ath-on-ground);
+  position: relative;
+  overflow: hidden;
+}
+
+.heroShot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.motif {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 125%;
+  height: 100%;
+  fill: none;
+  stroke: var(--ath-motif);
+  stroke-width: 1.4;
+  opacity: 0.22;
+  pointer-events: none;
+  animation: drift var(--duration-drift) linear infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-360px);
+  }
+}
+
+.heroGhost {
+  position: absolute;
+  right: calc(-1 * var(--space-5));
+  top: 10px;
+  font-size: 300px;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ath-accent);
+  opacity: 0.1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  padding: 88px 0 var(--space-24);
+  position: relative;
+}
+
+.heroMain {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.heroTags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.heroSportTag {
+  background: var(--ath-accent);
+  color: var(--ath-on-accent);
+}
+
+.heroMeta {
+  font-size: 14px;
+  color: var(--ath-on-ground-muted);
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: clamp(64px, 9vw, 128px);
+}
+
+.matchup {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sideName {
+  font-size: 44px;
+}
+
+.sideMeta {
+  font-size: 13px;
+  color: var(--ath-accent);
+}
+
+.at {
+  font-size: 32px;
+  color: var(--ath-accent);
+}
+
+.heroButtons {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.heroAside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.glass {
+  background: var(--ath-brand-deep);
+  border: 1px solid var(--ath-brand);
+  border-radius: var(--radius-xl);
+}
+
+.tonight {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tonightHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.tonightTime {
+  font-size: 13px;
+  color: var(--ath-on-ground-muted);
+}
+
+.tonightTitle {
+  margin: 0;
+  font-size: 52px;
+}
+
+.stats {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 500 15px/1.4 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.stats b {
+  color: var(--ath-on-ground);
+}
+
+.streak {
+  padding: 22px var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.streakIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-window);
+  background: var(--ath-brand);
+  color: var(--ath-accent);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.streakIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.streakText {
+  margin: 0;
+  font: 500 15px/1.45 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.streakText b {
+  color: var(--ath-on-ground);
+}
+
+/* ---------------------------------------------------------- sections */
+
+.sec {
+  padding: var(--space-24) 0;
+}
+
+.secTight {
+  padding-top: 0;
+}
+
+.secHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.secTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kicker {
+  font-size: 14px;
+  color: var(--ath-muted);
+  letter-spacing: var(--ath-tracking-label-wide);
+}
+
+.h2 {
+  margin: 0;
+  font-size: clamp(56px, 7vw, 88px);
+  color: var(--ath-brand);
+}
+
+.h2Small {
+  font-size: clamp(48px, 6vw, 72px);
+}
+
+.intro {
+  margin: 0;
+  max-width: 420px;
+  font: 400 17px/1.5 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.chips {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.chip {
+  min-height: var(--touch-min);
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--ath-line);
+  background: var(--ath-surface);
+  color: var(--ath-ink);
+  font: 700 14px/1 var(--ath-font-text);
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--ath-line-strong);
+}
+
+.chip[aria-pressed="true"],
+.chip[aria-selected="true"] {
+  background: var(--ath-brand);
+  border-color: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+/* ---------------------------------------------------------- week */
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game {
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  border-radius: var(--radius-sheet);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+
+.gameTop {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.stamp {
+  width: 64px;
+  height: 68px;
+  border-radius: 14px;
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.stampAway {
+  background: var(--ath-tint);
+  color: var(--ath-brand);
+}
+
+.stampDow {
+  font-size: 12px;
+}
+
+.stampDay {
+  font-size: 34px;
+}
+
+.gameWhat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.gameSport {
+  font-size: 13px;
+  color: var(--ath-muted);
+}
+
+.gameOpp {
+  margin: 0;
+  font: 700 21px/1.15 var(--ath-font-text);
+}
+
+.gameWhen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font: 700 17px/1 var(--ath-font-label);
+  letter-spacing: 0.04em;
+}
+
+.gameActions {
+  padding-top: 14px;
+  border-top: 1px solid var(--ath-line);
+  margin-top: auto;
+}
+
+.empty {
+  padding: var(--space-12);
+  text-align: center;
+  color: var(--ath-muted);
+  border: 1.5px dashed var(--ath-line);
+  border-radius: var(--radius-lg);
+}
+
+/* ---------------------------------------------------------- finals */
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.res {
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+.resHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resSport {
+  font-size: 12px;
+  color: var(--ath-muted);
+}
+
+.resTag {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  font: 700 12px/1 var(--ath-font-label);
+}
+
+.resW {
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+.resL,
+.resT {
+  background: var(--ath-neutral-bg);
+  color: var(--ath-neutral-ink);
+}
+
+.resScore {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0;
+  font-size: 40px;
+}
+
+.us {
+  color: var(--ath-brand);
+}
+
+.them,
+.dash {
+  color: var(--ath-score-muted);
+}
+
+.dash {
+  font-size: 22px;
+}
+
+.resOpp {
+  font: 600 15px/1.3 var(--ath-font-text);
+}
+
+.resDate {
+  font: 500 13px/1 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+/* ---------------------------------------------------------- season form */
+
+.form3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.formCard {
+  height: 100%;
+  border-radius: var(--radius-xl);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+}
+
+.formCardLead {
+  background: var(--ath-brand);
+  border-color: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+.formSport {
+  font-size: 13px;
+  color: var(--ath-muted);
+}
+
+.formCardLead .formSport {
+  color: var(--ath-accent);
+}
+
+.formRecordRow {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.formRecord {
+  margin: 0;
+  font-size: 96px;
+  color: var(--ath-brand);
+}
+
+.formCardLead .formRecord {
+  color: var(--ath-on-ground);
+}
+
+.formAside,
+.formNext {
+  margin: 0;
+  font: 600 15px/1.3 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.formNext {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.formCardLead .formAside,
+.formCardLead .formNext {
+  color: var(--ath-on-ground-muted);
+}
+
+.form {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.form li {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font: 700 13px/1 var(--ath-font-label);
+}
+
+.formW {
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+.formL,
+.formT {
+  background: var(--ath-surface);
+  color: var(--ath-brand);
+  box-shadow: inset 0 0 0 1.5px var(--ath-line-strong);
+}
+
+.formCardLead .formW {
+  background: var(--ath-accent);
+  color: var(--ath-on-accent);
+}
+
+/* ---------------------------------------------------------- teams */
+
+.teams {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+  height: 100%;
+  min-height: 176px;
+  padding: 22px;
+  border-radius: var(--radius-sheet);
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+.teams li:nth-child(3n + 2) .team {
+  background: var(--ath-brand-deep);
+}
+
+.teamName {
+  margin: 0;
+  font-size: 40px;
+}
+
+.teamMeta {
+  margin: 0;
+  font: 500 14px/1.35 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+/* ---------------------------------------------------------- tradition */
+
+.titles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--ath-brand);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.titles li {
+  background: var(--ath-ground);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.titleFigure {
+  margin: 0;
+  font-size: clamp(64px, 7vw, 104px);
+  color: var(--ath-accent);
+}
+
+.titleName {
+  margin: 0;
+  font: 700 19px/1.25 var(--ath-font-text);
+}
+
+.titleDetail {
+  margin: 0;
+  font: 500 14px/1.4 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.traditionIn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.traditionKicker {
+  font-size: 14px;
+  color: var(--ath-accent);
+  letter-spacing: 0.18em;
+}
+
+.traditionTitle {
+  margin: 0;
+  font-size: clamp(64px, 8vw, 104px);
+}
+
+/* ---------------------------------------------------------- fan zone */
+
+.fan {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fanItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-6);
+  border-radius: 18px;
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+  min-height: 164px;
+}
+
+[data-school] a.fanItem {
+  color: var(--ath-ink);
+  text-decoration: none;
+}
+
+a.fanItem:hover {
+  border-color: var(--ath-link);
+}
+
+.fanIco {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-window);
+  background: var(--ath-tint);
+  color: var(--ath-brand);
+  display: grid;
+  place-items: center;
+}
+
+.fanIco svg {
+  width: 22px;
+  height: 22px;
+}
+
+.fanTitle {
+  margin: 0;
+  font: 700 19px/1.2 var(--ath-font-text);
+}
+
+.fanText {
+  margin: 0;
+  font: 500 14px/1.4 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+/* ---------------------------------------------------------- alerts */
+
+.alertsSec {
+  padding: var(--space-20) 0;
+}
+
+.alerts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+  position: relative;
+}
+
+.alertsCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.alertsTitle {
+  margin: 0;
+  font-size: clamp(48px, 6vw, 80px);
+}
+
+.alertsText {
+  margin: 0;
+  font: 400 17px/1.55 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.alertForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field label {
+  font: 600 14px/1 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.field input,
+.field select {
+  height: 52px;
+  border-radius: var(--radius-window);
+  border: 1.5px solid var(--ath-on-ground-subtle);
+  background: var(--ath-brand-deep);
+  padding: 0 var(--space-4);
+  font: 500 16px var(--ath-font-text);
+  color: var(--ath-on-ground);
+}
+
+.formNote {
+  font: 400 13px/1.4 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.submit {
+  min-height: 52px;
+}
+
+.submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ---------------------------------------------------------- partners */
+
+.sponsors {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sponsors li {
+  height: 96px;
+  border-radius: 14px;
+  border: 1.5px dashed var(--ath-line-strong);
+  display: grid;
+  place-items: center;
+  color: var(--ath-muted);
+  font: 600 13px/1 var(--ath-font-text);
+  background: var(--ath-surface);
+}
+
+.partnersIn {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ---------------------------------------------------------- footer */
+
+.foot {
+  background: var(--ath-ground);
+  color: var(--ath-on-ground-subtle);
+  padding: 72px 0 var(--space-10);
+}
+
+[data-school] .foot a {
+  color: var(--ath-on-ground-muted);
+  text-decoration: none;
+}
+
+[data-school] .foot a:hover {
+  color: var(--ath-on-ground);
+  text-decoration: underline;
+}
+
+.footIn {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.footGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: var(--space-10);
+}
+
+.footCol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font: 500 15px/1.4 var(--ath-font-text);
+}
+
+.footSlogan {
+  font-size: 52px;
+  color: var(--ath-on-ground);
+}
+
+.footLabel {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ath-on-ground-subtle);
+}
+
+.footStrong {
+  color: var(--ath-on-ground);
+}
+
+.footList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notice {
+  margin: 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--ath-brand);
+  font: 400 13px/1.6 var(--ath-font-text);
+}
+
+/* ---------------------------------------------------------- responsive */
+
+@media (max-width: 1060px) {
+  .heroGrid,
+  .form3,
+  .alerts {
+    grid-template-columns: 1fr;
+  }
+
+  .games,
+  .results,
+  .teams,
+  .fan,
+  .titles,
+  .megaGrid,
+  .footGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sponsors {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .nav {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .utilEnd {
+    display: none;
+  }
+
+  .games,
+  .results,
+  .teams,
+  .fan,
+  .titles,
+  .footGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sec {
+    padding: var(--space-16) 0;
+  }
+
+  .secTight {
+    padding-top: 0;
+  }
+
+  .heroGrid {
+    padding: var(--space-12) 0 56px;
+  }
+
+  .sponsors {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .followLabel {
+    display: none;
+  }
+
+  .tonightTitle {
+    font-size: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motif {
+    animation: none;
+  }
+}
