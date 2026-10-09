@@ -1,0 +1,155 @@
+/* Families hub (SPEC §4), hub theme. */
+
+.head {
+  background: var(--hub-night);
+  color: var(--ath-on-ground);
+}
+
+.headIn {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.kicker {
+  font-size: 14px;
+  letter-spacing: var(--ath-tracking-label-wide);
+  color: var(--ghh-columbia);
+}
+
+.h1 {
+  margin: 0;
+  max-width: 900px;
+  font-size: clamp(56px, 8vw, 104px);
+}
+
+.lede {
+  margin: 0;
+  max-width: 760px;
+  font: 400 19px/1.55 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.body {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-24);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.step {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: var(--space-5);
+  padding: 28px;
+  border-radius: var(--radius-xl);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  scroll-margin-top: var(--space-4);
+}
+
+.num {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ath-brand);
+  color: var(--ath-white);
+  display: grid;
+  place-items: center;
+  font: 900 28px/1 var(--ath-font-display);
+}
+
+.num::before {
+  content: counter(step);
+}
+
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.h2 {
+  margin: 0;
+  font: 700 24px/1.2 var(--ath-font-text);
+}
+
+.how {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font: 400 17px/1.55 var(--ath-font-text);
+}
+
+.link {
+  align-self: flex-start;
+}
+
+.soon {
+  margin: 0;
+  font: 500 15px/1.4 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: sticky;
+  top: var(--space-4);
+}
+
+.card {
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ath-muted);
+}
+
+.contact {
+  margin: 0;
+  font: 500 15px/1.5 var(--ath-font-text);
+}
+
+@media (max-width: 1000px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .step {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-5);
+  }
+}

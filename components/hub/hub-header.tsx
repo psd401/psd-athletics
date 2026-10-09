@@ -19,16 +19,16 @@ export function HubHeader() {
         <nav aria-label="Main" className={styles.nav}>
           <Link href="/ghh">Gig Harbor</Link>
           <Link href="/phs">Peninsula</Link>
-          <a href="#week">Schedule</a>
-          <a href="#scores">Scores</a>
-          <a href="#families">Registration &amp; forms</a>
-          <a href="#fishbowl">Fish Bowl</a>
+          <Link href="/#week">Schedule</Link>
+          <Link href="/#scores">Scores</Link>
+          <Link href="/families">Registration &amp; forms</Link>
+          <Link href="/#fishbowl">Fish Bowl</Link>
         </nav>
         <div className={styles.headerEnd}>
-          <a className={`${styles.pill} ${styles.pillLight}`} href="#alerts" aria-label="Follow a team">
+          <Link className={`${styles.pill} ${styles.pillLight}`} href="/#alerts" aria-label="Follow a team">
             <BellIcon />
             <span className={styles.pillLabel}>Follow a team</span>
-          </a>
+          </Link>
         </div>
       </div>
     </header>

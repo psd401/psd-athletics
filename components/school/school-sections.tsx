@@ -11,7 +11,9 @@ import { BackIcon, BagIcon, BellIcon, FormIcon, TicketIcon, WatchIcon } from "..
 import styles from "./school.module.css";
 import { TeamsMenu, type MenuSeason } from "./teams-menu";
 
-export const FINAL_FORMS = "https://peninsula-wa.finalforms.com";
+import { FINAL_FORMS_URL } from "../../lib/families/steps";
+
+export const FINAL_FORMS = FINAL_FORMS_URL;
 
 // ------------------------------------------------------------ top of page
 
@@ -391,7 +393,7 @@ export function SchoolFooter({ school, content }: { school: SchoolView; content:
                 <a href={FINAL_FORMS}>Final Forms registration</a>
               </li>
               <li>
-                <Link href="/#families">Forms and steps for families</Link>
+                <Link href="/families">Forms and steps for families</Link>
               </li>
             </ul>
           </div>
