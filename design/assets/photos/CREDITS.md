@@ -1,6 +1,6 @@
 # Photo sources
 
-All photos were captured on October 8, 2026 from the schools' own public websites, for use in the district's athletics site designs. Confirm photo releases for any identifiable student before these appear on the live site.
+All photos were captured on October 8, 2026 from the schools' own public websites, for use in the district's athletics site designs. Students who take part in athletics waive photo privacy as part of participating, so these photos can be used on the live site (decided 2026-10-08, see `docs/DECISIONS.md`).
 
 | File | Source | Original description |
 |---|---|---|

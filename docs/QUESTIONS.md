@@ -22,7 +22,7 @@ Things the district needs to answer. When one is answered, write the answer here
 | # | Question | Who | Status |
 |---|---|---|---|
 | 11 | Who is the second human approver for Tier A PRs? The owner can't approve their own PRs. | Technology Services | Open |
-| 12 | Stay internal, or go public after the publication checklist (which brings free CodeQL and secret scanning)? Either way, confirm photo releases for the students in `design/assets/photos/` or replace those photos. | Technology Services, District AD | Open |
+| 12 | Stay internal, or go public after the publication checklist (which brings free CodeQL and secret scanning)? Student photos no longer block this (DECISIONS 12). | Technology Services | Open |
 | 13 | Is the school-themed public site (school colors and athletics typefaces as tokens layered on Nexus) an acceptable reading of standards/10, which otherwise asks for Nexus colors and type? | Technology Services | Open |
 | 14 | Official source files for the GH and P logos. The current ones were cut from the school websites. | Communications, schools | Open |
 | 15 | Is there a packaged Nexus for React 19? The vendored bundle targets React 18. | Technology Services | Open |
