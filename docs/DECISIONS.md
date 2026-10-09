@@ -20,7 +20,7 @@ Choices made while building, newest last. Each entry says what was decided, why,
 ## 2026-10-08 — Build plan (`docs/PLAN.md`)
 
 13. **Stack for the open slots:** Postgres + Drizzle ORM with committed SQL migrations; PGlite in process when `DATABASE_URL` is unset, so dev, Vitest and Playwright need no database server (`psd-ci` has none); S3 for photos; scheduled job handlers in `jobs/`; the official TypeScript MCP SDK. Reasons and costs in PLAN §2.
-14. **Better Auth instead of Auth.js** (CLAUDE.md said Auth.js). Auth.js is maintained by the Better Auth team since September 2025, is in security-patch mode, and v5 never left beta; Better Auth is stable and keeps sessions in our database. Pending sign-off (QUESTIONS 21).
+14. **Better Auth instead of Auth.js** (CLAUDE.md said Auth.js). Auth.js is maintained by the Better Auth team since September 2025, is in security-patch mode, and v5 never left beta; Better Auth is stable and keeps sessions in our database. Approved by Kris Hagel 2026-10-08 (QUESTIONS 21).
 15. **Missing data shows as missing.** Tickets, Watch and Directions buttons render only when the game has the link or venue; stories hide when there are none; alert forms are disabled until Phase 6; EN · ES and Search wait until they work. The comps show these filled in; the fixtures don't have the data (PLAN §4).
 16. **Public pages render per request in Phase 2** because Live/Tonight/Final depend on the time. Caching with revalidate-on-sync arrives with the sync in Phase 3.
 
@@ -59,3 +59,19 @@ Choices made while building, newest last. Each entry says what was decided, why,
 35. **Team names aren't links yet.** The Teams menu and the season tiles open the Teams section at that season until team pages exist (2.4). The "Game-day info", "All scores", "Records & Hall of Fame", "Become a sponsor" and team-page buttons are left out for the same reason (DECISIONS 28). Fan Zone cards without a confirmed link say "Link coming soon".
 36. **Season form cards** show varsity teams with at least one final, the marquee sport first, then the most recently played, three at most. The record is the published one when the fixture has it, otherwise counted from the finals.
 37. **The Peninsula logo sits on a white tile in the masthead**, because its green fill disappears on the school green (docs/BRAND.md).
+
+## 2026-10-08 — Answers from the plan review
+
+38. **The Google OAuth client is set up through `psd-gcp-infra`.** That repo keeps OAuth clients and consent screens out of Terraform (no public API) and documents them in its `RUNBOOK.md`, so the athletics client is a runbook entry there: an Internal consent screen (district accounts only), scopes `openid email profile`, redirect URIs `http://localhost:3000/api/auth/callback/google` and `https://athletics.psd401.net/api/auth/callback/google`. The client ID and secret go to the Keychain locally and Secrets Manager in the cloud (QUESTIONS 17).
+39. **Away venues come from Arbiter.** No hand entry; away games keep no Directions button until the sync brings venues (QUESTIONS 19).
+40. **PRs stay stacked** and work continues without waiting for each merge.
+46. **School-level ticket, stream, store and league links** (QUESTIONS 20). Verified on 2026-10-08: the GoFan API returns each school's name, mascot and address for its ID, the NFHS page titles name the school and city, and the schools' own athletics pages link to the stores and to ArbiterLive. Recorded in `lib/schools/content.ts` and used for the Fan Zone, utility bar, footers and hub cards. Per-game Tickets and Watch buttons still need a per-event link, because a school page isn't the game.
+
+| | Gig Harbor | Peninsula |
+|---|---|---|
+| GoFan | https://gofan.co/app/school/WA23221 | https://gofan.co/app/school/WA23302 |
+| NFHS Network | https://www.nfhsnetwork.com/schools/gig-harbor-high-school-gig-harbor-wa | https://www.nfhsnetwork.com/schools/peninsula-high-school-gig-harbor-wa |
+| Team store (BSN Sideline, as linked from the school sites) | http://sideline.bsnsports.com/schools/washington/gigharbor/gig-harbor-high-school | https://sideline.bsnsports.com/schools/washington/gigharbor/peninsula-high-school |
+| ArbiterLive | https://www.arbiterlive.com/School/8486 | https://www.arbiterlive.com/School/17802 |
+
+League: Puget Sound League, https://www.pugetsoundleague.org/.
