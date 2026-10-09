@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 
-import { can, type Actor, type Action, type Scope } from "./index";
+import { can, canAssign, type Actor, type Action, type Role, type Scope } from "./index";
 
 // Two schools, a few teams. Football and soccer at Gig Harbor, volleyball at Peninsula.
 const GH = "ghhs";
@@ -77,5 +77,28 @@ describe("can", () => {
 
   it("a grant for one school's team doesn't apply to a same-id team elsewhere", () => {
     expect(can(fbHead, "team.edit", { schoolId: PHS, teamId: "gh-fb" })).toBe(false);
+  });
+});
+
+describe("canAssign", () => {
+  it.each<[string, Actor, Role, string, boolean]>([
+    // Only the district AD names athletic directors (SPEC §2).
+    ["district AD names a school AD", districtAd, "school_ad", GH, true],
+    ["school AD can't name another AD", ghAd, "school_ad", GH, false],
+    ["nobody assigns the district AD role here", districtAd, "district_ad", GH, false],
+    // School ADs manage their own school's people.
+    ["school AD adds a secretary", ghAd, "secretary", GH, true],
+    ["school AD adds a head coach", ghAd, "head_coach", GH, true],
+    ["school AD can't add people at the other school", ghAd, "head_coach", PHS, false],
+    // Secretaries manage invitations for coaches and photographers.
+    ["secretary invites a head coach", ghSecretary, "head_coach", GH, true],
+    ["secretary invites a photographer", ghSecretary, "photographer", GH, true],
+    ["secretary can't add another secretary", ghSecretary, "secretary", GH, false],
+    ["secretary can't invite at the other school", ghSecretary, "assistant_coach", PHS, false],
+    // Coaches and agents of coaches don't hand out access.
+    ["head coach can't add an assistant", fbHead, "assistant_coach", GH, false],
+    ["someone with no role can't", nobody, "photographer", GH, false],
+  ])("%s", (_name, who, role, schoolId, expected) => {
+    expect(canAssign(who, role, schoolId)).toBe(expected);
   });
 });

@@ -37,7 +37,8 @@ test.describe("editing a team page in the Studio", () => {
     await page.goto("/studio/activity");
     const row = page.getByRole("listitem").filter({ hasText: note }).filter({ hasText: "published a coach's note" });
     await row.getByRole("button", { name: "Undo" }).click();
-    await expect(page.getByRole("listitem").filter({ hasText: "undid a change to a coach's note" }).first()).toBeVisible();
+    // Both projects sign in as the same coach, so match this run's note.
+    await expect(page.getByRole("listitem").filter({ hasText: note }).filter({ hasText: "undid a change to a coach's note" })).toBeVisible();
     await page.goto("/ghh/teams/girls-soccer");
     await expect(page.getByRole("complementary", { name: "Team details" })).not.toContainText(note);
   });

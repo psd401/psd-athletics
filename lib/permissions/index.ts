@@ -148,3 +148,25 @@ export async function loadActor(db: Db, personId: string, today: string, agentCo
 export function teamsFor(actor: Actor, action: Action, teams: { id: string; schoolId: string }[]): string[] {
   return teams.filter((t) => can(actor, action, { schoolId: t.schoolId, teamId: t.id })).map((t) => t.id);
 }
+
+/**
+ * Whether the actor can give someone `role` at a school, or end it (SPEC §2).
+ * The district AD names school ADs; school ADs add anyone else at their
+ * school; secretaries invite coaches and photographers. The district AD role
+ * itself isn't handed out in the Studio.
+ */
+export function canAssign(actor: Actor, role: Role, schoolId: string): boolean {
+  const scope: Scope = { schoolId, teamId: null };
+  switch (role) {
+    case "district_ad":
+      return false;
+    case "school_ad":
+      return actor.grants.some((g) => g.role === "district_ad");
+    case "secretary":
+      return can(actor, "people.manage", scope);
+    case "head_coach":
+    case "assistant_coach":
+    case "photographer":
+      return can(actor, "people.manage", scope) || can(actor, "people.invite", scope);
+  }
+}

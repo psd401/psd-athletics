@@ -153,3 +153,11 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 78. **Story bodies are plain text.** A blank line starts a new paragraph. No HTML or Markdown, so nothing a coach or an agent pastes can change the page.
 79. **Story addresses are `/{school}/stories/{slug}`,** with the slug made from the title and unique within the school (`-2`, `-3` for repeats). Renaming a story changes its address.
 80. **Stories appear on the school home (the latest four) and in the team page's News tab.** The home's Stories section stays hidden until something is published (DECISIONS 15).
+
+## 2026-10-09 — People and roles (Phase 4)
+
+81. **Who can give which role is `canAssign()` in `lib/permissions`.** The district AD names school ADs. A school AD adds secretaries, coaches and photographers at their school. A secretary invites coaches and photographers at their school ("Manages invitations", SPEC §2). Coaches don't hand out access. The district AD role isn't assigned in the Studio. Ending a role follows the same rule, and nobody can end their own access.
+82. **People are added by their psd401.net address.** A new address creates an unverified person row, and the role starts on the chosen date. Nothing is emailed: they sign in with Google. Better Auth is set to link that first Google sign-in to the row (`requireLocalEmailVerified: false`). This is safe because sign-up is off, so person rows come only from an AD or a Google sign-in, and Google sign-in still checks a verified psd401.net account three ways. Status reads "Invited" until they sign in, then "Active".
+83. **Ending a role that has started sets its end date to yesterday,** so access stops today and the history stays. A role that hasn't started yet is removed. Both are audited and can be undone for 30 minutes. Activity shows whose role changed ("Pat Q. · Head coach").
+84. **The access list exports as CSV** for the schools the person manages. Cells that start with `=`, `+`, `-` or `@` get a leading apostrophe so spreadsheets don't run them.
+85. **Not built yet from the People and roles design:** the coach onboarding checklist (it depends on bios, the Studio agent and sideline posting, which come later) and "Move what's already out there" (the migration agent, Phase 7). Assignments are entered by hand until the coaching-assignment source is known (QUESTIONS 5).
