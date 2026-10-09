@@ -110,6 +110,11 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 57. **"Know before you go" shows only for home games** and keeps the comp's bracketed placeholders (gates, parking, bag policy, accessible seating) until the athletics office supplies them. It's a native `<details>` accordion.
 58. **The text-me switches are shown disabled** with "Text alerts start later this season", like the other alert forms until Phase 6. The comp's search button and "More" tab are left out; the phone tab bar has Home, Schedule, Scores and Teams.
 
+## 2026-10-08 — Coaches and staff (PLAN task 2.7)
+
+59. **`/[school]/staff` lists the athletics office and one card per sport.** Head coaches come from active `head_coach` role assignments (started, not ended); names only, never contact details. With no assignments yet (QUESTIONS 5, 6), every card says "Head coach not listed yet" and links to its team page. Gig Harbor's office shows the comp's `[Athletic director]` placeholder until the name is confirmed.
+60. **"Message the coach" waits for the relay.** It has to deliver to the coach's district inbox without exposing the address, which needs the email provider (QUESTIONS 3). Until then the page says the athletics office can pass messages along. The masthead gains a Coaches link, and the school footer gains "Coaches & staff".
+
 ## 2026-10-08 — Review fixes
 
 63. **Roster entries need a publish step** (review finding on #16). `roster_entry` gains `published_at` (null until a coach publishes) in migration `0001`, and public pages show published entries only. There's no directory-information opt-out in athletics (Kris Hagel, 2026-10-09), so no opt-out column. Coach-supplied document and sponsor links render only if they're `https:` URLs.

@@ -200,3 +200,25 @@ export async function getTeamContent(db: Db, teamId: string): Promise<TeamConten
     sponsors,
   };
 }
+
+export interface HeadCoachView {
+  teamId: string;
+  name: string;
+}
+
+/**
+ * Current head coaches for a school's teams: active head_coach assignments
+ * (started, not ended) on `today`. Names only; never contact details.
+ */
+export async function listHeadCoaches(db: Db, { schoolId, today }: { schoolId: string; today: string }): Promise<HeadCoachView[]> {
+  const rows = await db
+    .select({ teamId: s.roleAssignment.teamId, name: s.person.name, endsOn: s.roleAssignment.endsOn })
+    .from(s.roleAssignment)
+    .innerJoin(s.team, eq(s.roleAssignment.teamId, s.team.id))
+    .innerJoin(s.person, eq(s.roleAssignment.personId, s.person.id))
+    .where(and(eq(s.team.schoolId, schoolId), eq(s.roleAssignment.role, "head_coach"), lte(s.roleAssignment.startsOn, today)))
+    .orderBy(asc(s.person.name));
+  return rows
+    .filter((r): r is typeof r & { teamId: string } => r.teamId !== null && (r.endsOn === null || r.endsOn >= today))
+    .map(({ teamId, name }) => ({ teamId, name }));
+}

@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { createMemoryDb, type Db } from "../db/client";
 import { seedFromFixtures } from "../db/seed";
 import * as s from "../db/schema";
-import { getGame, getTeamContent, listGames, listHonors, listSchools, listTeams } from "./queries";
+import { getGame, getTeamContent, listGames, listHeadCoaches, listHonors, listSchools, listTeams } from "./queries";
 
 let db: Db;
 
@@ -113,5 +113,27 @@ describe("getTeamContent", () => {
   it("is empty for a team with nothing published", async () => {
     const teams = await listTeams(db, { schoolId: "phs" });
     expect(await getTeamContent(db, teams[0]!.id)).toEqual({ roster: [], stories: [], albums: [], documents: [], coachNote: null, sponsors: [] });
+  });
+});
+
+describe("listHeadCoaches", () => {
+  it("returns active head coaches only, by name", async () => {
+    const teams = await listTeams(db, { schoolId: "phs" });
+    const football = teams.find((t) => t.sportSlug === "football" && t.level === "varsity")!;
+    const soccer = teams.find((t) => t.sportSlug === "girls-soccer" && t.level === "varsity")!;
+    await db.insert(s.person).values([
+      { id: "hc-1", name: "Current Coach", email: "hc-1@psd401.net", emailVerified: true },
+      { id: "hc-2", name: "Former Coach", email: "hc-2@psd401.net", emailVerified: true },
+      { id: "hc-3", name: "Future Coach", email: "hc-3@psd401.net", emailVerified: true },
+      { id: "ac-1", name: "Assistant Coach", email: "ac-1@psd401.net", emailVerified: true },
+    ]);
+    await db.insert(s.roleAssignment).values([
+      { personId: "hc-1", role: "head_coach", teamId: football.id, startsOn: "2026-08-01", source: "test" },
+      { personId: "hc-2", role: "head_coach", teamId: soccer.id, startsOn: "2025-08-01", endsOn: "2026-06-30", source: "test" },
+      { personId: "hc-3", role: "head_coach", teamId: soccer.id, startsOn: "2026-11-01", source: "test" },
+      { personId: "ac-1", role: "assistant_coach", teamId: soccer.id, startsOn: "2026-08-01", source: "test" },
+    ]);
+    expect(await listHeadCoaches(db, { schoolId: "phs", today: "2026-10-08" })).toEqual([{ teamId: football.id, name: "Current Coach" }]);
+    expect(await listHeadCoaches(db, { schoolId: "ghhs", today: "2026-10-08" })).toEqual([]);
   });
 });
