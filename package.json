@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun scripts/db-migrate.ts",
-    "db:seed": "bun scripts/seed.ts"
+    "db:seed": "bun scripts/seed.ts",
+    "test:e2e": "next build && playwright test"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.8",
@@ -24,6 +25,8 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.2.0",

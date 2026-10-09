@@ -10,7 +10,8 @@ export default defineConfig([
   {
     // Test-quality rules required by the PSD testing standard (05-testing.md):
     // no assertion-free tests, no committed .only, no committed .skip.
-    files: ["**/*.test.{ts,tsx}"],
+    // Applied to the Playwright specs too.
+    files: ["**/*.test.{ts,tsx}", "e2e/**/*.spec.ts"],
     plugins: { vitest },
     rules: {
       "vitest/expect-expect": "error",

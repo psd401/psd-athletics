@@ -19,7 +19,7 @@ The athletics platform for Peninsula School District: the district hub at `athle
 ## Stack
 
 - Next.js 16 (App Router) · React 19 · TypeScript (strict, `noUncheckedIndexedAccess`) — from `template-nextjs-app`
-- Vitest 4 + @testing-library/react (jsdom) · ESLint flat config · Playwright + axe for smoke and accessibility (add in Phase 1)
+- Vitest 4 + @testing-library/react (jsdom) · ESLint flat config · Playwright + axe for smoke and accessibility (`e2e/`; first run: `bunx playwright install chromium`)
 - Proposed in `docs/PLAN.md` §2 (Better Auth pending sign-off, QUESTIONS 21): Postgres + Drizzle ORM (SQL migrations in `drizzle/`; PGlite in process when `DATABASE_URL` is unset), S3 for photos (Phase 5), Better Auth with Google limited to `psd401.net`, scheduled job handlers in `jobs/` (Phase 3), the official TypeScript MCP SDK (Phase 7).
 - Hosting: AWS `us-west-2`, not yet confirmed. Don't provision anything or add IaC until it is.
 
@@ -32,6 +32,7 @@ bun run build        # production build — must pass before PR
 bun run test         # vitest run (CI gate; a zero-test repo fails psd-ci)
 bun run lint         # eslint . — includes test-quality rules
 bun run typecheck    # tsc --noEmit
+bun run test:e2e     # next build + Playwright + axe (desktop and 390px); not in psd-ci yet (QUESTIONS 18), paste output in PRs
 bun run db:generate  # drizzle-kit: write a new SQL migration in drizzle/ after editing lib/db/schema.ts
 bun run db:migrate   # apply migrations to DATABASE_URL (without it, the app uses in-memory PGlite and migrates itself)
 bun run db:seed      # load fixtures/ into DATABASE_URL (the in-memory dev database seeds itself)
