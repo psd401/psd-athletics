@@ -20,7 +20,7 @@ import { safeHttpsUrl } from "../../../../lib/security/url";
 import { levelLabel, opponentLine, timeLabel, type Level } from "../../../../lib/schedule/games";
 import { formatRecord, ordinal } from "../../../../lib/schedule/school";
 import { recordStats, teamRows, type ResultCell } from "../../../../lib/schedule/team";
-import { currentTime, formatShortDate } from "../../../../lib/schedule/time";
+import { currentTime, formatShortDate, pacificDate } from "../../../../lib/schedule/time";
 
 const termLabel = { fall: "Fall", winter: "Winter", spring: "Spring" } as const;
 const levelOrder = Object.keys(levelLabel) as Level[];
@@ -214,8 +214,10 @@ export default async function TeamPage({ params, searchParams }: { params: Param
           <ul className={t.list}>
             {teamContent.stories.map((s) => (
               <li key={s.id} className={t.card}>
-                <span className={`ath-label ${t.small}`}>{formatShortDate(s.publishedAt.toISOString().slice(0, 10))}</span>
-                <h3>{s.title}</h3>
+                <span className={`ath-label ${t.small}`}>{formatShortDate(pacificDate(s.publishedAt))}</span>
+                <h3>
+                  <Link href={`/${slug}/stories/${s.slug}`}>{s.title}</Link>
+                </h3>
                 {s.summary ? <p className={t.meta}>{s.summary}</p> : null}
               </li>
             ))}
