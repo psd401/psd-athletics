@@ -313,3 +313,109 @@ export function suggestGame(games: { id: string; startDate: string; startTime: s
   if (!ranked.length || (ranked[1] && ranked[1][1] === ranked[0]![1])) return null;
   return ranked[0]![0];
 }
+
+// ------------------------------------------------------------ Studio
+
+export interface StudioAlbum {
+  id: string;
+  title: string;
+  teamId: string;
+  gameId: string | null;
+  sport: string;
+  status: "draft" | "published" | "hidden";
+  updatedAt: Date;
+  /** Photos not removed. */
+  photoCount: number;
+  heldCount: number;
+  missingDescriptions: number;
+}
+
+/** Albums for the given teams, newest first, with what still needs the coach. */
+export async function listStudioAlbums(db: Db, teamIds: string[]): Promise<StudioAlbum[]> {
+  if (!teamIds.length) return [];
+  const albums = await db
+    .select({ album: s.album, sport: s.sport.name })
+    .from(s.album)
+    .innerJoin(s.team, eq(s.album.teamId, s.team.id))
+    .innerJoin(s.sport, eq(s.team.sportId, s.sport.id))
+    .where(inArray(s.album.teamId, teamIds))
+    .orderBy(desc(s.album.updatedAt));
+  if (!albums.length) return [];
+  const photos = await db
+    .select({ albumId: s.photo.albumId, held: s.photo.heldReason, alt: s.photo.altText })
+    .from(s.photo)
+    .where(and(inArray(s.photo.albumId, albums.map((a) => a.album.id)), isNull(s.photo.hiddenReason)));
+  return albums.map(({ album, sport }) => {
+    const mine = photos.filter((p) => p.albumId === album.id);
+    return {
+      id: album.id,
+      title: album.title,
+      teamId: album.teamId,
+      gameId: album.gameId,
+      sport,
+      status: album.status,
+      updatedAt: album.updatedAt,
+      photoCount: mine.length,
+      heldCount: mine.filter((p) => p.held).length,
+      missingDescriptions: mine.filter((p) => !p.alt?.trim()).length,
+    };
+  });
+}
+
+/** One album with every photo, held and removed ones included, for the Studio. */
+export async function getStudioAlbum(db: Db, albumId: string) {
+  const [row] = await db.select({ album: s.album, schoolId: s.team.schoolId }).from(s.album).innerJoin(s.team, eq(s.album.teamId, s.team.id)).where(eq(s.album.id, albumId));
+  if (!row) return null;
+  const photos = await db.select().from(s.photo).where(eq(s.photo.albumId, albumId)).orderBy(asc(s.photo.takenAt), asc(s.photo.createdAt));
+  return { album: row.album, schoolId: row.schoolId, photos };
+}
+
+export interface OpenReport {
+  id: string;
+  photoId: string;
+  albumId: string;
+  albumTitle: string;
+  teamId: string;
+  schoolId: string;
+  sport: string;
+  reason: string;
+  createdAt: Date;
+}
+
+/** Open family reports at the given schools, oldest first. The reporter's contact isn't included. */
+export async function listOpenReports(db: Db, schoolIds: string[]): Promise<OpenReport[]> {
+  if (!schoolIds.length) return [];
+  const rows = await db
+    .select({ report: s.photoReport, album: s.album, schoolId: s.team.schoolId, sport: s.sport.name })
+    .from(s.photoReport)
+    .innerJoin(s.photo, eq(s.photoReport.photoId, s.photo.id))
+    .innerJoin(s.album, eq(s.photo.albumId, s.album.id))
+    .innerJoin(s.team, eq(s.album.teamId, s.team.id))
+    .innerJoin(s.sport, eq(s.team.sportId, s.sport.id))
+    .where(and(eq(s.photoReport.status, "open"), inArray(s.team.schoolId, schoolIds)))
+    .orderBy(asc(s.photoReport.createdAt));
+  return rows.map(({ report, album, schoolId, sport }) => ({
+    id: report.id,
+    photoId: report.photoId,
+    albumId: album.id,
+    albumTitle: album.title,
+    teamId: album.teamId,
+    schoolId,
+    sport,
+    reason: report.reason,
+    createdAt: report.createdAt,
+  }));
+}
+
+/** Attach a game to an album (or clear it). Coaches and uploaders. */
+export async function setAlbumGame(ctx: Ctx, albumId: string, gameId: string | null) {
+  const { album: before, scope } = await loadAlbum(ctx.db, albumId);
+  need(ctx, ["photo.upload"], scope, "You can't edit this album.");
+  if (gameId) {
+    const [game] = await ctx.db.select({ teamId: s.game.teamId }).from(s.game).where(eq(s.game.id, gameId));
+    if (!game || game.teamId !== before.teamId) throw new ValidationError("Pick one of this team's games, or none.");
+  }
+  const [after] = await ctx.db.update(s.album).set({ gameId }).where(eq(s.album.id, albumId)).returning();
+  await recordChange(ctx.db, { actor: ctx.actor, verb: "update", objectType: "album", objectId: albumId, scope, before, after: after!, now: ctx.now });
+  return after!;
+}

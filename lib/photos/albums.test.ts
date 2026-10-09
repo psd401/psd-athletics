@@ -15,6 +15,9 @@ import {
   decideReport,
   describePhoto,
   getPublishedAlbum,
+  getStudioAlbum,
+  listOpenReports,
+  listStudioAlbums,
   listPublishedAlbums,
   photoForServing,
   publishAlbum,
@@ -180,5 +183,34 @@ describe("suggestGame", () => {
   it("suggests nothing without capture times, or outside any game", () => {
     expect(suggestGame(games, [null, null])).toBeNull();
     expect(suggestGame(games, [new Date("2026-10-04T19:00:00Z")])).toBeNull();
+  });
+});
+
+describe("Studio views", () => {
+  it("list a team's albums with counts of what still needs the coach", async () => {
+    const album = await createAlbum(as(photographer), { teamId: football, title: "Studio view" });
+    const [a, b] = await addPhotos(as(photographer), storage, album.id, [jpeg, jpeg]);
+    await describePhoto(as(photographer), a!.id, "Warmups.");
+    await removePhoto(as(photographer), b!.id);
+    const row = (await listStudioAlbums(db, [football])).find((x) => x.id === album.id);
+    expect(row).toMatchObject({ title: "Studio view", status: "draft", photoCount: 1, heldCount: 1, missingDescriptions: 0, sport: "Football" });
+    expect(await listStudioAlbums(db, [soccer])).toEqual([]);
+
+    const full = await getStudioAlbum(db, album.id);
+    expect(full?.photos.map((p) => [p.id, p.heldReason, p.hiddenReason])).toEqual([
+      [a!.id, "Waiting for the coach to review", null],
+      [b!.id, "Waiting for the coach to review", "Removed in the Studio"],
+    ]);
+  });
+
+  it("list open family reports for the schools asked for", async () => {
+    const album = await createAlbum(as(coach), { teamId: football, title: "Open report" });
+    const [p] = await addPhotos(as(coach), storage, album.id, [jpeg]);
+    await describePhoto(as(coach), p!.id, "Bench.");
+    await publishAlbum(as(coach), album.id);
+    const report = await reportPhoto(db, p!.id, { contact: "x@example.com", reason: "Please remove." }, now);
+    const open = await listOpenReports(db, ["ghhs"]);
+    expect(open.find((r) => r.id === report.id)).toMatchObject({ albumTitle: "Open report", sport: "Football", reason: "Please remove.", photoId: p!.id });
+    expect(await listOpenReports(db, ["phs"])).toEqual([]);
   });
 });
