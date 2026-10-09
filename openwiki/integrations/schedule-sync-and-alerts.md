@@ -18,8 +18,7 @@ openwiki:
 
 Arbiter is the source of truth. Access path is unconfirmed: the ArbiterLive team pages (entity IDs 8486 and 17802) block automated access, and which ID is which school is unknown (question #1). Ask for an API, partner feed or ICS export.
 
-<!-- openwiki: mermaid parse failed and this diagram was converted to a text fence so it does not break rendering. Fix the diagram source and restore the mermaid fence. Parser error: Heuristic: a semicolon inside a label breaks rendering; rephrase the label. -->
-```text
+```mermaid
 flowchart TD
   Poll["Poll every 15 min, 6 AM to 10 PM"] --> Diff[Diff vs Game rows]
   Diff --> Near{"Within 2 hours of game time?"}
@@ -29,7 +28,7 @@ flowchart TD
   Lvl -- no --> League{"League site shows same change?"}
   League -- yes --> Auto
   League -- no --> Hold
-  Auto --> Notify["Mark Updated; text followers once"]
+  Auto --> Notify["Mark Updated, text followers once"]
   Hold --> Review["AD/coach decides in Studio schedule-sync diff"]
 ```
 

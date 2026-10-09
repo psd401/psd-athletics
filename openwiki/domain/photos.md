@@ -14,21 +14,20 @@ openwiki:
 
 **Consult this page** for anything that ingests, holds, publishes or removes photos. Source: `docs/SPEC.md` §7. The district AD wants one home for every team's pictures so teams stop running their own social accounts. Not built yet (Phase 5; Studio screens `CMS-Photo-Upload`, `CMS-Sideline-Mobile`, `CMS-Media-Review`, public `GHHS-Photos` — see [routes](../product/surfaces-and-routes.md)).
 
-<!-- openwiki: mermaid parse failed and this diagram was converted to a text fence so it does not break rendering. Fix the diagram source and restore the mermaid fence. Parser error: Heuristic: a semicolon inside a label breaks rendering; rephrase the label. -->
-```text
+```mermaid
 flowchart TD
   U["Upload: desktop batch, phone camera roll, volunteer photographer"] --> T[Read capture timestamp]
-  T --> S[Strip EXIF + location]
-  S --> Z["Generate sizes thumb/card/full WebP/AVIF; keep original private"]
+  T --> S["Strip EXIF and location data"]
+  S --> Z["Generate sizes thumb, card, full in WebP and AVIF, keep original private"]
   Z --> A["Agent assist: match game by time, pick best set, draft alt text, jersey-number check"]
   A --> H{"Jersey matches opted-out roster entry?"}
-  H -- yes --> Hold[Hold photo, held_reason set]
+  H -- yes --> Hold["Hold photo, held_reason set"]
   H -- no --> C[Coach reviews every photo]
   Hold --> C
   C --> D{"Every photo has description?"}
   D -- no --> Block[Publishing blocked]
-  D -- yes --> P[Coach publishes album / feed post]
-  P --> R["Family 'Report this photo' hides immediately, notifies coach + AD, logs decision"]
+  D -- yes --> P["Coach publishes album or feed post"]
+  P --> R["Family Report this photo hides immediately, notifies coach and AD, logs decision"]
 ```
 
 Diagram: ordering from SPEC §7 ingest/agent/publishing lists. Volunteer uploads are held for the coach regardless.
