@@ -1,0 +1,12 @@
+# Paths OpenWiki must never read (gitignore syntax). See psd-dev-standards
+# standards/06, "What the wiki may read".
+
+# Seed data: staff names, emails and phone numbers from the school sites.
+fixtures/
+
+# Photos of students, and the design comps that show them.
+design/assets/photos/
+design/*.dc.html
+
+# Third-party copy; documented in vendor/nexus/README.md.
+vendor/
