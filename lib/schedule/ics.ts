@@ -5,7 +5,7 @@ import { levelLabel, opponentLine, startInstant, type GameView } from "./games";
 
 /** Escape TEXT values (RFC 5545 §3.3.11). */
 export function escapeText(value: string): string {
-  return value.replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  return value.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
 }
 
 /** Fold lines longer than 75 octets (RFC 5545 §3.1). */

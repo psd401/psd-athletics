@@ -56,7 +56,12 @@ describe("gameSummary", () => {
 
 describe("text rules", () => {
   it("escapes commas, semicolons, backslashes and newlines", () => {
-    expect(escapeText("a,b;c\\d\ne")).toBe("a\\,b\;c\\\\d\\ne");
+    expect(escapeText("a,b;c\\d\ne")).toBe(String.raw`a\,b\;c\\d\ne`);
+  });
+
+  it("escapes a semicolon in a summary", () => {
+    const ics = calendar([makeGame({ opponent: "Lincoln; Tacoma" })], { name: "x", siteUrl, stamp });
+    expect(ics).toContain(String.raw`SUMMARY:Gig Harbor Football vs Lincoln\; Tacoma`);
   });
 
   it("folds long lines at 75 octets with a leading space", () => {
