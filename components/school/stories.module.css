@@ -1,0 +1,110 @@
+/* Stories on the public sites (design/GHHS-Home.dc.html Stories, PHS-Home stories). */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+[data-school] .feature {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  min-height: 360px;
+  padding: 36px;
+  border-radius: var(--radius-xl);
+  background: var(--ath-ground);
+  color: var(--ath-on-ground);
+  text-decoration: none;
+}
+
+.featureKicker {
+  font-size: 13px;
+  color: var(--ath-accent);
+}
+
+.featureTitle {
+  margin: 0;
+  font-size: clamp(40px, 5vw, 60px);
+}
+
+.featureSummary {
+  margin: 0;
+  font: 500 16px/1.5 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-school] .item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border-radius: var(--radius-glass);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+  text-decoration: none;
+}
+
+.itemKicker {
+  font-size: 12px;
+  color: var(--ath-muted);
+}
+
+.itemTitle {
+  margin: 0;
+  font: 700 22px/1.2 var(--ath-font-text);
+}
+
+/* ---------------------------------------------------------- story page */
+
+.article {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-24);
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.crumb {
+  font: 600 15px/1 var(--ath-font-text);
+}
+
+.kicker {
+  font-size: 14px;
+  color: var(--ath-muted);
+}
+
+.h1 {
+  margin: 0;
+  font-size: clamp(48px, 7vw, 88px);
+  color: var(--ath-brand);
+}
+
+.summary {
+  margin: 0;
+  font: 500 21px/1.5 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.body p {
+  margin: 0 0 var(--space-4);
+  font: 400 19px/1.65 var(--ath-font-text);
+}
+
+@media (max-width: 1060px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

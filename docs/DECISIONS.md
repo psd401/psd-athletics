@@ -145,3 +145,11 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 73. **Studio screens are built with Nexus's CSS classes** (`nx-card`, `nx-decision`, `nx-row`…) through small server components (`components/studio/ui.tsx`) instead of the Nexus React bundle, which targets React 18 (QUESTIONS 15). The comps' agent rail waits for the agent work. Navigation lists only pages that exist.
 74. **Roster names must be "first name, last initial"** (`Alex R.`, `Mary Kate O.`). The editor refuses anything else, since that's the district's default for student names (SPEC §10). Roster entries start as drafts; "Publish" makes them public, and each publish is logged and can be undone. Jersey numbers are 1–3 digits and grades 9–12. Studio inputs and buttons get a 44px minimum height (Nexus's default is 40px).
 75. **Activity rows say what changed**: a story's title, a roster name, or the start of a note, cut to 60 characters, so people can tell their changes apart before undoing.
+
+## 2026-10-09 — Stories (Phase 4)
+
+76. **Stories are drafts until a publisher publishes them.** Head coaches and ADs publish; assistants draft (or publish when the head coach's publish rule allows it). Editing a published story needs publish rights, because it changes what families read. Unpublishing returns it to a draft. Drafts and unpublished stories are not found on the public site.
+77. **"Start from a final" fills in facts only:** the result, opponent, home or away, and date, from the schedule. It never adds athlete names or invents details (SPEC §8); the coach writes the rest.
+78. **Story bodies are plain text.** A blank line starts a new paragraph. No HTML or Markdown, so nothing a coach or an agent pastes can change the page.
+79. **Story addresses are `/{school}/stories/{slug}`,** with the slug made from the title and unique within the school (`-2`, `-3` for repeats). Renaming a story changes its address.
+80. **Stories appear on the school home (the latest four) and in the team page's News tab.** The home's Stories section stays hidden until something is published (DECISIONS 15).

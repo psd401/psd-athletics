@@ -23,6 +23,8 @@ import phone from "../../components/school/phone.module.css";
 import { MyTeams } from "../../components/school/my-teams";
 import { PhoneTabBar } from "../../components/school/phone-tabbar";
 import { QuickLinks } from "../../components/school/quick-links";
+import { StoriesSection } from "../../components/school/stories-section";
+import { listPublishedStories } from "../../lib/studio/stories";
 import { TeamsTabs, type SeasonTeams } from "../../components/school/teams-tabs";
 import { appDb } from "../../lib/data/db";
 import { listGames, listHonors, listSchools, listTeams } from "../../lib/data/queries";
@@ -72,10 +74,11 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
   const school = schools.find((s) => s.slug === slug);
   const other = schools.find((s) => s.slug !== slug);
   if (!school || !other) notFound();
-  const [allGames, honors, teams] = await Promise.all([
+  const [allGames, honors, teams, stories] = await Promise.all([
     listGames(db),
     listHonors(db, { schoolId: school.id }),
     listTeams(db, { schoolId: school.id }),
+    listPublishedStories(db, { schoolId: school.id, limit: 4 }),
   ]);
 
   const games = allGames.filter((g) => g.schoolId === school.id);
@@ -169,6 +172,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           {finals}
           <FishBowlChampions result={latestFishBowl(allGames)} schoolId={school.id} />
           {teamsTabs}
+          <StoriesSection slug={slug} stories={stories} />
           <Pillars schoolView={school} content={content} honors={honors} />
           <AthleticsOffice schoolView={school} content={content} />
           {alerts}
@@ -205,6 +209,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           sport={marquee ? { slug: marquee.sportSlug, name: marquee.sport } : null}
         />
         {finals}
+        <StoriesSection slug={slug} stories={stories} />
         <SeasonForm schoolSlug={slug} cards={seasonFormCards(games, now, { marqueeSport: marquee?.sportSlug ?? null, limit: 3 })} />
         {teamsTabs}
         <Tradition school={school} content={content} honors={honors} />

@@ -138,7 +138,7 @@ export async function listTeams(db: Db, { schoolId }: { schoolId?: string } = {}
 
 export interface TeamContent {
   roster: { id: string; displayName: string; jerseyNumber: string | null; position: string | null; grade: number | null }[];
-  stories: { id: string; title: string; summary: string | null; publishedAt: Date }[];
+  stories: { id: string; slug: string; title: string; summary: string | null; publishedAt: Date }[];
   albums: { id: string; title: string; publishedAt: Date }[];
   documents: { id: string; title: string; kind: string; url: string | null }[];
   coachNote: { body: string; publishedAt: Date } | null;
@@ -163,7 +163,7 @@ export async function getTeamContent(db: Db, teamId: string): Promise<TeamConten
       .where(and(eq(s.rosterEntry.teamId, teamId), isNotNull(s.rosterEntry.publishedAt)))
       .orderBy(asc(s.rosterEntry.displayName)),
     db
-      .select({ id: s.story.id, title: s.story.title, summary: s.story.summary, publishedAt: s.story.publishedAt })
+      .select({ id: s.story.id, slug: s.story.slug, title: s.story.title, summary: s.story.summary, publishedAt: s.story.publishedAt })
       .from(s.story)
       .where(and(eq(s.story.teamId, teamId), eq(s.story.status, "published")))
       .orderBy(desc(s.story.publishedAt)),

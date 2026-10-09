@@ -37,7 +37,7 @@ export default async function StudioLayout({ children }: { children: ReactNode }
 
   // Pages are added here as they're built.
   const items: NavItem[] = [{ href: "/studio", label: "Today" }];
-  if (ctx.myTeams.length > 0) items.push({ href: "/studio/teams", label: "Team pages" });
+  if (ctx.myTeams.length > 0) items.push({ href: "/studio/teams", label: "Team pages" }, { href: "/studio/stories", label: "Stories" });
   items.push({ href: "/studio/activity", label: "Activity" });
   void managesPeople;
 
