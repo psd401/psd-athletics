@@ -235,3 +235,9 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
      - eoc's toll-free registration describes PSD EOC staff emergency alerts, so carriers may filter athletics traffic on that number.
      - One opt-out list per number: someone who texts STOP to a game alert also stops eoc's alerts on that number.
    - **To revisit:** if either happens, a separate athletics number is a variable change plus its own registration.
+115. **Production AWS facts (checked 2026-10-09, read-only):**
+   - **Account:** 338414773271 (`psd401-prr-prod` SSO profile).
+   - **Texts:** psd-eoc's End User Messaging pool `pool-523bd2d550b44c329698f1400ba9032d` and its toll-free number are both ACTIVE. Opt-out list `psd-eoc-sms`.
+   - **Email:** SES production access is on (50,000 a day). `psd401.net` is already a verified identity.
+   - **CI access:** the GitHub OIDC provider already exists, so `create_github_oidc_provider` stays false.
+   - **DNS:** psd401.net is served by the district's on-prem DNS, not Route 53, so certificate, DKIM and site records go through the district DNS admins. `athletics.psd401.net` already has two A records (54.221.139.169, 18.233.124.95) that didn't answer HTTPS.

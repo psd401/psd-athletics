@@ -44,7 +44,12 @@ The org's reusable IaC workflow (phase 6 plan, `reusable-iac-checks.yml`) doesn'
 
    Then copy `envs/prod/backend.hcl.example` and `terraform.tfvars.example` and fill them in. They're git-ignored.
 2. Set `create_github_oidc_provider = true` only if the account has no GitHub OIDC provider yet.
-3. Plan and apply from CI (or a supervised session with scoped credentials, phase 6 decision 6.3). The first apply waits on the certificate. Add the `dns_records` output to psd401.net DNS: the site CNAME, the certificate validation and SES DKIM.
+3. Plan and apply in two steps, because psd401.net DNS is on the district's on-prem servers (`vmnocdcpridns01`/`vmnocdcdomcon01.peninsula.wednet.edu`), not Route 53. The `psd401.net` Route 53 zone in this account isn't authoritative, so records added there do nothing (checked 2026-10-09).
+   1. Apply everything except what waits on the certificate:
+      `terraform apply -target=module.athletics.aws_acm_certificate.site -target=module.athletics.aws_ecr_repository.app -target=module.athletics.aws_db_instance.main -target=module.athletics.aws_s3_bucket.photos -target=module.athletics.aws_sesv2_email_identity.domain`
+      Terraform pulls in dependencies.
+   2. The district DNS admins add the `dns_records` output: the certificate validation CNAME, three SES DKIM CNAMEs, and the site record. `athletics.psd401.net` already has A records (54.221.139.169, 18.233.124.95; nothing answered HTTPS on 2026-10-09). Replace them only once the new site is ready.
+   3. Run a full `terraform apply` once the certificate validates.
 4. Set the four secret values in Secrets Manager (`app_secret_names` output).
 5. Check whether the shared account already has SES production access (eoc sends email). If not, request it.
 6. For texts, set `sms_origination_identity_arn` to psd-eoc's pool ARN once its number is registered and live.
