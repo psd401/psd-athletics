@@ -73,3 +73,16 @@ Choices made while building, newest last. Each entry says what was decided, why,
 43. **The month view is a real table** (a caption, Sunday-first column headers, today marked `aria-current="date"`) instead of the comp's `role="grid"`, which would need full grid keyboard support. On phones the table scrolls sideways inside a focusable, labeled region (axe `scrollable-region-focusable`). Away games say "@" and home games "vs", so home and away aren't shown by color alone.
 44. **Every past game without a score shows "Result not reported"**, and finals say "Final · Win 37–8" in words. "Jump to today" moves to the first day from today onward.
 45. **The hub links to both school schedules** instead of the comp's single "Full schedule", since there isn't a combined schedule page.
+
+## 2026-10-08 — School links
+
+46. **School-level ticket, stream, store and league links** (QUESTIONS 20). Verified on 2026-10-08: the GoFan API returns each school's name, mascot and address for its ID, the NFHS page titles name the school and city, and the schools' own athletics pages link to the stores and to ArbiterLive. Recorded in `lib/schools/content.ts` and used for the Fan Zone, utility bar, footers and hub cards. Per-game Tickets and Watch buttons still need a per-event link, because a school page isn't the game.
+
+| | Gig Harbor | Peninsula |
+|---|---|---|
+| GoFan | https://gofan.co/app/school/WA23221 | https://gofan.co/app/school/WA23302 |
+| NFHS Network | https://www.nfhsnetwork.com/schools/gig-harbor-high-school-gig-harbor-wa | https://www.nfhsnetwork.com/schools/peninsula-high-school-gig-harbor-wa |
+| Team store (BSN Sideline, as linked from the school sites) | http://sideline.bsnsports.com/schools/washington/gigharbor/gig-harbor-high-school | https://sideline.bsnsports.com/schools/washington/gigharbor/peninsula-high-school |
+| ArbiterLive | https://www.arbiterlive.com/School/8486 | https://www.arbiterlive.com/School/17802 |
+
+League: Puget Sound League, https://www.pugetsoundleague.org/.

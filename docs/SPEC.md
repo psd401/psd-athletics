@@ -114,7 +114,7 @@ Every public page pattern exists for **both** schools; the design shows each pat
 
 | System | Use | Status |
 |---|---|---|
-| **Arbiter** | Source of truth for schedules, times, venues, scores | **Access path to confirm.** The ArbiterLive team pages (entity IDs 8486 and 17802) block automated access. Ask Arbiter for an API, partner feed or ICS export. Which ID is which school is not yet confirmed. |
+| **Arbiter** | Source of truth for schedules, times, venues, scores | **Access path to confirm.** The ArbiterLive team pages (entity IDs 8486 and 17802) block automated access. Ask Arbiter for an API, partner feed or ICS export. 8486 is Gig Harbor and 17802 is Peninsula (confirmed 2026-10-08, DECISIONS 46). |
 | **Puget Sound League site** (ArbiterSports-powered) | Standings; second source for the league-match rule | Confirm data access |
 | **MaxPreps** | Optional records and results backfill | Not a source of truth |
 | **NFHS Network** | Stream link per home game | Mapping per event |
