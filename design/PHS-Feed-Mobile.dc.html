@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Seahawks team feed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Big+Shoulders+Display:wght@700;800;900&amp;display=swap">
+<style>
+body{margin:0;background:#0D2726}
+a{color:#1F5C5A}a:hover{color:#0D2726}
+.m *{box-sizing:border-box}
+.disp{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.86;text-transform:uppercase}
+.cond{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.tag{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;background:#E4EBEA}
+.seg button{height:44px;border:0;border-radius:11px;background:transparent;font:700 15px/1 "Barlow",sans-serif;color:#2E4242;cursor:pointer}
+.seg button.is-on{background:#fff;color:#0E1E1D;box-shadow:0 1px 3px rgba(13,39,38,.15)}
+.rings{display:flex;gap:14px;overflow-x:auto;padding:4px 16px 8px}
+.ring{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;width:68px;background:none;border:0;cursor:pointer;padding:0;font:600 11px/1.15 "Barlow",sans-serif;color:#0E1E1D;text-align:center}
+.ring .o{width:64px;height:64px;border-radius:50%;padding:3px;background:#D4DDDC;display:grid;place-items:center}
+.ring.new .o{background:#194746}
+.ring .i{width:100%;height:100%;border-radius:50%;border:3px solid #F2F5F5;background:#E5EDEC;display:grid;place-items:center;font:900 18px/1 "Big Shoulders Display",sans-serif;color:#194746}
+.post{background:#fff;border-top:1px solid #D4DDDC;border-bottom:1px solid #D4DDDC}
+.ph{position:relative;overflow:hidden;background:#194746}
+.ph::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(185,188,192,.12) 0 2px,transparent 2px 20px);pointer-events:none}
+.ph.real::after{display:none}
+.ph .lbl{position:absolute;left:10px;top:10px;font:600 11px/1 "Barlow",sans-serif;color:#D3DDDC;background:rgba(13,39,38,.6);padding:5px 9px;border-radius:999px;z-index:1}
+.t1{background:#194746}.t2{background:#123836}.t3{background:#24585A}.t4{background:#0D2726}
+.act{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:12px;border:0;background:#ECF1F0;color:#0E1E1D;font:600 14px/1 "Barlow",sans-serif;text-decoration:none;cursor:pointer}
+.act svg{width:18px;height:18px}
+.follow{height:36px;padding:0 14px;border-radius:999px;border:1.5px solid #194746;background:#fff;color:#194746;font:700 13px/1 "Barlow",sans-serif;cursor:pointer}
+.follow.is-on{background:#194746;color:#fff}
+.tabbar{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.97);border-top:1px solid #D4DDDC;padding:8px 6px 26px}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:48px;justify-content:center;color:#5D7070;text-decoration:none;font:600 11px/1 "Barlow",sans-serif}
+.tabbar a[aria-current="page"]{color:#194746}
+.tabbar svg{width:22px;height:22px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+</style>
+</helmet>
+<div class="m" style="width: 390px; min-height: 2000px; background: #F2F5F5; color: #0E1E1D; font-family: Barlow, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="background: #194746; color: #fff; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #fff; display: grid; place-items: center"><img src="assets/logos/phs-p-logo.png" alt="Peninsula P logo" style="width: 34px; height: auto"></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="cond" style="font-size: 10px; color: #B9BCC0; letter-spacing: .18em">Peninsula</span><span class="disp" style="font-size: 26px">Hawks feed</span></span>
+<button type="button" aria-label="Get alerts for new posts" style="margin-left: auto; width: 44px; height: 44px; border-radius: 12px; border: 0; background: rgba(255,255,255,.14); color: #fff; display: grid; place-items: center">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg></button>
+</header>
+
+<div style="padding: 14px 16px 6px">
+<div class="seg" role="group" aria-label="Show posts from">
+<sc-for list="{{views}}" as="v" hint-placeholder-count="2"><button type="button" class="{{v.cls}}" aria-pressed="{{v.on}}" onClick="{{v.pick}}">{{v.label}}</button></sc-for>
+</div>
+</div>
+
+<div class="rings" role="list" aria-label="Teams">
+<sc-for list="{{rings}}" as="r" hint-placeholder-count="6">
+<button type="button" class="ring {{r.cls}}" role="listitem" aria-label="{{r.label}}"><span class="o"><span class="i">{{r.abbr}}</span></span>{{r.name}}</button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px; padding-top: 6px">
+<sc-for list="{{posts}}" as="p" hint-placeholder-count="4">
+<article class="post">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 16px">
+<span style="width: 38px; height: 38px; border-radius: 50%; background: #E5EDEC; display: grid; place-items: center; font: 900 15px/1 'Big Shoulders Display', sans-serif; color: #194746; flex: none">{{p.abbr}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0">
+<b style="font: 700 15px/1.2 Barlow, sans-serif">{{p.team}}</b>
+<span style="font: 500 12px/1 Barlow, sans-serif; color: #45585A">Coaching staff · {{p.when}}</span>
+</span>
+<button type="button" class="follow {{p.followCls}}" aria-pressed="{{p.following}}" onClick="{{p.toggle}}">{{p.followLabel}}</button>
+</div>
+<sc-if value="{{p.single}}" hint-placeholder-val="{{true}}">
+<div class="ph {{p.tone}} {{p.realCls}}" style="aspect-ratio: 4 / 5"><sc-if value="{{p.hasImg}}" hint-placeholder-val="{{false}}"><img src="{{p.img}}" alt="{{p.alt}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover"></sc-if><sc-if value="{{p.noImg}}" hint-placeholder-val="{{true}}"><span class="lbl">[Photo]</span></sc-if>
+<sc-if value="{{p.live}}" hint-placeholder-val="{{false}}"><span class="tag" style="position: absolute; right: 10px; top: 10px; background: #E5383B; color: #fff; z-index: 1"><span class="pulse" style="width: 6px; height: 6px; border-radius: 50%; background: #fff"></span>Live</span></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{p.album}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; aspect-ratio: 4 / 4">
+<div class="ph t1" style="grid-row: 1 / span 2"><span class="lbl">[Photo]</span></div>
+<div class="ph t3"></div>
+<div class="ph t2" style="display: grid; place-items: center"><span style="position: relative; z-index: 1; font: 900 28px/1 'Big Shoulders Display', sans-serif; color: #fff">+{{p.more}}</span></div>
+</div>
+</sc-if>
+<div style="padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 10px">
+<sc-if value="{{p.hasScore}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; background: #ECF1F0">
+<span class="cond" style="font-size: 12px; color: #45585A">{{p.game}}</span>
+<span class="disp" style="font-size: 26px; color: #194746">{{p.score}}</span>
+</div>
+</sc-if>
+<p style="margin: 0; font: 500 16px/1.45 Barlow, sans-serif">{{p.caption}}</p>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<a class="act" href="{{p.href}}">{{p.cta}}</a>
+<button type="button" class="act" aria-label="Share post"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path></svg>Share</button>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+
+<div style="margin: 18px 16px 24px; padding: 16px; border-radius: 16px; background: #fff; border: 1px solid #D4DDDC; display: flex; flex-direction: column; gap: 6px">
+<b style="font: 700 15px/1.3 Barlow, sans-serif">Why no likes or comments?</b>
+<span style="font: 500 14px/1.45 Barlow, sans-serif; color: #45585A">This feed is the team's news, posted by coaches. Nothing to moderate, nothing for kids to compare. Share any post with family by text.</span>
+</div>
+
+<div style="flex: 1"></div>
+<nav class="tabbar" aria-label="Sections">
+<a href="PHS-Mobile.dc.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7v9H3z"></path><path d="M9 20v-6h6v6"></path></svg>Today</a>
+<a href="PHS-Schedule.dc.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>Schedule</a>
+<a href="#feed" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="m21 16-5-5-9 9"></path></svg>Photos</a>
+<a href="PHS-Home.dc.html#teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"></path></svg>Teams</a>
+<a href="#more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>More</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { view: 'following', follows: { gsoc: true, vb: true, fb: false, wp: false } };
+  }
+  renderVals() {
+    const f = this.state.follows;
+    const all = [
+      { key: 'gsoc', abbr: 'GS', team: 'Girls Soccer', when: 'now', single: true, live: true, tone: 't1', caption: 'At home against Silas right now. Watch the live stream if you can’t make it.', cta: 'Watch live', href: '#watch' },
+      { key: 'fb', abbr: 'FB', team: 'Football', when: '2h', single: true, tone: 't4', img: 'assets/photos/phs-practice.jpg', alt: 'Seahawks players running a drill on the turf at practice', caption: 'Lights on in Purdy Friday against North Thurston, 7:00 PM. Get tickets before you leave the house.', cta: 'Buy tickets', href: '#tickets' },
+      { key: 'vb', abbr: 'VB', team: 'Volleyball', when: 'Wed', single: true, tone: 't2', hasScore: true, game: 'Final @ Capital', score: '0–3', caption: 'Tough night at Capital. Back home Tuesday against Timberline at 7:15.', cta: 'See the schedule', href: 'PHS-Schedule.dc.html' },
+      { key: 'gsoc', abbr: 'GS', team: 'Girls Soccer', when: 'Tue', album: true, more: 21, hasScore: true, game: 'Final vs Timberline', score: 'W 2–1', caption: 'Album from Tuesday’s win over Timberline. Download anything you like.', cta: 'Open album · 24 photos', href: '#album' },
+      { key: 'wp', abbr: 'WP', team: 'Water Polo', when: 'Mon', single: true, tone: 't3', caption: 'Home Monday against South Kitsap, 4:00 PM.', cta: 'Add to calendar', href: '#cal' }
+    ];
+    const v = this.state.view;
+    const posts = all.filter((p) => v === 'all' || f[p.key]).map((p) => ({
+      ...p,
+      single: !!p.single, album: !!p.album, live: !!p.live, hasScore: !!p.hasScore,
+      hasImg: !!p.img, noImg: !p.img, realCls: p.img ? 'real' : '', img: p.img || '', alt: p.alt || '',
+      following: !!f[p.key],
+      followCls: f[p.key] ? 'is-on' : '',
+      followLabel: f[p.key] ? 'Following' : 'Follow',
+      toggle: () => this.setState({ follows: { ...f, [p.key]: !f[p.key] } })
+    }));
+    const vopts = [['following', 'Teams I follow'], ['all', 'All Seahawks']];
+    const rings = [
+      { abbr: 'GS', name: 'Girls Soccer', label: 'Girls Soccer, new posts', cls: 'new' },
+      { abbr: 'FB', name: 'Football', label: 'Football, new posts', cls: 'new' },
+      { abbr: 'VB', name: 'Volleyball', label: 'Volleyball', cls: '' },
+      { abbr: 'WP', name: 'Water Polo', label: 'Water Polo', cls: '' },
+      { abbr: 'XC', name: 'Cross Country', label: 'Cross Country', cls: '' },
+      { abbr: 'SW', name: 'Swim & Dive', label: 'Girls Swim and Dive', cls: '' }
+    ];
+    return {
+      views: vopts.map(([val, label]) => ({ label, on: v === val, cls: v === val ? 'is-on' : '', pick: () => this.setState({ view: val }) })),
+      rings, posts
+    };
+  }
+}
+</script>
+</body>
+</html>

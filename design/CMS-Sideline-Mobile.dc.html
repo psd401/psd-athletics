@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Posting from the sideline</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+.thumb{position:relative;flex:0 0 96px;height:96px;border-radius:var(--radius-md);background:var(--surface-sunken);border:1px solid var(--line);overflow:hidden}
+.thumb::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,var(--line) 0 1px,transparent 1px 16px)}
+.thumb span{position:absolute;left:6px;bottom:6px;z-index:1;font:600 10px/1 var(--font-sans);color:var(--ink-subtle);background:var(--surface-raised);padding:3px 6px;border-radius:var(--radius-sm)}
+.thumb.add{display:grid;place-items:center;background:var(--surface-raised);border:1.5px dashed var(--line-strong);color:var(--ink-muted);font:600 12px/1.2 var(--font-sans);text-align:center}
+.thumb.add::after{display:none}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div style="width: 390px; min-height: 1300px; display: flex; flex-direction: column; background: var(--surface-canvas); color: var(--ink); font-family: var(--font-sans)">
+
+<div style="height: 56px; background: var(--surface-header); color: var(--on-header); display: flex; align-items: center; gap: 12px; padding: 0 16px">
+<span style="font: 500 20px/1 var(--font-display)">Studio</span>
+<span style="width: 1px; height: 20px; background: var(--on-header-muted); opacity: .5"></span>
+<span style="font: 600 13px/1 var(--font-sans)">Post to Girls Soccer</span>
+<span style="margin-left: auto; font: 400 12px/1 var(--font-sans); color: var(--on-header-muted)">Draft</span>
+</div>
+
+<div style="padding: 16px; display: flex; flex-direction: column; gap: 16px">
+
+<div class="nx-card" style="padding: 16px; display: flex; align-items: center; gap: 12px">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
+<span class="nx-eyebrow">Tonight · matched from Arbiter</span>
+<span style="font: 500 22px/26px var(--font-display)">vs Mount Tahoma</span>
+<span style="font: 400 13px/18px var(--font-sans); color: var(--ink-muted)">Varsity · 7:30 PM · home</span>
+</div>
+<x-import component-from-global-scope="Nexus.Badge" tone="flow">Live</x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.SegmentedControl" label="What are you posting?" value="Photos" options="{{kinds}}"></x-import>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font: 600 13px/16px var(--font-sans)">3 photos from your camera roll</span>
+<div style="display: flex; gap: 8px; overflow-x: auto">
+<div class="thumb"><span>Photo 1</span></div>
+<div class="thumb"><span>Photo 2</span></div>
+<div class="thumb"><span>Photo 3</span></div>
+<button type="button" class="thumb add" aria-label="Add photos">+<br>Add</button>
+</div>
+</div>
+
+<x-import component-from-global-scope="Nexus.TextArea" label="Caption" default-value="Home against Mount Tahoma tonight. Full album after the final." help="Suggested by the agent from tonight's game. Edit freely."></x-import>
+
+<x-import component-from-global-scope="Nexus.ChoiceChips" label="Other captions" options="{{caps}}"></x-import>
+
+<div class="nx-card" style="padding: 14px 16px">
+<x-import component-from-global-scope="Nexus.WorkSteps" steps="{{steps}}"></x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.Switch" label="Add these to tonight's album too" default-checked="{{yes}}"></x-import>
+
+</div>
+
+<div style="flex: 1"></div>
+<div style="position: sticky; bottom: 0; padding: 14px 16px 28px; background: var(--surface-raised); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px">
+<x-import component-from-global-scope="Nexus.TrustFooter" items="{{trust}}"></x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" size="lg" block="{{yes}}" icon="send">Post to the team feed</x-import>
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":390,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      yes: true,
+      kinds: ['Photos', 'Score update', 'Note'],
+      caps: ['Halftime from the sideline', 'Senior spotlight', 'Write my own'],
+      steps: [
+        { label: 'Location data removed from 3 photos', state: 'done' },
+        { label: 'Jersey numbers checked: no opt-outs', state: 'done' },
+        { label: 'Image descriptions drafted for 3', state: 'done' }
+      ],
+      trust: ['Posts as you', 'Girls Soccer only', 'undo for 30 min']
+    };
+  }
+}
+</script>
+</body>
+</html>

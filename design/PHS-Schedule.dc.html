@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Seahawks master schedule</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Big+Shoulders+Display:wght@700;800;900&amp;display=swap">
+<style>
+body{margin:0;background:#F2F5F5}
+a{color:#1F5C5A}a:hover{color:#0D2726}
+.ph{--forest:#0D2726;--green:#194746;--deep:#123836;--mint:#B9BCC0;--wash:#E5EDEC;--paper:#F2F5F5;--ink:#0E1E1D;--muted:#45585A;--line:#D4DDDC;font-family:"Barlow",system-ui,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+.ph *{box-sizing:border-box}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.disp{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.86;text-transform:uppercase}
+.cond{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.mast nav{display:flex;gap:2px;flex-wrap:wrap}
+.mast nav a{display:inline-flex;align-items:center;height:44px;padding:0 14px;border-radius:10px;color:var(--ink);text-decoration:none;font:600 15px/1 "Barlow",sans-serif}
+.mast nav a:hover,.mast nav a[aria-current="page"]{background:var(--wash);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border-radius:12px;border:0;font:700 14px/1 "Barlow",sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:var(--deep);color:#fff}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost:hover{background:var(--wash);color:var(--ink)}
+.btn-mint{background:var(--mint);color:var(--forest)}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.t-live{background:#E5383B;color:#fff}
+.t-w{background:var(--green);color:#fff}
+.t-l{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px #A9B8B7}
+.t-up{background:var(--wash);color:#194746}
+.t-home{background:var(--forest);color:#fff}
+.upd{background:#FFE7A3;color:#4A3300}
+.t-away{background:#E7ECEB;color:#2E4242}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;padding:22px;border-radius:22px;background:#fff;border:1px solid var(--line)}
+.grp{display:flex;flex-direction:column;gap:8px}
+.grp > span{font:600 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:#ECF1F0;flex-wrap:wrap}
+.seg button{height:36px;padding:0 14px;border:0;border-radius:9px;background:transparent;font:700 14px/1 "Barlow",sans-serif;color:#2E4242;cursor:pointer}
+.seg button:hover{background:rgba(255,255,255,.7)}
+.seg button.is-on{background:var(--green);color:#fff}
+.search{display:flex;align-items:center;gap:8px;height:44px;padding:0 14px;border-radius:12px;border:1.5px solid #B8C6C5;background:#fff;min-width:260px}
+.search input{border:0;outline:0;font:500 16px "Barlow",sans-serif;color:var(--ink);background:transparent;width:100%}
+.daygrp{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:22px 0;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:96px minmax(0,1fr) 120px auto;gap:18px;align-items:center;padding:14px 18px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.row + .row{margin-top:8px}
+.row.today{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.act{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none;font:600 13px/1 "Barlow",sans-serif;white-space:nowrap}
+.act:hover{background:var(--wash);color:var(--ink)}
+.act-strong{background:var(--green);border-color:var(--green);color:#fff}
+.act-strong:hover{background:var(--deep);color:#fff}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--line);gap:1px}
+.cal .hd{background:#ECF1F0;padding:10px;font:600 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cal .cell{background:#fff;min-height:132px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.cal .cell.out{background:#F6F8F8;color:#9AABAA}
+.cal .cell.today{box-shadow:inset 0 0 0 2px var(--green)}
+.mini{display:block;padding:4px 8px;border-radius:7px;font:600 12px/1.25 "Barlow",sans-serif;background:var(--wash);color:#194746;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini.away{background:#EEF1F1;color:#2E4242}
+.legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font:500 14px/1.3 "Barlow",sans-serif;color:var(--muted)}
+.scroll{overflow-x:auto}
+@media (max-width:900px){
+.daygrp{grid-template-columns:1fr;gap:10px}
+.row{grid-template-columns:80px minmax(0,1fr)}
+.row .where{display:none}
+.row .acts{grid-column:1 / -1}
+}
+@media (max-width:640px){
+.wrap{padding:0 16px}
+.mast nav{display:none}
+.search{min-width:0;width:100%}
+.cal{min-width:760px}
+}
+</style>
+</helmet>
+<div class="ph">
+
+<header class="mast" style="background: #fff; border-bottom: 1px solid #D4DDDC">
+<div class="wrap" style="display: flex; align-items: center; gap: 24px; height: 80px">
+<a href="PHS-Home.dc.html" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #0E1E1D">
+<img src="assets/logos/phs-p-logo.png" alt="Peninsula P logo" style="width: 60px; height: auto">
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="cond" style="font-size: 11px; color: #194746; letter-spacing: .2em">Peninsula</span><span class="disp" style="font-size: 34px">Seahawks</span></span>
+</a>
+<nav aria-label="Seahawks Athletics" style="margin-left: 16px">
+<a href="PHS-Home.dc.html#teams">Teams</a><a href="#top" aria-current="page">Schedule</a><a href="PHS-Home.dc.html#results">Scores</a><a href="PHS-Home.dc.html#stories">News</a><a href="PHS-Home.dc.html#fan">Fan Zone</a>
+</nav>
+<a class="btn btn-green" href="PHS-Home.dc.html#alerts" style="margin-left: auto">Follow a team</a>
+</div>
+</header>
+
+<section style="background: #0D2726; color: #fff; position: relative; overflow: hidden" id="top">
+<svg viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<g fill="none" stroke="#B9BCC0" stroke-width="1.3" opacity=".22"><path d="M1000 60 L1180 150 L1000 240"></path><path d="M1060 60 L1240 150 L1060 240"></path><path d="M1120 60 L1300 150 L1120 240"></path><path d="M1180 60 L1360 150 L1180 240"></path></g>
+</svg>
+<div class="wrap" style="position: relative; padding-top: 56px; padding-bottom: 56px; display: flex; justify-content: space-between; align-items: flex-end; gap: 28px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span class="cond" style="font-size: 14px; color: #B9BCC0; letter-spacing: .18em">Every level · every sport · 2026–27</span>
+<h1 class="disp" style="margin: 0; font-size: 132px">Schedule</h1>
+<span style="font: 500 16px/1.4 Barlow, sans-serif; color: #B3C2C1">Synced from Arbiter 6:41 PM · Times Pacific</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
+<span class="cond" style="font-size: 12px; color: #B3C2C1">Subscribe to what you filter</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<a class="btn btn-mint" href="#google">Google Calendar</a>
+<a class="btn" href="#apple" style="background: rgba(255,255,255,.1); color: #fff">Apple</a>
+<a class="btn" href="#outlook" style="background: rgba(255,255,255,.1); color: #fff">Outlook</a>
+<a class="btn" href="#ics" style="background: rgba(255,255,255,.1); color: #fff">Copy link</a>
+</div>
+</div>
+</div>
+</section>
+
+<div class="wrap" style="padding-top: 28px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 22px">
+
+<div class="toolbar" role="search" aria-label="Filter the schedule">
+<label class="grp" for="phs-q"><span>Search</span>
+<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#45585A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+<input id="phs-q" type="text" placeholder="Opponent, like Capital" value="{{q}}" onChange="{{onQ}}"></div>
+</label>
+<div class="grp"><span>Sport</span>
+<div class="seg" role="group" aria-label="Sport">
+<sc-for list="{{sports}}" as="o" hint-placeholder-count="5"><button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+</div></div>
+<div class="grp"><span>Level</span>
+<div class="seg" role="group" aria-label="Level">
+<sc-for list="{{levels}}" as="o" hint-placeholder-count="4"><button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+</div></div>
+<div class="grp"><span>Where</span>
+<div class="seg" role="group" aria-label="Home or away">
+<sc-for list="{{wheres}}" as="o" hint-placeholder-count="3"><button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+</div></div>
+<div class="grp" style="margin-left: auto"><span>View</span>
+<div class="seg" role="group" aria-label="View">
+<sc-for list="{{views}}" as="o" hint-placeholder-count="2"><button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+</div></div>
+</div>
+
+<div class="legend">
+<b style="color: #0E1E1D">{{countLine}}</b>
+<span><span class="tag t-live" style="height: 20px">Live</span> in progress</span>
+<span><span class="tag" style="height: 20px; background: #FFE7A3; color: #4A3300">Updated</span> Arbiter changed the time, place or date; followers got a text</span>
+<button type="button" class="btn btn-ghost" style="margin-left: auto; height: 36px" onClick="{{reset}}">Clear filters</button>
+</div>
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{true}}">
+<div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="5">
+<div class="daygrp">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="disp" style="font-size: 40px">{{g.dow}}</span>
+<span class="cond" style="font-size: 13px; color: #45585A">{{g.date}}</span>
+</div>
+<div>
+<sc-for list="{{g.rows}}" as="r" hint-placeholder-count="2">
+<div class="row {{r.rowCls}}">
+<span style="font: 700 18px/1 'Barlow Condensed', sans-serif; letter-spacing: .03em">{{r.time}}</span>
+<span style="display: flex; flex-direction: column; gap: 5px; min-width: 0">
+<span class="cond" style="font-size: 12px; color: #45585A">{{r.sport}} · {{r.level}}</span>
+<b style="font: 700 18px/1.2 Barlow, sans-serif">{{r.opp}}</b>
+</span>
+<span class="where" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+<span class="tag {{r.haCls}}">{{r.ha}}</span>
+<span class="tag {{r.stCls}}">{{r.status}}</span>
+</span>
+<span class="acts" style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end">
+<sc-if value="{{r.tickets}}" hint-placeholder-val="{{false}}"><a class="act act-strong" href="#tickets">Tickets</a></sc-if>
+<sc-if value="{{r.watch}}" hint-placeholder-val="{{false}}"><a class="act" href="#watch">Watch</a></sc-if>
+<sc-if value="{{r.recap}}" hint-placeholder-val="{{false}}"><a class="act" href="#recap">Recap</a></sc-if>
+<a class="act" href="#map">Map</a>
+<a class="act" href="#add" aria-label="Add to calendar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4M12 13v4M10 15h4"></path></svg></a>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{none}}" hint-placeholder-val="{{false}}">
+<div style="padding: 56px; text-align: center; border: 1.5px dashed #B8C6C5; border-radius: 18px; color: #45585A; font: 500 17px/1.5 Barlow, sans-serif">No games match those filters. Clear filters to see the whole schedule.</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{isMonth}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<h2 class="disp" style="margin: 0; font-size: 52px">October 2026</h2>
+<span style="font: 500 14px/1 Barlow, sans-serif; color: #45585A">Home games in green</span>
+</div>
+<div class="scroll">
+<div class="cal" role="grid" aria-label="October 2026">
+<div class="hd">Sun</div><div class="hd">Mon</div><div class="hd">Tue</div><div class="hd">Wed</div><div class="hd">Thu</div><div class="hd">Fri</div><div class="hd">Sat</div>
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+<div class="cell {{c.cls}}">
+<span style="font: 700 16px/1 'Barlow Condensed', sans-serif">{{c.n}}</span>
+<sc-for list="{{c.items}}" as="it" hint-placeholder-count="1"><span class="mini {{it.cls}}">{{it.label}}</span></sc-for>
+<sc-if value="{{c.more}}" hint-placeholder-val="{{false}}"><span style="font: 600 12px/1 Barlow, sans-serif; color: #45585A">{{c.moreLabel}}</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { q: '', sport: 'all', level: 'all', where: 'all', view: 'list' };
+  }
+  renderVals() {
+    const st = this.state;
+    const games = [
+      { d: 5, sport: 'Volleyball', level: 'Varsity', opp: '@ River Ridge', ha: 'Away', time: '7:15 PM', res: 'W 3–0' },
+      { d: 6, sport: 'Girls Soccer', level: 'Varsity', opp: 'vs Timberline', ha: 'Home', time: '7:00 PM', res: 'W 2–1' },
+      { d: 7, sport: 'Volleyball', level: 'Varsity', opp: '@ Capital', ha: 'Away', time: '7:15 PM', res: 'L 0–3' },
+      { d: 8, sport: 'Girls Soccer', level: 'Varsity', opp: 'vs Silas', ha: 'Home', time: 'Now', live: true },
+      { d: 9, sport: 'Football', level: 'Varsity', opp: 'vs North Thurston', ha: 'Home', time: '7:00 PM', tickets: true, watch: true },
+      { d: 12, sport: 'Football', level: 'Freshman', opp: 'vs North Thurston', ha: 'Home', time: '4:00 PM' },
+      { d: 12, sport: 'Water Polo', level: 'Varsity', opp: 'vs South Kitsap', ha: 'Home', time: '4:00 PM' },
+      { d: 12, sport: 'Football', level: 'JV', opp: 'vs North Thurston', ha: 'Home', time: '6:00 PM' },
+      { d: 13, sport: 'Girls Soccer', level: 'JV', opp: 'vs Capital', ha: 'Home', time: '4:30 PM' },
+      { d: 13, sport: 'Volleyball', level: 'Freshman', opp: 'vs Timberline', ha: 'Home', time: '5:45 PM' },
+      { d: 13, sport: 'Volleyball', level: 'JV', opp: 'vs Timberline', ha: 'Home', time: '5:45 PM' },
+      { d: 13, sport: 'Girls Soccer', level: 'Varsity', opp: 'vs Capital', ha: 'Home', time: '7:00 PM', watch: true },
+      { d: 13, sport: 'Volleyball', level: 'Varsity', opp: 'vs Timberline', ha: 'Home', time: '7:15 PM', watch: true },
+      { d: 15, sport: 'Girls Soccer', level: 'Varsity', opp: 'vs River Ridge', ha: 'Home', time: '4:30 PM' },
+      { d: 15, sport: 'Football', level: 'Varsity', opp: '@ River Ridge', ha: 'Away', time: '7:00 PM', updated: true },
+      { d: 15, sport: 'Volleyball', level: 'Varsity', opp: 'vs Lakes', ha: 'Home', time: '7:15 PM', watch: true },
+      { d: 20, sport: 'Girls Soccer', level: 'Varsity', opp: 'vs Mount Tahoma', ha: 'Home', time: '7:00 PM' },
+      { d: 23, sport: 'Football', level: 'Varsity', opp: 'vs Lakes', ha: 'Home', time: '7:00 PM', tickets: true, watch: true }
+    ];
+    const q = st.q.trim().toLowerCase();
+    const keep = (g) =>
+      (st.sport === 'all' || g.sport === st.sport) &&
+      (st.level === 'all' || g.level === st.level) &&
+      (st.where === 'all' || g.ha === st.where) &&
+      (!q || g.opp.toLowerCase().indexOf(q) >= 0 || g.sport.toLowerCase().indexOf(q) >= 0);
+    const shown = games.filter(keep);
+    const dowOf = (d) => ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'][(d - 1) % 7];
+    const byDay = {};
+    shown.forEach((g) => {
+      const status = g.live ? 'Live' : g.res ? 'Final ' + g.res : g.updated ? 'Updated' : 'Upcoming';
+      const stCls = g.live ? 't-live' : g.res ? (g.res[0] === 'W' ? 't-w' : 't-l') : '';
+      const row = {
+        ...g, status,
+        stCls: g.updated ? 'upd' : stCls || 't-up',
+        haCls: g.ha === 'Home' ? 't-home' : 't-away',
+        rowCls: g.d === 8 ? 'today' : '',
+        tickets: !!g.tickets, watch: !!g.watch || !!g.live, recap: !!g.res
+      };
+      (byDay[g.d] = byDay[g.d] || []).push(row);
+    });
+    const groups = Object.keys(byDay).map(Number).sort((a, b) => a - b).map((d) => ({
+      dow: d === 8 ? 'Today' : dowOf(d), date: 'Oct ' + d, rows: byDay[d]
+    }));
+    const opt = (key, pairs) => pairs.map(([v, label]) => ({ label, on: st[key] === v, cls: st[key] === v ? 'is-on' : '', pick: () => this.setState({ [key]: v }) }));
+    const cells = [];
+    for (let i = 0; i < 35; i++) {
+      const n = i - 3;
+      if (n < 1 || n > 31) { cells.push({ n: n < 1 ? String(30 + n) : String(n - 31), cls: 'out', items: [], more: false, moreLabel: '' }); continue; }
+      const evs = shown.filter((g) => g.d === n);
+      cells.push({
+        n: String(n), cls: n === 8 ? 'today' : '',
+        items: evs.slice(0, 3).map((g) => ({ label: g.time + ' ' + g.sport + (g.level !== 'Varsity' ? ' ' + g.level : ''), cls: g.ha === 'Away' ? 'away' : '' })),
+        more: evs.length > 3, moreLabel: '+' + (evs.length - 3) + ' more'
+      });
+    }
+    return {
+      q: st.q,
+      onQ: (e) => this.setState({ q: e.target.value }),
+      sports: opt('sport', [['all', 'All'], ['Football', 'Football'], ['Volleyball', 'Volleyball'], ['Girls Soccer', 'Girls Soccer'], ['Water Polo', 'Water Polo']]),
+      levels: opt('level', [['all', 'All'], ['Varsity', 'Varsity'], ['JV', 'JV'], ['Freshman', 'Freshman']]),
+      wheres: opt('where', [['all', 'Both'], ['Home', 'Home'], ['Away', 'Away']]),
+      views: opt('view', [['list', 'List'], ['month', 'Month']]),
+      isList: st.view === 'list', isMonth: st.view === 'month',
+      groups, none: shown.length === 0, cells,
+      countLine: shown.length + ' of ' + games.length + ' games',
+      reset: () => this.setState({ q: '', sport: 'all', level: 'all', where: 'all' })
+    };
+  }
+}
+</script>
+</body>
+</html>

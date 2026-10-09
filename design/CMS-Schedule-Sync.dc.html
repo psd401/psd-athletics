@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Arbiter schedule sync</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="nexus-theme.css">
+<link rel="stylesheet" href="../vendor/nexus/bundle.css">
+<script src="../vendor/nexus/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+</style>
+</helmet>
+<x-import component-from-global-scope="Nexus.ThemeProvider" theme="{{theme}}">
+<div class="studio">
+<x-import component-from-global-scope="Nexus.AppHeader" product="Athletics Studio" room="Schedule sync" live="Watching Arbiter · next check 6:56 PM" meta="Both schools · 2026–27" user="AD"></x-import>
+<div class="studio-body">
+
+<div class="studio-nav">
+<x-import component-from-global-scope="Nexus.Sidebar" brand="Peninsula Athletics" tagline="Athletics office" items="{{nav}}"></x-import>
+</div>
+
+<main class="studio-main">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="studio-eyebrow">Arbiter is the source of truth</span>
+<h1 class="studio-title">Schedule sync</h1>
+<p class="studio-sub">Game changes land here first, then on both school sites, the district hub and every subscribed calendar.</p>
+</div>
+
+<x-import component-from-global-scope="Nexus.StatusStrip" working="{{yes}}" items="{{strip}}" change="Agent applied 1 change under your league-match rule"></x-import>
+
+<x-import component-from-global-scope="Nexus.DiffTable" title="Changes from Arbiter" subtitle="1 needs you · 1 applied by rule · unchanged games hidden" columns="{{cols}}" rows="{{rows}}"></x-import>
+
+<div class="studio-grid2">
+<x-import component-from-global-scope="Nexus.Card" title="Publishing rules" subtitle="Applies to both schools · changes take effect on the next check">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Nexus.Switch" label="Publish a change on its own when the league site shows the same change" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Publish JV and C-team changes on their own" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Text team followers once per change" default-checked="{{yes}}"></x-import>
+<x-import component-from-global-scope="Nexus.Switch" label="Hold any change within 2 hours of game time for a person" default-checked="{{yes}}"></x-import>
+</div>
+</x-import>
+<x-import component-from-global-scope="Nexus.StandingTask" title="Check Arbiter for both schools" next="6:56 PM" day="Today" date="Oct 8" parsed="{{parsed}}" runs="{{runs}}" last-run="6:41 PM · 2 changes found" scopes="{{scopes}}" enabled="{{yes}}"></x-import>
+</div>
+
+<x-import component-from-global-scope="Nexus.Card" title="Connected sources" subtitle="Each one is read-only unless it says otherwise">
+<x-import component-from-global-scope="Nexus.SourceTrail" sources="{{sources}}"></x-import>
+</x-import>
+
+<x-import component-from-global-scope="Nexus.BottomBar" trust="{{trust}}">
+<x-import component-from-global-scope="Nexus.Button" variant="secondary" size="sm">Keep as draft</x-import>
+<x-import component-from-global-scope="Nexus.Button" variant="primary" icon-end="arrow">Apply 1 change and notify</x-import>
+</x-import>
+</main>
+
+<aside class="studio-rail" aria-label="Sync agent">
+<div style="padding: 20px 20px 12px; border-bottom: 1px solid var(--line)">
+<x-import component-from-global-scope="Nexus.AgentStatusLine" state="waiting" now="Waiting on you for 1 change" sub="Gig Harbor girls soccer · Oct 15"></x-import>
+</div>
+<div style="flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Sync agent" agent="{{yes}}" time="6:41 PM">
+<p style="margin: 0 0 10px">Arbiter moved two games. Peninsula football at River Ridge is now Thursday, Oct 15, and the league site shows the same date, so I applied it under your rule and texted followers once.</p>
+<p style="margin: 0">Gig Harbor girls soccer vs North Thurston moved from 7:00 to 3:30 PM, but the league site still shows 7:00. I have not published it.</p>
+</x-import>
+<x-import component-from-global-scope="Nexus.ToolCallCard" name="arbiter.list_events" summary="Read fall schedules for both schools" status="done" access="read" duration="1.4s" inputs="{{toolIn}}" result="2 changed games · all others unchanged"></x-import>
+<x-import component-from-global-scope="Nexus.ToolCallCard" name="studio.apply_schedule_change" summary="Moved Peninsula football @ River Ridge to Thu, Oct 15" status="done" access="write" duration="0.3s" inputs="{{toolIn2}}" result="Updated on 3 pages and in subscribed calendars · followers texted"></x-import>
+<x-import component-from-global-scope="Nexus.AgentMessage" author="Sync agent" agent="{{yes}}" time="6:42 PM">
+<p style="margin: 0 0 10px">Want me to ask the Gig Harbor coach to confirm the 3:30 start?</p>
+<x-import component-from-global-scope="Nexus.ChoiceChips" label="Confirm the new start time" options="{{ask}}"></x-import>
+</x-import>
+</div>
+<div style="padding: 16px 20px 20px; border-top: 1px solid var(--line)">
+<x-import component-from-global-scope="Nexus.Composer" placeholder="Ask about a game, or change a rule…" hint="The agent reads Arbiter. It never edits Arbiter."></x-import>
+</div>
+</aside>
+
+</div>
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["nexus","dark"],"default":"nexus"},"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'nexus',
+      yes: true,
+      nav: [
+        { label: 'Today', icon: 'home', href: 'CMS-Today.dc.html' },
+        { label: 'Waiting for me', icon: 'clock', count: 1, urgent: true },
+        { section: 'Schools' },
+        { label: 'Gig Harbor Tides', icon: 'users', sub: '7 fall teams' },
+        { label: 'Peninsula Seahawks', icon: 'users', sub: '8 fall teams' },
+        { section: 'Program' },
+        { label: 'Photos and media', icon: 'folder', href: 'CMS-Media-Review.dc.html' },
+        { label: 'Schedule sync', icon: 'cloud', current: true, sub: 'Agent watching' },
+        { label: 'People and roles', icon: 'users', href: 'CMS-People-Roles.dc.html' },
+        { label: 'Agents and access', icon: 'agent', href: 'CMS-Agents.dc.html' },
+        { label: 'Settings', icon: 'gear' }
+      ],
+      strip: ['Checked 2 schools at 6:41 PM', '2 changes found', 'Next check 6:56 PM'],
+      cols: [
+        { key: 'status', label: 'Status', type: 'text' },
+        { key: 'school', label: 'School', type: 'text' },
+        { key: 'team', label: 'Team', type: 'text' },
+        { key: 'opp', label: 'Opponent', type: 'text' },
+        { key: 'date', label: 'Date', type: 'text' },
+        { key: 'time', label: 'Time', type: 'text' }
+      ],
+      rows: [
+        { id: 1, status: 'Needs you', school: 'Gig Harbor', team: 'Girls Soccer · Varsity', opp: 'vs North Thurston', date: 'Thu, Oct 15', time: '3:30 PM', _changed: ['time'], _old: { time: '7:00 PM' } },
+        { id: 2, status: 'Applied · league matches', school: 'Peninsula', team: 'Football · Varsity', opp: '@ River Ridge', date: 'Thu, Oct 15', time: '7:00 PM', _changed: ['date'], _old: { date: 'Fri, Oct 16' } }
+      ],
+      parsed: [
+        { icon: 'clock', text: 'Every 15 minutes, 6 AM to 10 PM' },
+        { icon: 'cloud', text: 'ArbiterLive · Gig Harbor and Peninsula' },
+        { icon: 'check', text: 'Applies changes only under the rules on this page' }
+      ],
+      runs: [
+        { state: 'ok' }, { state: 'ok' }, { state: 'ok' }, { state: 'ok' }, { state: 'ok' }, { state: 'ok' },
+        { state: 'warn', label: '6:41 PM · 2 changes' }, { state: 'next' }
+      ],
+      scopes: [{ kind: 'read', label: 'Arbiter schedules' }, { kind: 'write', label: 'Site schedules, under your rules' }],
+      sources: [
+        { name: 'ArbiterLive · Gig Harbor', detail: 'All levels · fall, winter, spring', icon: 'cloud', status: 'connected', statusLabel: 'Connected' },
+        { name: 'ArbiterLive · Peninsula', detail: 'All levels · fall, winter, spring', icon: 'cloud', status: 'connected', statusLabel: 'Connected' },
+        { name: 'Puget Sound League', detail: 'Standings and league schedule, used to double-check changes', icon: 'chart', status: 'connected', statusLabel: 'Connected' },
+        { name: 'NFHS Network', detail: 'Stream links for home games', icon: 'eye', status: 'connected', statusLabel: 'Connected' },
+        { name: 'GoFan', detail: 'Ticket links per event', icon: 'link', status: 'waiting', statusLabel: 'Needs event mapping' }
+      ],
+      trust: ['Read-only access to Arbiter', '1 change waiting', 'followers texted once per change'],
+      toolIn: { entities: '8486, 17802', season: 'Fall 2026', levels: 'all' },
+      toolIn2: { game: 'PHS Football V @ River Ridge', from: 'Fri, Oct 16', to: 'Thu, Oct 15', rule: 'league site matches' },
+      ask: ['Ask the coach', 'I’ll confirm it myself', 'Wait for the league site']
+    };
+  }
+}
+</script>
+</body>
+</html>

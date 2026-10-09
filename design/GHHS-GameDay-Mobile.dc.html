@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tides game day on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=Big+Shoulders+Display:wght@700;800;900&amp;display=swap">
+<style>
+body{margin:0;background:#011430}
+a{color:#69ABE0}a:hover{color:#fff}
+.m *{box-sizing:border-box}
+.disp{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:900;line-height:.86;text-transform:uppercase}
+.cond{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.bigbtn{display:flex;align-items:center;justify-content:center;gap:10px;height:56px;border-radius:16px;font:700 17px/1 "Barlow",sans-serif;text-decoration:none;border:0;cursor:pointer;width:100%}
+.bigbtn svg{width:20px;height:20px}
+.acc{border-top:1px solid #E1E9F3}
+.acc button{width:100%;min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:none;border:0;padding:0 2px;font:700 17px/1.2 "Barlow",sans-serif;color:#0B1A33;cursor:pointer;text-align:left}
+.acc p{margin:0 0 18px;font:400 16px/1.55 "Barlow",sans-serif;color:#40516B}
+.row{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid #E1E9F3}
+.sw{width:52px;height:32px;border-radius:999px;background:#C9D4E2;position:relative;border:0;cursor:pointer;flex:none}
+.sw i{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:left .2s}
+.sw.is-on{background:#022C66}
+.sw.is-on i{left:23px}
+.tabbar{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(1,20,48,.96);border-top:1px solid rgba(141,200,240,.2);padding:8px 6px 26px}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:48px;justify-content:center;color:#9FB3CE;text-decoration:none;font:600 11px/1 "Barlow",sans-serif}
+.tabbar a[aria-current="page"]{color:#69ABE0}
+.tabbar svg{width:22px;height:22px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+</style>
+</helmet>
+<div class="m" style="width: 390px; min-height: 2100px; background: #F2F6FB; color: #0B1A33; font-family: Barlow, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+<header style="background: #022C66; color: #fff; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+<img src="assets/logos/ghhs-gh-logo.png" alt="Gig Harbor GH logo" style="width: 46px; height: auto">
+<span class="disp" style="font-size: 30px">Tides</span>
+<button type="button" aria-label="Search" style="margin-left: auto; width: 44px; height: 44px; border-radius: 12px; border: 0; background: rgba(141,200,240,.14); color: #fff; display: grid; place-items: center">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></button>
+</header>
+
+<section style="background: #011430; color: #fff; padding: 22px 16px 26px; position: relative; overflow: hidden">
+<svg viewBox="0 0 390 300" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<g fill="none" stroke="#69ABE0" stroke-width="1.2" opacity=".2"><path d="M0 220 C 60 200, 130 240, 195 220 S 330 200, 390 220"></path><path d="M0 240 C 60 220, 130 260, 195 240 S 330 220, 390 240"></path><path d="M0 260 C 60 240, 130 280, 195 260 S 330 240, 390 260"></path><path d="M0 280 C 60 260, 130 300, 195 280 S 330 260, 390 280"></path></g>
+</svg>
+<div style="position: relative; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; gap: 8px">
+<sc-if value="{{live}}" hint-placeholder-val="{{false}}"><span class="tag" style="background: #E5383B; color: #fff"><span class="pulse" style="width: 6px; height: 6px; border-radius: 50%; background: #fff"></span>Live now</span></sc-if>
+<sc-if value="{{notLive}}" hint-placeholder-val="{{true}}"><span class="tag" style="background: #FFE7A3; color: #4A3300">Game day · Tonight</span></sc-if>
+<span class="cond" style="font-size: 13px; color: #A9C8E8">Girls Soccer · Varsity</span>
+</div>
+<h1 class="disp" style="margin: 0; font-size: 64px">Tides vs<br>Mount Tahoma</h1>
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="cond" style="font-size: 12px; color: #69ABE0">{{countLabel}}</span>
+<span class="disp" style="font-size: 56px; font-variant-numeric: tabular-nums">{{countText}}</span>
+</div>
+<div style="text-align: right; font: 600 14px/1.4 Barlow, sans-serif; color: #C7D6EA">7:30 PM<br>Home · [Field name]</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(141,200,240,.25); border-radius: 14px; overflow: hidden">
+<div style="background: #022C66; padding: 12px 14px"><span class="disp" style="font-size: 30px">5–2</span><br><span class="cond" style="font-size: 11px; color: #69ABE0">Tides · 3–0 league</span></div>
+<div style="background: #022C66; padding: 12px 14px"><span class="disp" style="font-size: 30px">13–0</span><br><span class="cond" style="font-size: 11px; color: #69ABE0">Goals, last three</span></div>
+</div>
+</div>
+</section>
+
+<section style="padding: 18px 16px; display: flex; flex-direction: column; gap: 10px">
+<a class="bigbtn" href="#tickets" style="background: #022C66; color: #fff">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 0 0-6V6H3z"></path></svg>
+Show my ticket</a>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+<a class="bigbtn" href="#watch" style="background: #fff; color: #0B1A33; box-shadow: inset 0 0 0 1.5px #C9D6E6">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="m10 9 5 3-5 3z"></path></svg>Watch</a>
+<a class="bigbtn" href="#map" style="background: #fff; color: #0B1A33; box-shadow: inset 0 0 0 1.5px #C9D6E6">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>Directions</a>
+</div>
+</section>
+
+<section style="margin: 0 16px; padding: 6px 18px 4px; background: #fff; border-radius: 20px; border: 1px solid #DCE5F0">
+<h2 class="disp" style="margin: 14px 0 10px; font-size: 32px; color: #022C66">Know before you go</h2>
+<sc-for list="{{faq}}" as="q" hint-placeholder-count="4">
+<div class="acc">
+<button type="button" aria-expanded="{{q.open}}" onClick="{{q.toggle}}">{{q.title}}
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{q.icon}}"></path></svg></button>
+<sc-if value="{{q.open}}" hint-placeholder-val="{{false}}"><p>{{q.body}}</p></sc-if>
+</div>
+</sc-for>
+</section>
+
+<section style="margin: 16px 16px 0; padding: 18px; background: #fff; border-radius: 20px; border: 1px solid #DCE5F0">
+<div class="row" style="border-top: 0; padding-top: 0">
+<span style="flex: 1; display: flex; flex-direction: column; gap: 4px"><b style="font: 700 17px/1.2 Barlow, sans-serif">Text me the final score</b><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Girls Soccer · Varsity</span></span>
+<button type="button" class="sw {{scoreCls}}" role="switch" aria-checked="{{alertScore}}" aria-label="Text me the final score" onClick="{{toggleScore}}"><i></i></button>
+</div>
+<div class="row">
+<span style="flex: 1; display: flex; flex-direction: column; gap: 4px"><b style="font: 700 17px/1.2 Barlow, sans-serif">Text me schedule changes</b><span style="font: 500 14px/1.4 Barlow, sans-serif; color: #4C5D77">Time, field or date moves from Arbiter</span></span>
+<button type="button" class="sw {{changeCls}}" role="switch" aria-checked="{{alertChange}}" aria-label="Text me schedule changes" onClick="{{toggleChange}}"><i></i></button>
+</div>
+</section>
+
+<section style="padding: 26px 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<h2 class="disp" style="margin: 0 0 4px; font-size: 32px; color: #022C66">Up next</h2>
+<sc-for list="{{next}}" as="n" hint-placeholder-count="4">
+<a href="{{n.href}}" style="display: flex; align-items: center; gap: 14px; padding: 14px; background: #fff; border-radius: 16px; border: 1px solid #DCE5F0; text-decoration: none; color: #0B1A33; min-height: 72px">
+<span style="width: 52px; height: 56px; border-radius: 12px; background: #022C66; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: none"><span class="cond" style="font-size: 11px">{{n.dow}}</span><span class="disp" style="font-size: 26px">{{n.dd}}</span></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0"><span class="cond" style="font-size: 11px; color: #4C5D77">{{n.sport}}</span><b style="font: 700 17px/1.2 Barlow, sans-serif">{{n.opp}}</b><span style="font: 500 13px/1 Barlow, sans-serif; color: #4C5D77">{{n.time}}</span></span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4C5D77" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+</a>
+</sc-for>
+</section>
+
+<section style="margin: 4px 16px 24px; border-radius: 20px; background: #022C66; color: #fff; display: flex; flex-direction: column; overflow: hidden">
+<img src="assets/photos/ghhs-volleyball.jpg" alt="Tides volleyball team on their home court" style="width: 100%; height: 180px; object-fit: cover; object-position: center 35%">
+<div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px">
+<span class="cond" style="font-size: 12px; color: #69ABE0">Latest final</span>
+<div style="display: flex; justify-content: space-between; align-items: baseline"><span class="disp" style="font-size: 44px">Volleyball 3</span><span class="disp" style="font-size: 44px; color: #69ABE0">0</span></div>
+<span style="font: 500 15px/1.4 Barlow, sans-serif; color: #C7D6EA">vs Mount Tahoma · Wed · fourth straight win</span>
+</div>
+</section>
+
+<div style="flex: 1"></div>
+<nav class="tabbar" aria-label="Sections">
+<a href="#home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7v9H3z"></path><path d="M9 20v-6h6v6"></path></svg>Today</a>
+<a href="GHHS-Home.dc.html#week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>Schedule</a>
+<a href="GHHS-Home.dc.html#results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>Scores</a>
+<a href="GHHS-Home.dc.html#teams"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"></path></svg>Teams</a>
+<a href="#more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>More</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: 0, alertScore: true, alertChange: true };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.forceUpdate(), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  renderVals() {
+    const kick = Date.parse('2026-10-09T02:30:00Z');
+    const left = kick - Date.now();
+    const live = left <= 0;
+    let countText = 'Now';
+    if (!live) {
+      const h = Math.floor(left / 3600000);
+      const m = Math.floor((left % 3600000) / 60000);
+      const s = Math.floor((left % 60000) / 1000);
+      const pad = (n) => String(n).padStart(2, '0');
+      countText = (h > 0 ? h + ':' : '') + pad(m) + ':' + pad(s);
+    }
+    const items = [
+      { title: 'Gates and parking', body: 'Gates open [time]. Park in [lot]; overflow at [lot]. The student lot fills first on game nights.' },
+      { title: 'Tickets and passes', body: 'Digital tickets on GoFan. ASB cards and district passes scan at the gate. [Cash policy].' },
+      { title: 'Bag and conduct policy', body: '[Clear-bag rule]. Sportsmanship expectations follow WIAA and Puget Sound League rules.' },
+      { title: 'Accessible seating', body: '[Accessible entrance and seating area]. Ask any staff member in a Tides lanyard for help.' }
+    ];
+    const faq = items.map((it, i) => ({
+      ...it,
+      open: this.state.open === i,
+      icon: this.state.open === i ? 'M5 12h14' : 'M12 5v14M5 12h14',
+      toggle: () => this.setState({ open: this.state.open === i ? -1 : i })
+    }));
+    return {
+      live, notLive: !live,
+      countLabel: live ? 'Kickoff was 7:30 PM' : 'Kickoff in',
+      countText,
+      faq,
+      alertScore: this.state.alertScore, alertChange: this.state.alertChange,
+      scoreCls: this.state.alertScore ? 'is-on' : '',
+      changeCls: this.state.alertChange ? 'is-on' : '',
+      toggleScore: () => this.setState({ alertScore: !this.state.alertScore }),
+      toggleChange: () => this.setState({ alertChange: !this.state.alertChange }),
+      next: [
+        { dow: 'Fri', dd: '9', sport: 'Football · Varsity', opp: '@ Central Kitsap', time: '7:00 PM · Directions', href: 'GHHS-Football.dc.html' },
+        { dow: 'Tue', dd: '13', sport: 'Girls Soccer · Varsity', opp: '@ Bellarmine Prep', time: '7:00 PM', href: '#gsoc' },
+        { dow: 'Tue', dd: '13', sport: 'Volleyball · Varsity', opp: '@ Central Kitsap', time: '7:15 PM', href: '#vb' },
+        { dow: 'Thu', dd: '15', sport: 'Girls Soccer · Varsity', opp: 'vs North Thurston', time: '3:30 PM · Home', href: '#gsoc' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

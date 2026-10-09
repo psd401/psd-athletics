@@ -1,0 +1,58 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-09T02:10:00Z"},
+  "title": "PSD Athletics Sites",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 3000, "title": "District hub · athletics.psd401.net", "expand": "fill", "is_interactive": true},
+    "GHHS-Home.dc.html": {"x": 0, "y": 3420, "w": 1440, "h": 3700, "title": "Gig Harbor · home", "expand": "fill", "is_interactive": true},
+    "GHHS-Football.dc.html": {"x": 1520, "y": 3420, "w": 1440, "h": 3000, "title": "Gig Harbor · football team page", "expand": "fill", "is_interactive": true},
+    "GHHS-GameDay-Mobile.dc.html": {"x": 3040, "y": 3420, "w": 390, "h": 2100, "title": "Gig Harbor · game day on a phone", "is_interactive": true, "radius": 36},
+    "PHS-Home.dc.html": {"x": 0, "y": 7540, "w": 1440, "h": 3700, "title": "Peninsula · home", "expand": "fill", "is_interactive": true},
+    "PHS-Schedule.dc.html": {"x": 1520, "y": 7540, "w": 1440, "h": 2400, "title": "Peninsula · master schedule", "expand": "fill", "is_interactive": true},
+    "PHS-Mobile.dc.html": {"x": 3040, "y": 7540, "w": 390, "h": 2000, "title": "Peninsula · home on a phone", "is_interactive": true, "radius": 36},
+    "CMS-Today.dc.html": {"x": 0, "y": 11660, "w": 1440, "h": 1100, "title": "Studio · coach's today", "expand": "fill"},
+    "CMS-Story-Editor.dc.html": {"x": 1520, "y": 11660, "w": 1440, "h": 1100, "title": "Studio · recap with the agent", "expand": "fill"},
+    "CMS-Schedule-Sync.dc.html": {"x": 3040, "y": 11660, "w": 1440, "h": 1200, "title": "Studio · Arbiter schedule sync", "expand": "fill"},
+    "CMS-Agents.dc.html": {"x": 4560, "y": 11660, "w": 1440, "h": 1200, "title": "Studio · AI agents and MCP access", "expand": "fill"},
+    "GHHS-Photos.dc.html": {"x": 0, "y": 13280, "w": 1440, "h": 2600, "title": "Gig Harbor · photo hub", "expand": "fill", "is_interactive": true},
+    "PHS-Feed-Mobile.dc.html": {"x": 1520, "y": 13280, "w": 390, "h": 2000, "title": "Peninsula · team feed on a phone", "is_interactive": true, "radius": 36},
+    "CMS-Photo-Upload.dc.html": {"x": 1990, "y": 13280, "w": 1440, "h": 1200, "title": "Studio · coach adds a game album", "expand": "fill"},
+    "CMS-Sideline-Mobile.dc.html": {"x": 3510, "y": 13280, "w": 390, "h": 1300, "title": "Studio · posting from the sideline", "radius": 36},
+    "CMS-Media-Review.dc.html": {"x": 3980, "y": 13280, "w": 1440, "h": 1200, "title": "Studio · AD media oversight", "expand": "fill"},
+    "CMS-People-Roles.dc.html": {"x": 0, "y": 16300, "w": 1440, "h": 1200, "title": "Studio · people, roles and onboarding", "expand": "fill"},
+    "PHS-Staff.dc.html": {"x": 1520, "y": 16300, "w": 1440, "h": 1900, "title": "Peninsula · coaches and staff directory", "expand": "fill", "is_interactive": true}
+  },
+  "order": [
+    "Main.dc.html",
+    "GHHS-Home.dc.html",
+    "GHHS-Football.dc.html",
+    "GHHS-GameDay-Mobile.dc.html",
+    "PHS-Home.dc.html",
+    "PHS-Schedule.dc.html",
+    "PHS-Mobile.dc.html",
+    "CMS-Today.dc.html",
+    "CMS-Story-Editor.dc.html",
+    "CMS-Schedule-Sync.dc.html",
+    "CMS-Agents.dc.html",
+    "GHHS-Photos.dc.html",
+    "PHS-Feed-Mobile.dc.html",
+    "CMS-Photo-Upload.dc.html",
+    "CMS-Sideline-Mobile.dc.html",
+    "CMS-Media-Review.dc.html",
+    "CMS-People-Roles.dc.html",
+    "PHS-Staff.dc.html"
+  ],
+  "notes": {
+    "rowHub": {"x": 0, "y": -280, "text": "District hub · athletics.psd401.net", "kind": "title1", "maxW": 1440},
+    "rowGhhs": {"x": 0, "y": 3140, "text": "Gig Harbor Tides · athletics.psd401.net/ghh", "kind": "title1", "maxW": 3430},
+    "rowPhs": {"x": 0, "y": 7260, "text": "Peninsula Seahawks · athletics.psd401.net/phs", "kind": "title1", "maxW": 3430},
+    "rowCms": {"x": 0, "y": 11380, "text": "Athletics Studio — the coach CMS, built on Nexus", "kind": "title1", "maxW": 6000},
+    "rowPhotos": {"x": 0, "y": 13000, "text": "Photos — one home for every team's pictures", "kind": "title1", "maxW": 5420},
+    "rowBeyond": {"x": 0, "y": 16020, "text": "People, roles and the staff directory", "kind": "title1", "maxW": 2960}
+  },
+  "designSystems": [
+    {"title": "Nexus", "namespace": "nexus", "artifact": "https://claude.ai/artifact/L9zua8NYVAMtqb1DKgJkBA", "version": "1791420304-e96f", "copiedAt": "2026-10-09T02:10:00Z"}
+  ]
+}
