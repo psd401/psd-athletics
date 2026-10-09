@@ -71,11 +71,11 @@ export interface SchoolView {
   homeField: string | null;
   logoPath: string;
   social: s.SchoolSocial;
-  /** The athletics office (AD and secretary). Coaches are never in this list. */
-  contacts: { name: string; role: string; email: string | null; phone: string | null }[];
+  /** The athletics office (AD and secretary): names and roles only (DECISIONS 65). */
+  contacts: { name: string; role: string }[];
 }
 
-/** Schools with their athletics office, whose published contacts appear on the site (DECISIONS 52). */
+/** Schools with their athletics office. Email and phone stay in the database; public pages don't show them (DECISIONS 65). */
 export async function listSchools(db: Db): Promise<SchoolView[]> {
   const schools = await db.select().from(s.school).orderBy(asc(s.school.id));
   const contacts = await db.select().from(s.schoolContact).orderBy(asc(s.schoolContact.sort));
@@ -92,7 +92,7 @@ export async function listSchools(db: Db): Promise<SchoolView[]> {
     social: school.social,
     contacts: contacts
       .filter((c) => c.schoolId === school.id)
-      .map((c) => ({ name: c.name, role: c.role, email: c.email, phone: c.phone })),
+      .map((c) => ({ name: c.name, role: c.role })),
   }));
 }
 

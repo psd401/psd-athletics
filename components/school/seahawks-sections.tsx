@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { backgroundAlt } from "../../lib/schools/photos";
 import Link from "next/link";
 
 import type { SchoolView } from "../../lib/data/queries";
@@ -56,7 +57,7 @@ export function MatchHero({
   const host = home ? `The ${schoolView.mascot} host` : `The ${schoolView.mascot} visit`;
   return (
     <section className={`${styles.hero} ath-on-dark`} id="top" aria-label="Next game">
-      <Image className={styles.shot} src={content.heroPhoto} alt="" fill priority sizes="100vw" />
+      <Image className={styles.shot} src={content.heroPhoto} alt={backgroundAlt(content.heroPhoto)} fill priority sizes="100vw" />
       <div className={styles.tint} aria-hidden="true" />
       <div className={`ath-wrap ${styles.grid}`}>
         <div className={styles.main}>
@@ -168,7 +169,7 @@ export function FishBowlChampions({ result, schoolId }: { result: FishBowlResult
   const loser = result.sides.find((s) => !s.winner)!;
   return (
     <section className={`${styles.champ} ath-on-dark`} aria-labelledby="champ-title">
-      <Image className={styles.champShot} src="/images/phs-team.jpg" alt="" fill sizes="100vw" />
+      <Image className={styles.champShot} src="/images/phs-team.jpg" alt={backgroundAlt("/images/phs-team.jpg")} fill sizes="100vw" />
       <div className={`ath-wrap ${styles.champIn}`}>
         <div className={styles.champCopy}>
           <span className={`ath-label ${styles.champKicker}`}>
@@ -285,13 +286,6 @@ export function AthleticsOffice({ schoolView, content }: { schoolView: SchoolVie
               <span className={styles.personText}>
                 <h3 className={styles.personName}>{c.name}</h3>
                 <span className={styles.personRole}>{c.role}</span>
-                {c.email || c.phone ? (
-                  <span className={styles.personReach}>
-                    {c.email ? <a href={`mailto:${c.email}`}>{c.email}</a> : null}
-                    {c.email && c.phone ? " · " : null}
-                    {c.phone ? <a href={`tel:+1${c.phone.replace(/\D/g, "")}`}>{c.phone}</a> : null}
-                  </span>
-                ) : null}
               </span>
             </li>
           ))}

@@ -61,18 +61,6 @@ export default async function FamiliesPage() {
                 {school.contacts.map((c) => (
                   <p key={c.name} className={f.contact}>
                     <b>{c.name}</b>, {c.role}
-                    {c.email ? (
-                      <>
-                        <br />
-                        <a href={`mailto:${c.email}`}>{c.email}</a>
-                      </>
-                    ) : null}
-                    {c.phone ? (
-                      <>
-                        <br />
-                        <a href={`tel:+1${c.phone.replace(/\D/g, "")}`}>{c.phone}</a>
-                      </>
-                    ) : null}
                   </p>
                 ))}
               </div>

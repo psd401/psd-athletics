@@ -7,8 +7,9 @@ test.describe("coaches and staff", () => {
     await page.goto("/phs/staff");
     await expect(page).toHaveTitle("Coaches & staff · Seahawks Athletics");
     await expect(page.locator('a[aria-current="page"]')).toHaveText("Coaches");
-    await expect(page.getByRole("link", { name: "filkinsr@psd401.net" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "253-530-4410" })).toHaveAttribute("href", "tel:+12535304410");
+    await expect(page.getByRole("heading", { name: "Ross Filkins" })).toBeVisible();
+    // No office or coach email addresses or phone numbers on the page (DECISIONS 65).
+    await expect(page.locator('a[href^="mailto:"], a[href^="tel:"]')).toHaveCount(0);
     await expect(page.getByRole("link", { name: "Football team page" })).toHaveAttribute("href", "/phs/teams/football");
     await expect(page.getByText("Head coach not listed yet").first()).toBeVisible();
     // No coach email addresses anywhere in the directory.

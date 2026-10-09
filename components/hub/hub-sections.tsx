@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { backgroundAlt } from "../../lib/schools/photos";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -19,7 +20,7 @@ export function FishBowlBand({ result }: { result: FishBowlResult | null }) {
   const [first, second] = result.sides;
   return (
     <section className={`${styles.fish} ${styles.sec} ath-on-dark`} id="fishbowl" aria-labelledby="fishbowl-title">
-      <Image className={styles.fishShot} src="/images/ghhs-fishbowl-crowd.jpg" alt="" fill sizes="100vw" />
+      <Image className={styles.fishShot} src="/images/ghhs-fishbowl-crowd.jpg" alt={backgroundAlt("/images/ghhs-fishbowl-crowd.jpg")} fill sizes="100vw" />
       <svg className={styles.fishWaves} viewBox="0 0 1440 600" preserveAspectRatio="none" aria-hidden="true">
         <path className={styles.waveTides} d="M0 520 C 240 470, 480 570, 720 520" />
         <path className={styles.waveTides} d="M0 548 C 240 498, 480 598, 720 548" />
@@ -323,10 +324,7 @@ export function HubFooter({ schools }: { schools: SchoolView[] }) {
                   <span>
                     {lead.role}
                     <br />
-                    <span className={styles.footStrong}>
-                      {lead.name}
-                      {lead.phone ? ` · ${lead.phone}` : ""}
-                    </span>
+                    <span className={styles.footStrong}>{lead.name}</span>
                   </span>
                 ) : null}
                 <a href={`/${school.slug}`}>{school.mascot} Athletics</a>

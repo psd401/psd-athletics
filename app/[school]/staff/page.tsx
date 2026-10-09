@@ -83,16 +83,6 @@ export default async function StaffPage({ params }: { params: Promise<{ school: 
                   <span className={seahawks.personText}>
                     <h3 className={seahawks.personName}>{c.name}</h3>
                     <span className={seahawks.personRole}>{c.role}</span>
-                    {c.email ? (
-                      <span className={seahawks.personReach}>
-                        <a href={`mailto:${c.email}`}>{c.email}</a>
-                      </span>
-                    ) : null}
-                    {c.phone ? (
-                      <span className={seahawks.personReach}>
-                        <a href={`tel:+1${c.phone.replace(/\D/g, "")}`}>{c.phone}</a>
-                      </span>
-                    ) : null}
                   </span>
                 </li>
               ))}

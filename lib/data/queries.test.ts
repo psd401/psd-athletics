@@ -61,10 +61,15 @@ describe("getGame", () => {
 });
 
 describe("listSchools", () => {
-  it("includes the athletics office as published by the school", async () => {
+  it("includes the athletics office by name and role only", async () => {
     const [ghhs, phs] = await listSchools(db);
-    expect(ghhs?.contacts).toEqual([{ name: "Carly Fries-Geldermann", role: "Athletic Secretary", email: null, phone: null }]);
-    expect(phs?.contacts[0]).toEqual({ name: "Ross Filkins", role: "Athletic Director", email: "filkinsr@psd401.net", phone: "253-530-4410" });
+    expect(ghhs?.contacts).toEqual([{ name: "Carly Fries-Geldermann", role: "Athletic Secretary" }]);
+    expect(phs?.contacts).toEqual([
+      { name: "Ross Filkins", role: "Athletic Director" },
+      { name: "Angie Wehmeier", role: "Athletic Secretary" },
+    ]);
+    // Email and phone stay in the database but never reach a page (DECISIONS 65).
+    expect(JSON.stringify([ghhs, phs])).not.toMatch(/@psd401\.net|253-530/);
   });
 });
 

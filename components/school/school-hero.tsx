@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { backgroundAlt } from "../../lib/schools/photos";
 import Link from "next/link";
 
 import type { SchoolView } from "../../lib/data/queries";
@@ -106,7 +107,7 @@ export function SchoolHero({ school, content, marquee, marqueeTeamGames, tonight
   const unit = marquee?.sportSlug === "football" ? "kickoff" : "start";
   return (
     <section className={`${styles.hero} ath-on-dark`} id="top" aria-label="Next game">
-      <Image className={styles.heroShot} src={content.heroPhoto} alt="" fill priority sizes="100vw" />
+      <Image className={styles.heroShot} src={content.heroPhoto} alt={backgroundAlt(content.heroPhoto)} fill priority sizes="100vw" />
       <Motif kind={content.motif} />
       <span className={`ath-display ${styles.heroGhost}`} aria-hidden="true">
         {content.ghostText}

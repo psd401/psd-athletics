@@ -19,7 +19,8 @@ test.describe("Peninsula home", () => {
     await expect(page.getByRole("heading", { name: "The week ahead" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Fish Bowl champions" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "More than a scoreboard" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "filkinsr@psd401.net" })).toHaveAttribute("href", "mailto:filkinsr@psd401.net");
+    await expect(page.getByRole("heading", { name: "Ross Filkins" })).toBeVisible();
+    await expect(page.locator('a[href^="mailto:"], a[href^="tel:"]')).toHaveCount(0);
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);
   });
