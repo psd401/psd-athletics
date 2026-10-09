@@ -12,7 +12,7 @@ import { listPublishedAlbums, photoForServing } from "../photos/albums";
 import { memoryPhotoStorage } from "../photos/storage";
 import { cameraJpeg } from "../photos/test-images";
 import { PermissionError, ValidationError } from "../studio/errors";
-import { createPost, listFeed, removePost } from "./posts";
+import { createPost, listFeed, publishPost, removePost } from "./posts";
 
 let db: Db;
 let soccer: string;
@@ -140,5 +140,18 @@ describe("listFeed", () => {
     await db.update(s.photo).set({ hiddenReason: "Reported" }).where(eq(s.photo.id, withPhotos.photos[0]!.id));
     expect((await listFeed(db, { schoolId: "ghhs" })).find((p) => p.id === withPhotos.id)!.photos).toHaveLength(1);
     expect(await listFeed(db, { schoolId: "phs" })).toEqual([]);
+  });
+});
+
+describe("publishPost", () => {
+  it("lets a person publish an assistant's draft; the assistant can't", async () => {
+    const [connection] = await db.insert(s.agentConnection).values({ personId: "asst", clientName: "Claude", expiresAt: new Date("2026-10-10T00:00:00Z") }).returning();
+    const viaAgent = actor("asst", "assistant_coach", soccer, connection!.id);
+    const draft = await createPost(as(viaAgent), storage, { teamId: soccer, kind: "note", body: "Drafted for the coach." });
+    await expect(publishPost(as(viaAgent), draft.id)).rejects.toThrow(new PermissionError("A person publishes posts. Open the Studio to publish this one."));
+    await expect(publishPost(as(photographer), draft.id)).rejects.toThrow(PermissionError);
+    const live = await publishPost(as(assistant), draft.id);
+    expect(live.publishedAt?.toISOString()).toBe(now.toISOString());
+    expect((await listFeed(db, { schoolId: "ghhs" })).some((p) => p.id === draft.id)).toBe(true);
   });
 });

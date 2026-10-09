@@ -65,7 +65,8 @@ export interface RosterInput {
   grade?: number | null;
 }
 
-function rosterFields(input: RosterInput) {
+/** Checks a roster row against the district name rule (first name, last initial). Throws ValidationError. */
+export function rosterFields(input: RosterInput) {
   const displayName = input.displayName.trim().replace(/\s+/g, " ");
   if (!ROSTER_NAME.test(displayName)) throw new ValidationError("Use first name and last initial, like Alex R.");
   const jersey = input.jerseyNumber?.trim() ?? "";

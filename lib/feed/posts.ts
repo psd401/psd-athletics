@@ -133,6 +133,18 @@ export async function removePost(ctx: Ctx, postId: string) {
   return after!;
 }
 
+/** Publish a draft post (an assistant's). A person with feed.post on the team; never an agent. */
+export async function publishPost(ctx: Ctx, postId: string) {
+  if (ctx.actor.agentConnectionId) throw new PermissionError("A person publishes posts. Open the Studio to publish this one.");
+  const [before] = await ctx.db.select().from(s.feedPost).where(eq(s.feedPost.id, postId));
+  if (!before) throw new ValidationError("That post doesn't exist.");
+  const scope = await teamScope(ctx.db, before.teamId);
+  if (!can(ctx.actor, "feed.post", scope)) throw new PermissionError("Only this team's coaches can publish to its feed.");
+  const [after] = await ctx.db.update(s.feedPost).set({ publishedAt: before.publishedAt ?? ctx.now }).where(eq(s.feedPost.id, postId)).returning();
+  await recordChange(ctx.db, { actor: ctx.actor, verb: "publish", objectType: "feed_post", objectId: postId, scope, before, after: after!, now: ctx.now });
+  return after!;
+}
+
 export interface FeedPhoto {
   id: string;
   altText: string;

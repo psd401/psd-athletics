@@ -44,6 +44,7 @@ export default async function StudioLayout({ children }: { children: ReactNode }
   if (photoTeams || oversees) items.push({ href: "/studio/photos", label: "Photos" });
   if (peopleSchools(ctx).length > 0) items.push({ href: "/studio/people", label: "People and roles" });
   items.push({ href: "/studio/activity", label: "Activity" });
+  items.push({ href: "/studio/assistants", label: "Assistants" });
 
   return (
     <div data-theme="nexus" className={styles.shell}>

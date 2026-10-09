@@ -15,6 +15,13 @@
       "when": 1791550106049,
       "tag": "0001_roster_publish",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791564638013,
+      "tag": "0002_mcp_oauth",
+      "breakpoints": true
     }
   ]
 }

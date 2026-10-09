@@ -1,0 +1,29 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.psd401/psd-athletics",
+  "title": "Peninsula Athletics",
+  "description": "Coaches' AI assistants read schedules and draft stories, roster changes and team feed posts.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/psd401/psd-athletics",
+    "source": "github"
+  },
+  "websiteUrl": "https://athletics.psd401.net",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://athletics.psd401.net/mcp"
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "psd": {
+        "owner": "@krishagel",
+        "riskTier": "MCP-3",
+        "auth": "OAuth 2.1, psd401.net Google accounts, audience-bound JWT access tokens",
+        "dataTouched": ["schedules and results", "stories", "roster directory information", "team feed posts"],
+        "inventory": "docs/MCP.md"
+      }
+    }
+  }
+}

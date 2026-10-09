@@ -207,3 +207,14 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
    - **WAF:** AWS managed rules plus a per-IP rate limit, which also slows abuse of the public report and alert forms (DECISIONS 96, 103).
    - **Not applied.** The account, state bucket and SMS provider are open (QUESTIONS 26, 27).
 108. **The app image runs Next.js on Node 24, with bun alongside** for installs and jobs. `next build` under bun's own runtime crashed (bun 1.2.23 segfault in Docker), and locally `bun run` already launches the Next CLI with Node, so the image matches what's tested. AWS pieces sit behind the existing interfaces, chosen by environment: S3 photo storage (`PHOTO_STORAGE=s3`), the SES sender (`ALERTS_EMAIL=ses`) and the RDS connection (`DATABASE_HOST`/`DATABASE_SECRET_ARN`, password read at connect time and cached for a minute). Without them, the local defaults (folder, log sender, PGlite or `DATABASE_URL`) are unchanged. Dev sign-in also stays off whenever `DATABASE_HOST` is set.
+
+## 2026-10-09 — MCP server (Phase 7)
+
+109. **The MCP server is in this app at `/mcp`** (`@modelcontextprotocol/server` 2.1.0, stateless, accepting 2025-era clients too).
+   - **Authorization server:** this app, through Better Auth's `mcp` plugin (OAuth 2.1, dynamic client registration, audience-bound JWTs, consent on `/connect`).
+   - **Connections:** each assistant is an `agent_connection` per person and client, so the audit log names it and the person can turn it off (Studio → Assistants). That revokes its tokens, and the server refuses tokens issued before the turn-off. Security times use the real clock, not the pinned app clock.
+   - **Seven tools** (docs/MCP.md). **`psd_athletics_content_publish` never publishes.** It returns the Studio link where the person publishes. SPEC §8 lists it as a "Change" tool for coaches, but CLAUDE.md's non-negotiable "Agents propose; people publish" wins (spec-vs-rule conflicts follow the rule).
+   - **Writes:** default to dry run. Story and feed tools only make drafts; roster adds stay unpublished; roster removals are limited to unpublished entries.
+   - **Not offered:** `upload_media` and `share_to_social` (docs/MCP.md).
+110. **Sign-in during an assistant's authorization:** the sign-in page verifies the signed request, signs the person in, and sends them back to the authorize endpoint (signature fields and a satisfied `prompt=login` removed). The authorize endpoint re-checks the client, redirect URI and PKCE. Better Auth's server-side sign-in hook didn't resume the flow for server actions, so this does it explicitly. Consent uses a small client component that posts to the consent endpoint and follows its redirect, as Better Auth's own client does.
+111. **A person publishes assistant drafts:** `publishPost` refuses agents, and the Studio post page lists "Drafts from your assistant" with Publish. Story drafts already show in Stories, and unpublished roster entries in the team editor.
