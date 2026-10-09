@@ -1,0 +1,121 @@
+{
+  "_about": "Real fall 2026 data gathered Oct 8, 2026 from MaxPreps (which is fed by ArbiterSports) and the school websites. Use as seed/fixture data until the Arbiter sync is live. Times are Pacific. 'ha' is home/away from the listed school's point of view. Results are from the listed school's point of view (us-them).",
+  "asOf": "2026-10-08T19:00:00-07:00",
+  "schools": [
+    {
+      "id": "ghhs",
+      "name": "Gig Harbor High School",
+      "mascot": "Tides",
+      "path": "/ghh",
+      "founded": 1979,
+      "address": "5101 Rosedale St NW, Gig Harbor, WA 98335",
+      "colors": { "navy": "#022C66", "columbiaBlue": "#69ABE0", "logoOutline": "#00022C", "white": "#FFFFFF" },
+      "logo": "assets/logos/ghhs-gh-logo.png",
+      "social": { "instagram": "@GHTidePride", "x": "@GHTidePride" },
+      "contacts": [ { "name": "Carly Fries-Geldermann", "role": "Athletic Secretary" } ],
+      "arbiterEntityIdCandidate": "8486 or 17802 (mapping to school not yet confirmed)",
+      "stateTitles": [
+        "Track and field: 11 state titles, including boys and girls 3A in 2018",
+        "Boys cross country: 4A state titles 2011, 2013, 2014; 2013 Nike Cross Nationals champions",
+        "Girls cross country: 4A state titles 2005, 2006, 2007",
+        "Baseball: state champions 1997 and 2017",
+        "Water polo: three consecutive state titles (years to confirm)"
+      ],
+      "sportsBySeason": {
+        "fall": ["Football", "Girls Soccer", "Volleyball", "Boys Tennis", "Cross Country", "Girls Swim and Dive", "Boys Water Polo"],
+        "winter": ["Basketball", "Wrestling", "Girls Bowling", "Dance", "Cheerleading", "Boys Swim and Dive", "Girls Flag Football"],
+        "spring": ["Baseball", "Golf", "Girls Lacrosse", "Fastpitch", "Boys Soccer", "Track and Field", "Girls Water Polo", "Girls Tennis"]
+      }
+    },
+    {
+      "id": "phs",
+      "name": "Peninsula High School",
+      "mascot": "Seahawks",
+      "path": "/phs",
+      "founded": 1947,
+      "address": "14105 Purdy Dr NW, Gig Harbor, WA 98332",
+      "homeField": "Roy Anderson Field",
+      "colors": { "green": "#194746", "silver": "#A7A9AC", "white": "#FFFFFF" },
+      "logo": "assets/logos/phs-p-logo.png",
+      "contacts": [
+        { "name": "Ross Filkins", "role": "Athletic Director", "email": "filkinsr@psd401.net", "phone": "253-530-4410" },
+        { "name": "Angie Wehmeier", "role": "Athletic Secretary", "email": "wehmeiere@psd401.net", "phone": "253-530-4411" }
+      ],
+      "arbiterEntityIdCandidate": "8486 or 17802 (mapping to school not yet confirmed)",
+      "history": [
+        "3A state football champions in 1978 (coach Larry Lunke)",
+        "League football champions 2012 and 2013",
+        "Varsity Letter in Community Service program",
+        "Hawks Scholarship Fund"
+      ],
+      "sportsBySeason": {
+        "fall": ["Football", "Boys Tennis", "Boys Water Polo", "Volleyball", "Girls Soccer", "Girls Swim and Dive", "Cross Country", "Cheer"],
+        "winter": ["Boys Basketball", "Girls Basketball", "Boys Swim and Dive", "Girls Bowling", "Wrestling", "Unified Soccer", "Water Polo"],
+        "spring": ["Fastpitch", "Baseball", "Golf", "Boys Soccer", "Girls Lacrosse", "Girls Tennis", "Girls Water Polo", "Track and Field", "Unified Soccer"]
+      }
+    }
+  ],
+  "fishBowl": { "season": 2026, "date": "2026-09-19", "time": "17:00", "site": "Gig Harbor", "winner": "phs", "score": { "phs": 37, "ghhs": 8 } },
+  "records": {
+    "ghhs-football-varsity": { "overall": "3-2", "league": "2-0", "leagueRank": 2, "pointsFor": 98, "pointsAgainst": 93, "home": "2-1", "away": "1-1", "streak": "W2" },
+    "ghhs-volleyball-varsity": { "overall": "6-3", "note": "won four straight through Oct 7" },
+    "ghhs-girls-soccer-varsity": { "overall": "5-2", "league": "3-0", "leagueRank": 1, "lastThree": "13-0 goals" },
+    "phs-volleyball-varsity": { "overall": "4-6", "league": "4-5" },
+    "phs-girls-soccer-varsity": { "overall": "3-4", "league": "1-0" }
+  },
+  "games": [
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-09-04", "time": "19:00", "opponent": "Emerald Ridge", "ha": "away", "league": false, "result": "L", "score": "14-20" },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-09-11", "time": "19:00", "opponent": "Bainbridge", "ha": "home", "league": false, "result": "W", "score": "25-8" },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-09-19", "time": "17:00", "opponent": "Peninsula", "ha": "home", "league": false, "result": "L", "score": "8-37", "note": "The Fish Bowl" },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-09-25", "time": "19:00", "opponent": "Bellarmine Prep", "ha": "home", "league": true, "result": "W", "score": "20-0" },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-10-02", "time": "19:00", "opponent": "Lincoln", "ha": "away", "league": true, "result": "W", "score": "31-28" },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-10-09", "time": "19:00", "opponent": "Central Kitsap", "ha": "away", "league": true },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-10-16", "time": "19:00", "opponent": "Silas", "ha": "home", "league": true },
+    { "school": "ghhs", "sport": "Football", "level": "Varsity", "date": "2026-10-23", "time": "19:00", "opponent": "Mount Tahoma", "ha": "away", "league": true },
+
+    { "school": "ghhs", "sport": "Volleyball", "level": "Varsity", "date": "2026-09-29", "time": "19:15", "opponent": "Peninsula", "ha": "away", "result": "W", "score": "3-0" },
+    { "school": "ghhs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-01", "time": "19:15", "opponent": "Lincoln", "ha": "away", "result": "W", "score": "3-1" },
+    { "school": "ghhs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-05", "time": "19:15", "opponent": "Silas", "ha": "home", "result": "W", "score": "3-0" },
+    { "school": "ghhs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-07", "time": "19:15", "opponent": "Mount Tahoma", "ha": "home", "result": "W", "score": "3-0" },
+    { "school": "ghhs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-13", "time": "19:15", "opponent": "Central Kitsap", "ha": "away" },
+    { "school": "ghhs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-15", "time": "19:15", "opponent": "Bellarmine Prep", "ha": "home" },
+
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-09-29", "time": "19:00", "opponent": "Lakes", "ha": "away", "result": "W", "score": "8-0" },
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-01", "time": "19:30", "opponent": "Silas", "ha": "home", "result": "W", "score": "3-0" },
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-06", "time": "19:00", "opponent": "Capital", "ha": "away", "result": "W", "score": "2-0" },
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-08", "time": "19:30", "opponent": "Mount Tahoma", "ha": "home" },
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-13", "time": "19:00", "opponent": "Bellarmine Prep", "ha": "away" },
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-15", "time": "15:30", "opponent": "North Thurston", "ha": "home" },
+    { "school": "ghhs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-20", "time": "19:00", "opponent": "Timberline", "ha": "away" },
+
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-09-04", "time": "19:00", "opponent": "W.F. West", "ha": "away", "result": "L", "score": "21-42" },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-09-10", "time": "19:00", "opponent": "Franklin Pierce", "ha": "home", "result": "L", "score": "14-42" },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-09-19", "time": "17:00", "opponent": "Gig Harbor", "ha": "away", "result": "W", "score": "37-8", "note": "The Fish Bowl" },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-09-25", "time": "19:00", "opponent": "Timberline", "ha": "away", "league": true, "note": "result not captured" },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-10-02", "time": "19:00", "opponent": "Capital", "ha": "home", "league": true, "note": "result not captured" },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-10-09", "time": "19:00", "opponent": "North Thurston", "ha": "home", "league": true, "tickets": true, "stream": true },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-10-15", "time": "19:00", "opponent": "River Ridge", "ha": "away", "league": true },
+    { "school": "phs", "sport": "Football", "level": "Varsity", "date": "2026-10-23", "time": "19:00", "opponent": "Lakes", "ha": "home", "league": true },
+    { "school": "phs", "sport": "Football", "level": "Freshman", "date": "2026-10-12", "time": "16:00", "opponent": "North Thurston", "ha": "home" },
+    { "school": "phs", "sport": "Football", "level": "JV", "date": "2026-10-12", "time": "18:00", "opponent": "North Thurston", "ha": "home" },
+    { "school": "phs", "sport": "Water Polo", "level": "Varsity", "date": "2026-10-12", "time": "16:00", "opponent": "South Kitsap", "ha": "home" },
+
+    { "school": "phs", "sport": "Volleyball", "level": "Varsity", "date": "2026-09-29", "time": "19:15", "opponent": "Gig Harbor", "ha": "home", "result": "L", "score": "0-3" },
+    { "school": "phs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-01", "time": "19:15", "opponent": "North Thurston", "ha": "home", "result": "L", "score": "0-3" },
+    { "school": "phs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-05", "time": "19:15", "opponent": "River Ridge", "ha": "away", "result": "W", "score": "3-0" },
+    { "school": "phs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-07", "time": "19:15", "opponent": "Capital", "ha": "away", "result": "L", "score": "0-3" },
+    { "school": "phs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-13", "time": "19:15", "opponent": "Timberline", "ha": "home" },
+    { "school": "phs", "sport": "Volleyball", "level": "Varsity", "date": "2026-10-15", "time": "19:15", "opponent": "Lakes", "ha": "home" },
+    { "school": "phs", "sport": "Volleyball", "level": "JV", "date": "2026-10-13", "time": "17:45", "opponent": "Timberline", "ha": "home" },
+    { "school": "phs", "sport": "Volleyball", "level": "Freshman", "date": "2026-10-13", "time": "17:45", "opponent": "Timberline", "ha": "home" },
+
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-09-29", "time": "19:00", "opponent": "Central Kitsap", "ha": "home", "result": "L", "score": "0-2" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-01", "time": "19:00", "opponent": "Lincoln", "ha": "away", "result": "W", "score": "8-0" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-06", "time": "19:00", "opponent": "Timberline", "ha": "home", "result": "W", "score": "2-1" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-08", "time": null, "opponent": "Silas", "ha": "home", "note": "in progress at snapshot time; start time not listed" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-13", "time": "19:00", "opponent": "Capital", "ha": "home" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-15", "time": "16:30", "opponent": "River Ridge", "ha": "home" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "Varsity", "date": "2026-10-20", "time": "19:00", "opponent": "Mount Tahoma", "ha": "home" },
+    { "school": "phs", "sport": "Girls Soccer", "level": "JV", "date": "2026-10-13", "time": "16:30", "opponent": "Capital", "ha": "home" }
+  ]
+}
