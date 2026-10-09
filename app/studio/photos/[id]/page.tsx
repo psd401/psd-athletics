@@ -65,6 +65,13 @@ export default async function AlbumPage({ params, searchParams }: { params: Para
           sub={`${shown.length} ${shown.length === 1 ? "photo" : "photos"}${held.length ? `, ${held.length} held for the coach` : ""}. ${
             canPublish ? "You decide what posts." : "The head coach or an athletic director publishes."
           }`}
+          actions={
+            published ? (
+              <Link className="nx-btn nx-btn--secondary nx-btn--sm" href={`/${ctx.schools.find((s) => s.id === schoolId)?.slug}/photos/${album.id}`}>
+                View on the site
+              </Link>
+            ) : null
+          }
         />
         {saved ? (
           <div className="nx-banner nx-banner--success" role="status">

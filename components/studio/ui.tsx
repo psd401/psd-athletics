@@ -3,7 +3,7 @@
 // renders the same markup with these.
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 
 import styles from "./studio.module.css";
 
@@ -121,10 +121,13 @@ export function Decision({
   undo: string;
   needs?: boolean;
 }) {
+  const id = useId();
   return (
-    <section className={`nx-decision ${needs ? "nx-decision--needs" : ""}`}>
+    <section className={`nx-decision ${needs ? "nx-decision--needs" : ""}`} aria-labelledby={id}>
       <span className="nx-eyebrow">{eyebrow}</span>
-      <h2 className="nx-decision__title">{title}</h2>
+      <h2 id={id} className="nx-decision__title">
+        {title}
+      </h2>
       <p className="nx-decision__why">{why}</p>
       <div className="nx-decision__rec">
         <span className="nx-decision__rec-label">{label}</span>
