@@ -1,0 +1,50 @@
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch-min);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--ath-line);
+  background: var(--ath-surface);
+  color: var(--ath-ink);
+  text-decoration: none;
+  font: 600 13px/1 var(--ath-font-text);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+[data-school] .act {
+  color: var(--ath-ink);
+}
+
+.act:hover {
+  background: var(--ath-tint);
+}
+
+.act svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+[data-school] .strong {
+  background: var(--ath-brand);
+  border-color: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+.strong:hover {
+  background: var(--ath-brand-hover);
+}
+
+.iconOnly {
+  width: var(--touch-min);
+  justify-content: center;
+  padding: 0;
+}

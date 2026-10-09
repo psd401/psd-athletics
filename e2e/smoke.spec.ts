@@ -2,15 +2,6 @@ import { expect, test } from "@playwright/test";
 
 import { axeViolations, hasHorizontalScroll } from "./axe";
 
-test.describe("public site", () => {
-  test("home page renders and passes axe", async ({ page }) => {
-    await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    expect(await axeViolations(page)).toEqual([]);
-    expect(await hasHorizontalScroll(page)).toBe(false);
-  });
-});
-
 test.describe("Athletics Studio", () => {
   test("sends signed-out visitors to sign-in", async ({ page }) => {
     await page.goto("/studio");

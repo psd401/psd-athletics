@@ -42,3 +42,12 @@ Choices made while building, newest last. Each entry says what was decided, why,
 24. **Three checks keep the Studio to `psd401.net`:** Google's `hd` option (Google offers only district accounts, and Better Auth rejects an id token whose `hd` claim differs), `user.validateUserInfo` on every Google sign-in (verified email whose domain is exactly `psd401.net`), and a `session.create.before` hook that refuses a session for any person row that isn't a verified district account. The rule is one function, `lib/auth/domain.ts`.
 25. **Studio pages render with Nexus CSS only** (`tokens.css` + `bundle.css`, `nx-` classes) and no Nexus React bundle yet, which targets React 18 (QUESTIONS 15). Each Studio page checks the session itself as well as the layout.
 26. **`BETTER_AUTH_SECRET` is required in production** (Better Auth refuses its default secret there). With no Google client configured, the sign-in page says so and the button is disabled.
+
+## 2026-10-08 — District hub (PLAN task 2.1)
+
+27. **The score ticker has a pause button** and pauses on hover and keyboard focus. It scrolls for more than five seconds, which WCAG 2.2.2 says needs a way to stop it; the comp had none. Under reduced motion it doesn't move and becomes a scrollable row.
+28. **Links to pages that don't exist yet are left out** until the PR that builds the page: Full schedule and calendar subscribe (2.3), Photos in the header (Phase 5), Fish Bowl history, Sideline Store, Watch live and Tickets quick links (no URLs yet, QUESTIONS 20), the Puget Sound League link (URL to confirm). Families cards other than Final Forms show "Link coming soon" (QUESTIONS 23).
+29. **The ticker shows the latest finals whatever the result.** The comp's hub ticker happened to show only wins; a district site reports losses too.
+30. **Afternoon games today are tagged "Today", evening games "Tonight"** (5 PM and later, or no listed time). The hero tag is Live/Tonight/Today when it applies, otherwise "Home" or "Next up".
+31. **Small layout changes from the comp:** the hero school names scale with the viewport (clamp to 10vw) so "Seahawks" fits its half; the hero clips the center slash; on phones each game's title row spans the full card width instead of the 72px time column.
+32. **Images in `public/` are served as-is** (`images.unoptimized`). They're already web-sized; on-the-fly resizing needs sharp and a hosting decision, revisited in Phase 5. Photos and logos are copies of `design/assets/` (credits in `design/assets/photos/CREDITS.md`).

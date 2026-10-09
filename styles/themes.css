@@ -22,6 +22,9 @@
   --ghh-muted: #4c5d77;
   --ghh-line: #d4dfec;
   --ghh-tag: #e3eefb;
+  --ghh-on-navy: #dcebfa;
+  --ghh-sky-light: #b9d9f2;
+  --ghh-wave-deep: #2c5d9e;
 
   /* Peninsula Seahawks */
   --phs-forest: #0d2726;
@@ -35,6 +38,8 @@
   --phs-muted: #45585a;
   --phs-line: #d4dddc;
   --phs-tag: #e2eae9;
+  --phs-motif: #d3dddc;
+  --phs-wave-deep: #4e7c79;
 
   /* District hub */
   --hub-night: #0a111c;
@@ -43,6 +48,10 @@
   --hub-muted: #556273;
   --hub-line: #dce2ea;
   --hub-sunken: #e6ebf1;
+  --hub-on-night: #e8edf3;
+  --hub-on-night-text: #aeb9c7;
+  --hub-on-night-label: #7f8da0;
+  --hub-night-line: #1f2b3a;
 
   /* Shared status colors. Live is darker than BRAND's #E5383B so white
      label text on it reaches 4.5:1 (4.87:1; #E5383B is 4.23:1). */
@@ -138,3 +147,69 @@
   background: var(--ath-paper);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Shared type and layout utilities for the public sites. */
+.ath-display {
+  font-family: var(--ath-font-display);
+  font-variation-settings: var(--ath-font-display-settings);
+  font-weight: 900;
+  line-height: var(--ath-leading-display);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.ath-label {
+  font-family: var(--ath-font-label);
+  font-weight: 600;
+  letter-spacing: var(--ath-tracking-label);
+  text-transform: uppercase;
+}
+
+.ath-wrap {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-10);
+}
+
+[data-school] *,
+[data-school] *::before,
+[data-school] *::after {
+  box-sizing: border-box;
+}
+
+[data-school] a {
+  color: var(--ath-link);
+}
+
+/* Focus ring: dark ink on light grounds; sections on a dark ground add
+   .ath-on-dark to flip it to white. Both are at least 3:1 against their ground. */
+[data-school] {
+  --ath-focus: var(--ath-ink);
+}
+
+.ath-on-dark {
+  --ath-focus: var(--ath-white);
+}
+
+[data-school] :focus-visible {
+  outline: 3px solid var(--ath-focus);
+  outline-offset: 2px;
+}
+
+.ath-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .ath-wrap {
+    padding: 0 var(--space-4);
+  }
+}
+

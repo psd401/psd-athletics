@@ -1,0 +1,167 @@
+.ticker {
+  overflow: hidden;
+  color: var(--ath-on-ground);
+}
+
+.hub {
+  background: var(--hub-night);
+  border-top: 1px solid var(--hub-night-line);
+}
+
+.school {
+  background: var(--ath-ground);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+}
+
+.label {
+  flex: none;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 var(--space-6) 0 var(--space-10);
+  font: 700 14px/1 var(--ath-font-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hub .label {
+  background: var(--ath-live);
+  color: var(--ath-white);
+}
+
+.school .label {
+  background: var(--ath-accent);
+  color: var(--ath-on-accent);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.4s var(--ease-in-out) infinite;
+}
+
+.viewport {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.track {
+  display: flex;
+  gap: 44px;
+  margin: 0;
+  padding: 0 0 0 var(--space-8);
+  list-style: none;
+  white-space: nowrap;
+  width: max-content;
+  animation: tick 48s linear infinite;
+}
+
+.track[data-paused="true"],
+.viewport:hover .track,
+.ticker:focus-within .track {
+  animation-play-state: paused;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 15px/1 var(--ath-font-text);
+  color: var(--ath-on-ground-muted);
+}
+
+.item b {
+  color: var(--ath-on-ground);
+  font-weight: 700;
+}
+
+.hub .final {
+  background: var(--ath-neutral-bg);
+  color: var(--ath-neutral-ink);
+}
+
+.hub .next,
+.school .next {
+  background: var(--ath-white);
+  color: var(--ath-ink);
+}
+
+.hub .next {
+  background: var(--ath-tonight-bg);
+  color: var(--ath-tonight-ink);
+}
+
+.pause {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ath-on-ground);
+  cursor: pointer;
+}
+
+.pause:hover {
+  background: var(--ath-brand-deep);
+}
+
+.pause svg {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes tick {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* No motion: a still, scrollable row, no duplicate copy, no pause button. */
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .dot {
+    animation: none;
+  }
+
+  .viewport {
+    overflow-x: auto;
+  }
+
+  .duplicate,
+  .pause {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .label {
+    padding: 0 var(--space-4);
+  }
+}
