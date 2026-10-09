@@ -48,6 +48,7 @@ export interface FixtureSnapshot {
 }
 
 export interface FixtureContent {
+  schools: { id: string; arbiterEntityId: string }[];
   honors: {
     school: string;
     sport?: string;

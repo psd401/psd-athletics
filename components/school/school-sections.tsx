@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import type { SchoolView, TeamView } from "../../lib/data/queries";
-import type { SchoolContent } from "../../lib/schools/content";
+import { LEAGUE_URL, type SchoolContent } from "../../lib/schools/content";
 import { levelLabel, opponentLine, result, type GameView } from "../../lib/schedule/games";
 import type { FormCard } from "../../lib/schedule/school";
 import { formatShortDate } from "../../lib/schedule/time";
@@ -15,7 +15,7 @@ export const FINAL_FORMS = "https://peninsula-wa.finalforms.com";
 
 // ------------------------------------------------------------ top of page
 
-export function UtilityBar({ other }: { other: SchoolView }) {
+export function UtilityBar({ other, content }: { other: SchoolView; content: SchoolContent }) {
   return (
     <div className={`${styles.util} ath-on-dark`}>
       <div className={`ath-wrap ${styles.utilIn}`}>
@@ -30,7 +30,10 @@ export function UtilityBar({ other }: { other: SchoolView }) {
           {other.shortName} {other.mascot}
         </Link>
         <span className={styles.utilEnd}>
+          <a href={content.links.tickets}>Tickets</a>
+          <a href={content.links.watch}>Watch live</a>
           <a href={FINAL_FORMS}>Register</a>
+          <a href={content.links.store}>Sideline Store</a>
         </span>
       </div>
     </div>
@@ -231,11 +234,10 @@ export function Tradition({
 // ------------------------------------------------------------ fan zone
 
 export function FanZone({ school, content }: { school: SchoolView; content: SchoolContent }) {
-  // Only Final Forms has a confirmed link (QUESTIONS 20, 23).
   const items: { icon: ReactNode; title: string; text: string; href?: string }[] = [
-    { icon: <TicketIcon />, title: "Tickets", text: "Digital tickets on GoFan. Link coming soon." },
-    { icon: <WatchIcon />, title: "Watch live", text: "Home games on the NFHS Network. Link coming soon." },
-    { icon: <BagIcon />, title: "Sideline Store", text: `Official ${school.mascot} gear. Link coming soon.` },
+    { icon: <TicketIcon />, title: "Tickets", text: "Digital tickets on GoFan", href: content.links.tickets },
+    { icon: <WatchIcon />, title: "Watch live", text: "Home games on the NFHS Network", href: content.links.watch },
+    { icon: <BagIcon />, title: "Sideline Store", text: `Official ${school.mascot} gear`, href: content.links.store },
     { icon: <FormIcon />, title: "Register to play", text: "Final Forms, physicals, ASB", href: FINAL_FORMS },
   ];
   return (
@@ -395,6 +397,9 @@ export function SchoolFooter({ school, content }: { school: SchoolView; content:
                   <a href={handleUrl("x", school.social.x)}>X {school.social.x}</a>
                 </li>
               ) : null}
+              <li>
+                <a href={LEAGUE_URL}>Puget Sound League</a>
+              </li>
               <li>
                 <Link href="/">Peninsula Athletics</Link>
               </li>

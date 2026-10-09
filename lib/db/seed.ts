@@ -133,7 +133,7 @@ export async function seedFromFixtures(
         homeField: school.homeField ?? null,
         logoPath: `/logos/${school.logo.split("/").pop()}`,
         social: school.social ?? {},
-        arbiterEntityId: null,
+        arbiterEntityId: content.schools.find((c) => c.id === school.id)?.arbiterEntityId ?? null,
       });
       if (school.contacts.length > 0) {
         await tx.insert(s.schoolContact).values(

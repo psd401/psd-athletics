@@ -46,6 +46,8 @@
 
 .utilEnd {
   margin-left: auto;
+  display: flex;
+  gap: var(--space-5);
 }
 
 /* ---------------------------------------------------------- masthead */

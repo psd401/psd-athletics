@@ -1,13 +1,79 @@
 {
-  "_about": "School honors for the titles bands on the hub and school pages. Facts come from fixtures/fall-2026-snapshot.json (stateTitles, history); figures and wording come from the approved comps (design/Main.dc.html, design/GHHS-Home.dc.html, design/PHS-Home.dc.html). Bracketed values are placeholders to confirm (QUESTIONS 10).",
+  "_about": "School honors for the titles bands on the hub and school pages. Facts come from fixtures/fall-2026-snapshot.json (stateTitles, history); figures and wording come from the approved comps (design/Main.dc.html, design/GHHS-Home.dc.html, design/PHS-Home.dc.html). Bracketed values are placeholders to confirm (QUESTIONS 10). schools[] holds facts confirmed outside the snapshot: ArbiterLive entity ids (checked on arbiterlive.com 2026-10-08, DECISIONS 46).",
   "honors": [
-    { "school": "ghhs", "sport": "Track and Field", "figure": "11", "title": "Track & field state titles", "detail": "Including boys and girls 3A in 2018", "featuredOnHub": true },
-    { "school": "ghhs", "sport": "Cross Country", "figure": "2013", "title": "Nike Cross Nationals champions", "detail": "Boys cross country", "featuredOnHub": true },
-    { "school": "ghhs", "sport": "Cross Country", "figure": "3 in 4", "title": "Boys XC 4A state titles", "detail": "2011 · 2013 · 2014", "featuredOnHub": false },
-    { "school": "ghhs", "sport": "Cross Country", "figure": "3 straight", "title": "Girls XC 4A state titles", "detail": "2005 · 2006 · 2007", "featuredOnHub": false },
-    { "school": "ghhs", "sport": "Baseball", "figure": "’97 · ’17", "title": "Baseball state champions", "detail": "1997 · 2017", "featuredOnHub": true },
-    { "school": "ghhs", "sport": "Water Polo", "figure": "3 straight", "title": "Water polo state titles", "detail": "[Years to confirm]", "featuredOnHub": false },
-    { "school": "phs", "sport": "Football", "figure": "’12 · ’13", "title": "League football champions", "detail": "Back-to-back league titles", "featuredOnHub": true },
-    { "school": "phs", "sport": "Football", "figure": "1978", "title": "3A state football champions", "detail": "Under coach Larry Lunke", "featuredOnHub": true }
+    {
+      "school": "ghhs",
+      "sport": "Track and Field",
+      "figure": "11",
+      "title": "Track & field state titles",
+      "detail": "Including boys and girls 3A in 2018",
+      "featuredOnHub": true
+    },
+    {
+      "school": "ghhs",
+      "sport": "Cross Country",
+      "figure": "2013",
+      "title": "Nike Cross Nationals champions",
+      "detail": "Boys cross country",
+      "featuredOnHub": true
+    },
+    {
+      "school": "ghhs",
+      "sport": "Cross Country",
+      "figure": "3 in 4",
+      "title": "Boys XC 4A state titles",
+      "detail": "2011 · 2013 · 2014",
+      "featuredOnHub": false
+    },
+    {
+      "school": "ghhs",
+      "sport": "Cross Country",
+      "figure": "3 straight",
+      "title": "Girls XC 4A state titles",
+      "detail": "2005 · 2006 · 2007",
+      "featuredOnHub": false
+    },
+    {
+      "school": "ghhs",
+      "sport": "Baseball",
+      "figure": "’97 · ’17",
+      "title": "Baseball state champions",
+      "detail": "1997 · 2017",
+      "featuredOnHub": true
+    },
+    {
+      "school": "ghhs",
+      "sport": "Water Polo",
+      "figure": "3 straight",
+      "title": "Water polo state titles",
+      "detail": "[Years to confirm]",
+      "featuredOnHub": false
+    },
+    {
+      "school": "phs",
+      "sport": "Football",
+      "figure": "’12 · ’13",
+      "title": "League football champions",
+      "detail": "Back-to-back league titles",
+      "featuredOnHub": true
+    },
+    {
+      "school": "phs",
+      "sport": "Football",
+      "figure": "1978",
+      "title": "3A state football champions",
+      "detail": "Under coach Larry Lunke",
+      "featuredOnHub": true
+    }
+  ],
+  "schools": [
+    {
+      "id": "ghhs",
+      "arbiterEntityId": "8486"
+    },
+    {
+      "id": "phs",
+      "arbiterEntityId": "17802"
+    }
   ]
 }

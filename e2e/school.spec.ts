@@ -15,6 +15,12 @@ test.describe("Gig Harbor home", () => {
     await expect(page.getByText("Volleyball has won four straight.")).toBeVisible();
     await expect(page.getByRole("list", { name: "Last five: loss, win, loss, win, win" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Built on titles" })).toBeVisible();
+    const fan = page.locator("#fan");
+    await expect(fan.getByRole("link", { name: /Tickets/ })).toHaveAttribute("href", "https://gofan.co/app/school/WA23221");
+    await expect(fan.getByRole("link", { name: /Watch live/ })).toHaveAttribute(
+      "href",
+      "https://www.nfhsnetwork.com/schools/gig-harbor-high-school-gig-harbor-wa",
+    );
 
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);
@@ -64,6 +70,7 @@ test.describe("Peninsula home", () => {
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Friday night at home.");
     await expect(page.getByRole("link", { name: /Directions to Roy Anderson Field/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: "More than a scoreboard" })).toBeVisible();
+    await expect(page.locator("#fan").getByRole("link", { name: /Tickets/ })).toHaveAttribute("href", "https://gofan.co/app/school/WA23302");
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);
   });
