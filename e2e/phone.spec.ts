@@ -37,7 +37,7 @@ test.describe("school home on a phone", () => {
 test.describe("phone gutters", () => {
   test.skip(({ isMobile }) => !isMobile, "phone layout");
 
-  for (const path of ["/ghh", "/phs", "/ghh/schedule", "/phs/teams/football"]) {
+  for (const path of ["/ghh", "/phs", "/ghh/schedule", "/phs/teams/football", "/ghh/photos", "/phs/feed", "/alerts", "/alerts/stop"]) {
     test(`${path} keeps a 16px side gutter around the main heading`, async ({ page }) => {
       await page.goto(path);
       const box = await page.getByRole("heading", { level: 1 }).boundingBox();

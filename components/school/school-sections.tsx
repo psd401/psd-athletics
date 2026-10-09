@@ -9,6 +9,8 @@ import { levelLabel, opponentLine, result, type GameView } from "../../lib/sched
 import type { FormCard } from "../../lib/schedule/school";
 import { formatShortDate } from "../../lib/schedule/time";
 import { BackIcon, BagIcon, BellIcon, FormIcon, TicketIcon, WatchIcon } from "../athletics/icons";
+import { startFollowAction } from "../../app/alerts/actions";
+import alerts from "../hub/alerts.module.css";
 import styles from "./school.module.css";
 import { TeamsMenu, type MenuSeason } from "./teams-menu";
 
@@ -313,32 +315,38 @@ export function SchoolAlerts({ school, content, teams }: { school: SchoolView; c
           </h2>
           <p className={styles.alertsText}>{content.alertsText}</p>
         </div>
-        {/* Alerts ship in Phase 6 (DECISIONS 15). */}
-        <form className={styles.alertForm} aria-labelledby="alerts-title" aria-describedby="school-alerts-note">
-          <fieldset className={styles.alertForm} disabled>
-            <div className={styles.field}>
-              <label htmlFor={`${school.slug}-team`}>Teams</label>
-              <select id={`${school.slug}-team`} defaultValue="">
-                <option value="" disabled>
-                  Choose a team
+        <form className={styles.alertForm} action={startFollowAction} aria-labelledby="alerts-title" aria-describedby="school-alerts-note">
+          <div className={styles.field}>
+            <label htmlFor={`${school.slug}-team`}>Team</label>
+            <select id={`${school.slug}-team`} name="teamId" required defaultValue="">
+              <option value="" disabled>
+                Choose a team
+              </option>
+              {teams.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.sport} · {levelLabel[t.level]}
                 </option>
-                {teams.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.sport} · {levelLabel[t.level]}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.field}>
-              <label htmlFor={`${school.slug}-contact`}>Mobile number or email</label>
-              <input id={`${school.slug}-contact`} type="text" autoComplete="email" placeholder="(253) 555-0123" />
-            </div>
-            <button type="submit" className={`${styles.btn} ${styles.btnAccent} ${styles.submit}`}>
-              Start alerts
-            </button>
+              ))}
+            </select>
+          </div>
+          <div className={styles.field}>
+            <label htmlFor={`${school.slug}-contact`}>Email or mobile number</label>
+            <input id={`${school.slug}-contact`} name="contact" type="text" required autoComplete="email" inputMode="email" placeholder="name@email.com" />
+          </div>
+          <fieldset className={alerts.checks}>
+            <legend className="ath-visually-hidden">Send me</legend>
+            <label className={alerts.check}>
+              <input type="checkbox" name="changes" defaultChecked /> Schedule changes
+            </label>
+            <label className={alerts.check}>
+              <input type="checkbox" name="finals" /> Final scores
+            </label>
           </fieldset>
+          <button type="submit" className={`${styles.btn} ${styles.btnAccent} ${styles.submit}`}>
+            Start alerts
+          </button>
           <span id="school-alerts-note" className={styles.formNote}>
-            Text and email alerts start later this season.
+            No account. We send a code to confirm, and every message has a link to stop.
           </span>
         </form>
       </div>

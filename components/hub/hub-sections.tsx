@@ -9,6 +9,8 @@ import { LEAGUE_URL, schoolContent } from "../../lib/schools/content";
 import { levelLabel, type FishBowlResult } from "../../lib/schedule/games";
 import { formatShortDate } from "../../lib/schedule/time";
 import { BusIcon, CardIcon, FormIcon, InfoIcon, PulseIcon, ShieldIcon } from "../athletics/icons";
+import { startFollowAction } from "../../app/alerts/actions";
+import alerts from "./alerts.module.css";
 import styles from "./hub.module.css";
 
 // ------------------------------------------------------------ Fish Bowl
@@ -257,33 +259,38 @@ export function AlertsSignup({ teams, schools }: { teams: TeamView[]; schools: S
               required. Grandparents welcome.
             </p>
           </div>
-          {/* Alerts ship in Phase 6; the form shows what's coming and can't be sent yet (DECISIONS 15). */}
-          <form className={styles.form} aria-labelledby="alerts-title" aria-describedby="alerts-note">
-            <fieldset className={styles.form} disabled>
-              <div className={styles.field}>
-                <label htmlFor="hub-team">Team</label>
-                <select id="hub-team" defaultValue="">
-                  <option value="" disabled>
-                    Choose a team
+          <form className={styles.form} action={startFollowAction} aria-labelledby="alerts-title" aria-describedby="alerts-note">
+            <div className={styles.field}>
+              <label htmlFor="hub-team">Team</label>
+              <select id="hub-team" name="teamId" required defaultValue="">
+                <option value="" disabled>
+                  Choose a team
+                </option>
+                {teams.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {name(t)} · {t.sport} · {levelLabel[t.level]}
                   </option>
-                  {teams.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {name(t)} · {t.sport} · {levelLabel[t.level]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.field}>
-                <label htmlFor="hub-contact">Mobile number or email</label>
-                <input id="hub-contact" type="text" autoComplete="email" placeholder="(253) 555-0123 or name@email.com" />
-              </div>
-              <button type="submit" className={`${styles.pill} ${styles.pillDark} ${styles.submit}`}>
-                Start alerts
-              </button>
+                ))}
+              </select>
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="hub-contact">Email or mobile number</label>
+              <input id="hub-contact" name="contact" type="text" required autoComplete="email" inputMode="email" placeholder="name@email.com" />
+            </div>
+            <fieldset className={alerts.checks}>
+              <legend className="ath-visually-hidden">Send me</legend>
+              <label className={alerts.check}>
+                <input type="checkbox" name="changes" defaultChecked /> Schedule changes
+              </label>
+              <label className={alerts.check}>
+                <input type="checkbox" name="finals" /> Final scores
+              </label>
             </fieldset>
+            <button type="submit" className={`${styles.pill} ${styles.pillDark} ${styles.submit}`}>
+              Start alerts
+            </button>
             <span id="alerts-note" className={styles.formNote}>
-              Text and email alerts start later this season. When they do: reply STOP to end texts; we only send schedule changes
-              and final scores.
+              No account. We send a code to confirm; every message has a link to stop. Messages go out 7 am to 9 pm, except changes to a game that day.
             </span>
           </form>
         </div>
