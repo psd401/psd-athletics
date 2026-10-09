@@ -8,6 +8,13 @@
       "when": 1791519390190,
       "tag": "0000_initial_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791525809951,
+      "tag": "0001_roster_publish_and_directory_opt_out",
+      "breakpoints": true
     }
   ]
 }
