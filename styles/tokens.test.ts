@@ -34,21 +34,31 @@ const tokenPx = (prefix: string) =>
 const spacePx = tokenPx("--space-");
 const radiusPx = tokenPx("--radius-");
 
+const spacingProperty =
+  /^(?:(?:padding|margin|inset)(?:-(?:top|right|bottom|left|block|inline)(?:-(?:start|end))?)?|gap|row-gap|column-gap|top|right|bottom|left)$/;
+
+/** property/value pairs, anchored to the start of a declaration so that
+ *  border-top is never read as top. */
+function declarations(code: string): [string, string][] {
+  return [...code.matchAll(/(?:^|[{;])\s*([a-z-]+)\s*:\s*([^;{}]+)/gm)].map((m) => [m[1] ?? "", (m[2] ?? "").trim()]);
+}
+
 function violations(source: string): string[] {
   const found: string[] = [];
-  const code = source.replace(/\/\*[\s\S]*?\*\//g, "");
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
   for (const hex of code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? []) found.push(`hex color ${hex}`);
-  for (const m of code.matchAll(/font-family\s*:\s*([^;}]+)/g)) {
-    if (!/^var\(--/.test((m[1] ?? "").trim())) found.push(`font-family ${m[1]}`);
-  }
-  for (const m of code.matchAll(/\b(padding|margin|gap|row-gap|column-gap|inset|top|right|bottom|left)[\w-]*\s*:\s*([^;}]+)/g)) {
-    for (const px of (m[2] ?? "").match(/\b\d+px\b/g) ?? []) {
-      if (spacePx.has(px)) found.push(`${m[1]} ${px} (use the --space token)`);
+  for (const [property, value] of declarations(code)) {
+    if (property === "font-family" && !/^var\(--/.test(value)) found.push(`font-family ${value}`);
+    if (property === "font" && !/var\(--/.test(value)) found.push(`font ${value}`);
+    if (spacingProperty.test(property)) {
+      for (const px of value.match(/\b\d+px\b/g) ?? []) {
+        if (spacePx.has(px)) found.push(`${property} ${px} (use the --space token)`);
+      }
     }
-  }
-  for (const m of code.matchAll(/border-radius\s*:\s*([^;}]+)/g)) {
-    for (const px of (m[1] ?? "").match(/\b\d+px\b/g) ?? []) {
-      if (radiusPx.has(px)) found.push(`border-radius ${px} (use the --radius token)`);
+    if (property === "border-radius") {
+      for (const px of value.match(/\b\d+px\b/g) ?? []) {
+        if (radiusPx.has(px)) found.push(`border-radius ${px} (use the --radius token)`);
+      }
     }
   }
   return found;
@@ -72,5 +82,24 @@ describe("component styles use tokens", () => {
       "border-radius 10px (use the --radius token)",
     ]);
     expect(violations(".a{color:var(--ath-ink);font-family:var(--ath-font-text);padding:28px}")).toEqual([]);
+  });
+
+  it("reads declarations, not substrings of property names", () => {
+    expect(violations(".a{border-top:16px solid var(--ath-line);border-left-width:16px}")).toEqual([]);
+    expect(violations(".a{margin-top:16px;inset-inline-start:8px}")).toEqual([
+      "margin-top 16px (use the --space token)",
+      "inset-inline-start 8px (use the --space token)",
+    ]);
+  });
+
+  it("catches a literal family in the font shorthand", () => {
+    expect(violations(".a{font:700 12px/1 Arial}")).toEqual(["font 700 12px/1 Arial"]);
+    expect(violations(".a{font:700 12px/1 var(--ath-font-label)}")).toEqual([]);
+  });
+
+  it("ignores comments but not URLs", () => {
+    expect(violations("// was #fff before\nconst a = 1;")).toEqual([]);
+    // A URL's "//" isn't a comment, so the rest of the line is still checked.
+    expect(violations('const u = "https://example.org"; const c = "#022c66";')).toEqual(["hex color #022c66"]);
   });
 });
