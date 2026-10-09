@@ -357,6 +357,9 @@ export default async function TeamPage({ params, searchParams }: { params: Param
                     <CalendarAddIcon />
                     Add to calendar
                   </a>
+                  <Link className={`${t.btn} ${t.btnLine}`} href={`/${slug}/game/${next.id}`}>
+                    Game-day info
+                  </Link>
                 </div>
               </div>
             ) : null}

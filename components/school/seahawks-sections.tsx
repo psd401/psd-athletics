@@ -125,6 +125,9 @@ export function MatchHero({
               Add to calendar
             </a>
           </div>
+          <Link className={`${styles.btn} ${styles.btnGhost}`} href={`/${marquee.schoolSlug}/game/${marquee.id}`}>
+            Game-day info
+          </Link>
         </div>
       </div>
     </section>

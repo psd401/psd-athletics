@@ -1,7 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Countdown, remaining } from "./countdown";
+import { compactRemaining, Countdown, remaining } from "./countdown";
 
 describe("remaining", () => {
   it("splits the time left into days, hours, minutes and seconds", () => {
@@ -50,5 +50,15 @@ describe("Countdown", () => {
       vi.advanceTimersByTime(1000);
     });
     expect(screen.getByRole("timer")).toHaveTextContent("01Days00Hours00Min01Sec");
+  });
+});
+
+describe("compactRemaining", () => {
+  const start = Date.parse("2026-10-09T02:30:00Z");
+  it("shows minutes and seconds, adds hours and days when needed", () => {
+    expect(compactRemaining(start, start - 65_000)).toBe("01:05");
+    expect(compactRemaining(start, start - 2 * 3_600_000 - 5_000)).toBe("02:00:05");
+    expect(compactRemaining(start, start - 86_400_000 - 1000)).toBe("1 day 00:00:01");
+    expect(compactRemaining(start, start)).toBeNull();
   });
 });
