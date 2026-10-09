@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { backgroundAlt } from "../../lib/schools/photos";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -221,7 +222,7 @@ export function Tradition({
   if (honors.length === 0) return null;
   return (
     <section className={`${styles.sec} ${styles.hero} ath-on-dark`} id="tradition" aria-labelledby="tradition-title">
-      <Image className={styles.heroShot} src={content.traditionPhoto} alt="" fill sizes="100vw" style={{ opacity: 0.22 }} />
+      <Image className={styles.heroShot} src={content.traditionPhoto} alt={backgroundAlt(content.traditionPhoto)} fill sizes="100vw" style={{ opacity: 0.22 }} />
       <div className={`ath-wrap ${styles.traditionIn}`}>
         <div className={styles.secTitle}>
           <span className={`ath-label ${styles.traditionKicker}`}>{content.traditionKicker(school.founded)}</span>
@@ -380,7 +381,6 @@ export function SchoolFooter({ school, content }: { school: SchoolView; content:
                 <span className={styles.footStrong}>{c.name}</span>
                 <br />
                 {c.role}
-                {c.phone ? ` · ${c.phone}` : ""}
               </span>
             ))}
             {hasAd ? null : <span>[Athletic director]</span>}

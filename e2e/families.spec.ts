@@ -13,6 +13,7 @@ test.describe("families hub", () => {
     await expect(page.getByRole("link", { name: "WIAA Student Eligibility Center" })).toHaveAttribute("href", "https://www.wiaa.com/eligibility/");
     await expect(page.getByText("Link coming soon. Your athletics office can help now.")).toHaveCount(4);
     await expect(page.getByRole("complementary", { name: "Athletics offices" })).toContainText("Ross Filkins");
+    await expect(page.locator('a[href^="mailto:"], a[href^="tel:"]')).toHaveCount(0);
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);
   });

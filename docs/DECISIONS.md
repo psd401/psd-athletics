@@ -99,7 +99,7 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 
 ## 2026-10-08 — Peninsula home (PLAN task 2.5)
 
-52. **The athletics office's own published email and phone are shown** (AD and athletic secretary), as in the comp and on the school's site. Coaches' addresses are still never shown; the staff page relays messages (SPEC §4). `listSchools` now returns office emails; the contacts table holds only office staff.
+52. ~~The athletics office's email and phone are shown~~ Superseded by 65.
 53. **A home marquee game's "Buy tickets on GoFan" goes to the school's GoFan page** until per-event ticket links exist. The school page is where that game's tickets are sold. Other per-game Tickets buttons still need an event link.
 54. **Each school picks a section order** (`layout` in `lib/schools/content.ts`): Gig Harbor uses the GHHS-Home order, Peninsula the PHS-Home order. The new patterns are shared components either school can use: match-card hero, Live now strip, week board, champions band, pillars and athletics office. The champions band only shows on the page of the school that won the latest Fish Bowl.
 55. **Small departures from the PHS comp:** the opponent's crest is a monogram of their initials (we don't hold other schools' logos) instead of the comp's dashed placeholder; the photo tint is a flat 78% of the school's darkest color instead of a gradient; the pillars are 1978, Unified and Letter, picked by `pillarFigures` (the 2012–13 league titles are in 1978's text); Stories stay hidden until there are stories.
@@ -123,5 +123,10 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 ## 2026-10-08 — Review fixes
 
 63. **Roster entries need a publish step** (review finding on #16). `roster_entry` gains `published_at` (null until a coach publishes) in migration `0001`, and public pages show published entries only. There's no directory-information opt-out in athletics (Kris Hagel, 2026-10-09), so no opt-out column. Coach-supplied document and sponsor links render only if they're `https:` URLs.
-64. **Photos used as tinted backgrounds are decorative (`alt=""`); photos shown as content get a description.** BRAND.md says to use the school photos as dark-tinted heroes or plain card images, and never to put text on an untinted photo. Behind text at 20–50% opacity they carry no information, so WCAG treats them as decorative. Every content photo (story covers, cards, and later album photos) needs a description, and coach-published photos are blocked without one (`photo_published_has_alt`). Students in the photos in `public/images/` are cleared for use (DECISIONS 12). `phs-team.jpg` is a tinted background on Peninsula's Fish Bowl champions and tradition bands. Review finding on #17; Kris to confirm this reading of "every published photo needs an image description".
+64. **Every photo has alt text; darkened backgrounds say so** (Kris Hagel, 2026-10-09, replacing the first version of this entry). A photo used as a darkened background behind text gets alt text like "Darkened background photo: an osprey in flight over the Peninsula ballfield light tower". The descriptions live in `lib/schools/photos.ts`, and a test fails if a photo in `public/images/` has none or a component gives a photo an empty `alt`. Students in these photos are cleared for use (DECISIONS 12). Coach-published photos still can't be published without a description (`photo_published_has_alt`).
+
+## 2026-10-09 — Answers from the stack review
+
+65. **No email addresses or phone numbers for the athletics office on public pages** (Kris Hagel: no benefit). Office cards, footers, the staff page and the families hub show names and roles only. `listSchools` no longer returns them, and the contacts stay in the database for the Studio and the message relay. Coaches' contacts were never shown.
+66. **The marquee home game's GoFan fallback stays** (DECISIONS 53, confirmed).
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { backgroundAlt } from "../../lib/schools/photos";
 
 import { formatWeekday } from "../../lib/schedule/time";
 import { gameState, opponentLine, timeLabel, type GameView } from "../../lib/schedule/games";
@@ -61,7 +62,7 @@ export function HubHero({ tides, hawks, now }: { tides: Side; hawks: Side; now: 
   return (
     <section className={`${styles.hero} ath-on-dark`} id="top" aria-label="Choose a school">
       <div className={`${styles.half} ${styles.tides}`}>
-        <Image className={styles.shot} src="/images/ghhs-friday-night.jpg" alt="" fill priority sizes="50vw" />
+        <Image className={styles.shot} src="/images/ghhs-friday-night.jpg" alt={backgroundAlt("/images/ghhs-friday-night.jpg")} fill priority sizes="50vw" />
         <Waves />
         <span className={`ath-display ${styles.ghost}`} aria-hidden="true">
           {tides.mascot}
@@ -86,7 +87,7 @@ export function HubHero({ tides, hawks, now }: { tides: Side; hawks: Side; now: 
         </div>
       </div>
       <div className={`${styles.half} ${styles.hawks}`}>
-        <Image className={styles.shot} src="/images/phs-osprey.jpg" alt="" fill sizes="50vw" />
+        <Image className={styles.shot} src="/images/phs-osprey.jpg" alt={backgroundAlt("/images/phs-osprey.jpg")} fill sizes="50vw" />
         <Chevrons />
         <span className={`ath-display ${styles.ghost}`} aria-hidden="true">
           Hawks

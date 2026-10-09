@@ -17,6 +17,7 @@ test.describe("district hub", () => {
 
     await expect(page.getByText("19 games · From the fall schedule snapshot · Times Pacific")).toBeVisible();
     await expect(page.getByText("The Fish Bowl", { exact: true })).toBeVisible();
+    await expect(page.getByRole("contentinfo")).not.toContainText("253-530");
 
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);
