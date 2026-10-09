@@ -122,7 +122,8 @@ export function LatestFinals({ games }: { games: GameView[] }) {
             Latest finals
           </h2>
         </div>
-        <ul className={styles.results}>
+        {/* Scrolls sideways on phones, so it takes focus for keyboard scrolling. */}
+        <ul className={styles.results} tabIndex={0} aria-label="Latest finals, newest first">
           {games.map((game) => {
             const r = result(game)!;
             const word = r === "W" ? "Win" : r === "L" ? "Loss" : "Tie";

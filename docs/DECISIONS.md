@@ -130,3 +130,9 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 65. **No email addresses or phone numbers for the athletics office on public pages** (Kris Hagel: no benefit). Office cards, footers, the staff page and the families hub show names and roles only. `listSchools` no longer returns them, and the contacts stay in the database for the Studio and the message relay. Coaches' contacts were never shown.
 66. **The marquee home game's GoFan fallback stays** (DECISIONS 53, confirmed).
 
+
+## 2026-10-09 — Phone home (design/PHS-Mobile.dc.html)
+
+67. **Phones get additions, not a second page.** On screens up to 640px, every school page gets a bottom tab bar (Today, Schedule, Scores, Teams), and the school home adds "My teams" and Quick links, with latest finals as a swipeable row. Above 640px those stay hidden. The comp's "More" tab and "Email the AD" link are left out (DECISIONS 65).
+68. **"My teams" is stored only in the visitor's browser** (`localStorage`, per school). There's no account and nothing is sent. "Next up" shows the next two games of the picked teams; "This week" shows the next seven days.
+69. **Classes paired with `.ath-wrap` set vertical padding only.** The `padding` shorthand in a CSS module overrode the wrap's side gutter, so the school hero, Peninsula's match hero and the Teams menu touched the screen edge on phones. An e2e test now checks a 16px gutter around the main heading on four pages.

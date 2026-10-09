@@ -31,7 +31,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: 56px;
-  padding: 84px 0 92px;
+  padding-top: 84px;
+  padding-bottom: 92px;
   align-items: center;
 }
 
@@ -551,7 +552,8 @@ a.evt:hover {
   }
 
   .grid {
-    padding: var(--space-12) 0 56px;
+    padding-top: var(--space-12);
+  padding-bottom: 56px;
   }
 
   .champIn {

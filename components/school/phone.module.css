@@ -1,0 +1,234 @@
+/* Phone-only additions to the school pages (design/PHS-Mobile.dc.html). Hidden above 640px. */
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  display: none;
+  padding: 0 0 env(safe-area-inset-bottom);
+  background: var(--ath-surface);
+  border-top: 1px solid var(--ath-line);
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-school] .tabbar a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: 60px;
+  color: var(--ath-muted);
+  text-decoration: none;
+  font: 600 12px/1 var(--ath-font-text);
+}
+
+[data-school] .tabbar a[aria-current="page"] {
+  color: var(--ath-brand);
+}
+
+.tabbar svg {
+  width: 22px;
+  height: 22px;
+}
+
+.section {
+  padding: var(--space-6) var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.h2 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.edit {
+  min-height: var(--touch-min);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--ath-link);
+  font: 700 14px/1 var(--ath-font-text);
+  cursor: pointer;
+}
+
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-window);
+  background: var(--ath-tint);
+}
+
+.seg button {
+  min-height: var(--touch-min);
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ath-ink);
+  font: 700 14px/1 var(--ath-font-text);
+  cursor: pointer;
+}
+
+.seg button[aria-pressed="true"] {
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-school] .item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+  text-decoration: none;
+  min-height: 76px;
+}
+
+.stamp {
+  width: 52px;
+  height: 56px;
+  border-radius: var(--radius-window);
+  background: var(--ath-brand);
+  color: var(--ath-on-ground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.itemText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.small {
+  font: 500 13px/1.3 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.picker {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--ath-line);
+  border-radius: var(--radius-lg);
+  background: var(--ath-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.picker legend {
+  padding: 0 var(--space-1);
+  font: 700 15px/1.2 var(--ath-font-text);
+}
+
+.pick {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  font: 500 16px/1.2 var(--ath-font-text);
+}
+
+.pick input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--ath-brand);
+}
+
+.empty {
+  margin: 0;
+  padding: var(--space-5);
+  border: 1.5px dashed var(--ath-line-strong);
+  border-radius: var(--radius-lg);
+  color: var(--ath-muted);
+  font: 500 15px/1.4 var(--ath-font-text);
+}
+
+.quick {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 var(--space-6);
+  list-style: none;
+}
+
+[data-school] .quick a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 88px;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+  color: var(--ath-ink);
+  text-decoration: none;
+  text-align: center;
+  font: 600 13px/1.2 var(--ath-font-text);
+}
+
+.quick svg {
+  width: 24px;
+  height: 24px;
+  color: var(--ath-brand);
+}
+
+/* Declared last so it wins over .section's display. */
+.section.phoneOnly {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .section.phoneOnly {
+    display: flex;
+  }
+
+  .tabbar {
+    display: block;
+  }
+
+  /* Room for the tab bar under the last section. */
+  .page {
+    padding-bottom: 72px;
+  }
+}

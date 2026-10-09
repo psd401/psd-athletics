@@ -9,6 +9,7 @@ import { CalendarAddIcon, PinIcon, TicketIcon, WatchIcon } from "../../../../com
 import { StatusTag } from "../../../../components/athletics/status-tag";
 import { CompactCountdown } from "../../../../components/school/countdown";
 import g from "../../../../components/school/gameday.module.css";
+import { PhoneTabBar } from "../../../../components/school/phone-tabbar";
 import { appDb } from "../../../../lib/data/db";
 import { getGame, listGames, listSchools } from "../../../../lib/data/queries";
 import { schoolContent } from "../../../../lib/schools/content";
@@ -258,12 +259,7 @@ export default async function GameDayPage({ params }: { params: Params }) {
           </section>
         ) : null}
       </main>
-      <nav className={g.tabbar} aria-label="Sections">
-        <Link href={`/${slug}`}>Home</Link>
-        <Link href={`/${slug}/schedule`}>Schedule</Link>
-        <Link href={`/${slug}#results`}>Scores</Link>
-        <Link href={`/${slug}#teams`}>Teams</Link>
-      </nav>
+      <PhoneTabBar slug={slug} />
     </div>
   );
 }

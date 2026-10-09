@@ -164,7 +164,8 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-10);
-  padding: 36px 0 var(--space-10);
+  padding-top: 36px;
+  padding-bottom: var(--space-10);
 }
 
 .megaTitle {
@@ -309,7 +310,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
   gap: var(--space-12);
-  padding: 88px 0 var(--space-24);
+  padding-top: 88px;
+  padding-bottom: var(--space-24);
   position: relative;
 }
 
@@ -1261,7 +1263,8 @@ a.fanItem:hover {
   }
 
   .heroGrid {
-    padding: var(--space-12) 0 56px;
+    padding-top: var(--space-12);
+  padding-bottom: 56px;
   }
 
   .sponsors {
@@ -1274,6 +1277,23 @@ a.fanItem:hover {
 
   .tonightTitle {
     font-size: 40px;
+  }
+}
+
+/* Phones: finals become a swipeable row (design/PHS-Mobile.dc.html). */
+@media (max-width: 640px) {
+  .results {
+    /* Contains its visually hidden text, so it can't widen the page. */
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: var(--space-2);
+  }
+
+  .results li {
+    flex: 0 0 72%;
+    scroll-snap-align: start;
   }
 }
 

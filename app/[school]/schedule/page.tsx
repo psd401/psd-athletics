@@ -6,6 +6,9 @@ import { Motif } from "../../../components/school/school-hero";
 import { Masthead, SchoolFooter, UtilityBar } from "../../../components/school/school-sections";
 import { ScheduleView } from "../../../components/school/schedule-view";
 import styles from "../../../components/school/school.module.css";
+import phone from "../../../components/school/phone.module.css";
+import { PhoneTabBar } from "../../../components/school/phone-tabbar";
+
 import { SITE_URL } from "../../../lib/config/site";
 import { appDb } from "../../../lib/data/db";
 import { listGames, listSchools } from "../../../lib/data/queries";
@@ -60,7 +63,7 @@ export default async function SchedulePage({
   const allFromArbiter = sorted.length > 0 && sorted.every((g) => g.source === "arbiter");
 
   return (
-    <div data-school={slug} className={styles.page}>
+    <div data-school={slug} className={`${styles.page} ${phone.page}`}>
       <UtilityBar other={other} content={content} />
       <Masthead school={school} seasons={[]} current="schedule" />
       <main>
@@ -81,6 +84,7 @@ export default async function SchedulePage({
         />
       </main>
       <SchoolFooter school={school} content={content} />
+      <PhoneTabBar slug={slug} current="schedule" />
     </div>
   );
 }

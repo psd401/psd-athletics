@@ -19,6 +19,10 @@ import { SchoolWeek, type WeekGame } from "../../components/school/school-week";
 import { AthleticsOffice, FishBowlChampions, LiveNow, MatchHero, Pillars } from "../../components/school/seahawks-sections";
 import { WeekBoard } from "../../components/school/week-board";
 import styles from "../../components/school/school.module.css";
+import phone from "../../components/school/phone.module.css";
+import { MyTeams } from "../../components/school/my-teams";
+import { PhoneTabBar } from "../../components/school/phone-tabbar";
+import { QuickLinks } from "../../components/school/quick-links";
 import { TeamsTabs, type SeasonTeams } from "../../components/school/teams-tabs";
 import { appDb } from "../../lib/data/db";
 import { listGames, listHonors, listSchools, listTeams } from "../../lib/data/queries";
@@ -127,6 +131,18 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
   );
   const sourceLabel = week.length > 0 && week.every((w) => w.game.source === "arbiter") ? "Synced from Arbiter" : "Fall schedule snapshot";
   const finals = <LatestFinals games={latestFinals(games, 8)} />;
+  const upcoming = games
+    .filter((g) => ["live", "tonight", "today", "upcoming"].includes(gameState(g, now)))
+    .sort(byStart)
+    .slice(0, 40);
+  const myTeams = (
+    <MyTeams
+      slug={slug}
+      teams={teams.filter((t) => t.term === currentTerm(today)).map((t) => ({ id: t.id, sport: t.sport, level: t.level }))}
+      games={upcoming}
+      weekEnd={addDays(today, 7)}
+    />
+  );
   const teamsTabs = <TeamsTabs seasons={seasons} initial={currentTerm(today)} />;
   const alerts = <SchoolAlerts school={school} content={content} teams={teams.filter((t) => t.term === currentTerm(today))} />;
 
@@ -135,13 +151,14 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
     const live = games.filter((g) => gameState(g, now) === "live").sort(byStart)[0] ?? null;
     const board = boardDays(week.map(({ game, state }) => ({ game, state })), today, 7);
     return (
-      <div data-school={slug} className={styles.page}>
+      <div data-school={slug} className={`${styles.page} ${phone.page}`}>
         <UtilityBar other={other} content={content} />
         {masthead}
         <main>
           {ticker}
           <MatchHero schoolView={school} content={content} marquee={marquee} now={now} clockOffsetMs={clockOffsetMs(now)} />
           <LiveNow game={live} />
+          {myTeams}
           <WeekBoard
             days={board}
             kicker={`Week of ${formatMonthDay(today)} · ${sourceLabel}`}
@@ -155,14 +172,16 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           <Pillars schoolView={school} content={content} honors={honors} />
           <AthleticsOffice schoolView={school} content={content} />
           {alerts}
+          <QuickLinks slug={slug} content={content} />
         </main>
         <SchoolFooter school={school} content={content} />
+        <PhoneTabBar slug={slug} current="home" />
       </div>
     );
   }
 
   return (
-    <div data-school={slug} className={styles.page}>
+    <div data-school={slug} className={`${styles.page} ${phone.page}`}>
       <UtilityBar other={other} content={content} />
       {masthead}
       <main>
@@ -177,6 +196,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           now={now}
           clockOffsetMs={clockOffsetMs(now)}
         />
+        {myTeams}
         <SchoolWeek
           schoolSlug={slug}
           mascot={school.mascot}
@@ -191,8 +211,10 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
         <FanZone school={school} content={content} />
         {alerts}
         <Partners content={content} />
+        <QuickLinks slug={slug} content={content} />
       </main>
       <SchoolFooter school={school} content={content} />
+      <PhoneTabBar slug={slug} current="home" />
     </div>
   );
 }

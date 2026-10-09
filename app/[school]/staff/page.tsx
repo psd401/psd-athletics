@@ -5,6 +5,9 @@ import { connection } from "next/server";
 import { CoachDirectory, type CoachCard } from "../../../components/school/coach-directory";
 import { Masthead, SchoolFooter, UtilityBar } from "../../../components/school/school-sections";
 import styles from "../../../components/school/school.module.css";
+import phone from "../../../components/school/phone.module.css";
+import { PhoneTabBar } from "../../../components/school/phone-tabbar";
+
 import seahawks from "../../../components/school/seahawks.module.css";
 import s from "../../../components/school/staff.module.css";
 import { appDb } from "../../../lib/data/db";
@@ -54,7 +57,7 @@ export default async function StaffPage({ params }: { params: Promise<{ school: 
     }));
 
   return (
-    <div data-school={slug} className={styles.page}>
+    <div data-school={slug} className={`${styles.page} ${phone.page}`}>
       <UtilityBar other={other} content={content} />
       <Masthead school={school} seasons={[]} current="staff" traditionNav={content.traditionNav} />
       <main>
@@ -109,6 +112,7 @@ export default async function StaffPage({ params }: { params: Promise<{ school: 
         </div>
       </main>
       <SchoolFooter school={school} content={content} />
+      <PhoneTabBar slug={slug} />
     </div>
   );
 }

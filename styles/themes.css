@@ -211,5 +211,10 @@
   .ath-wrap {
     padding: 0 var(--space-4);
   }
+
+  /* School pages have a fixed tab bar on phones; keep scrolled-to content above it. */
+  html:has([data-school] nav[aria-label="Sections"]) {
+    scroll-padding-bottom: 80px;
+  }
 }
 
