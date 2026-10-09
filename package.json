@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun scripts/db-migrate.ts"
+    "db:migrate": "bun scripts/db-migrate.ts",
+    "db:seed": "bun scripts/seed.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.8",
