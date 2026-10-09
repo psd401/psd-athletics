@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import type { Db } from "../db/client";
 import * as schema from "../db/schema";
 import { appDb } from "../data/db";
+import { devSignInEnabled } from "./dev";
 import { DISTRICT_DOMAIN, isDistrictAccount } from "./domain";
 
 /** Google sign-in works only when the OAuth client is configured (QUESTIONS 17). */
@@ -21,6 +22,8 @@ export function createAuth(db: Db) {
   return betterAuth({
     baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
     secret: process.env.BETTER_AUTH_SECRET,
+    // Password sign-in exists only for the made-up dev people (lib/auth/dev.ts).
+    emailAndPassword: { enabled: devSignInEnabled(), disableSignUp: true },
     // Send sign-in errors (like a non-district account) back to our page.
     onAPIError: { errorURL: "/sign-in" },
     database: drizzleAdapter(db, {

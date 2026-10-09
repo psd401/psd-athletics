@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import "../../vendor/nexus/bundle.css";
 import styles from "../../components/studio/studio.module.css";
 import { TrustFooter } from "../../components/studio/trust-footer";
+import { DEV_PASSWORD, devPeople, devSignInEnabled } from "../../lib/auth/dev";
 import { DISTRICT_DOMAIN } from "../../lib/auth/domain";
 import { safeNext } from "../../lib/auth/redirect";
 import { currentPerson, getAuth, googleConfigured } from "../../lib/auth/server";
@@ -13,6 +14,16 @@ export const metadata: Metadata = { title: "Sign in · Athletics Studio" };
 const errors: Record<string, string> = {
   district_account_required: `That account isn't a ${DISTRICT_DOMAIN} account. Sign in with your district Google account.`,
 };
+
+async function signInAsDevPerson(formData: FormData) {
+  "use server";
+  if (!devSignInEnabled()) throw new Error("Development sign-in is off");
+  const email = String(formData.get("email") ?? "");
+  if (!devPeople.some((p) => p.email === email)) throw new Error("Not a development person");
+  const auth = await getAuth();
+  await auth.api.signInEmail({ body: { email, password: DEV_PASSWORD } });
+  redirect(safeNext(String(formData.get("next") ?? "")));
+}
 
 async function signInWithGoogle(formData: FormData) {
   "use server";
@@ -57,6 +68,26 @@ export default async function SignInPage({
               <div className="nx-banner nx-banner--info" role="status">
                 <div className="nx-banner__body">
                   Sign-in isn&apos;t set up on this server yet. It needs a Google OAuth client from Technology Services.
+                </div>
+              </div>
+            ) : null}
+            {devSignInEnabled() ? (
+              <div className="nx-banner nx-banner--warning">
+                <div className="nx-banner__body">
+                  <b>Local development only.</b> Sign in as a made-up person to try a role.
+                  <ul className={styles.devList}>
+                    {devPeople.map((p) => (
+                      <li key={p.id}>
+                        <form action={signInAsDevPerson}>
+                          <input type="hidden" name="email" value={p.email} />
+                          <input type="hidden" name="next" value={next} />
+                          <button type="submit" className="nx-btn nx-btn--secondary nx-btn--sm">
+                            {p.name}
+                          </button>
+                        </form>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             ) : null}

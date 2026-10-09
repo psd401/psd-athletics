@@ -29,6 +29,8 @@ export default defineConfig({
       // Not a real secret: production mode refuses Better Auth's default.
       BETTER_AUTH_SECRET: "e2e-only-not-a-secret-0000000000000000",
       BETTER_AUTH_URL: `http://localhost:${port}`,
+      // Made-up Studio people on the in-memory database (lib/auth/dev.ts).
+      ATHLETICS_DEV_SIGN_IN: "1",
     },
   },
 });
