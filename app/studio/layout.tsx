@@ -38,6 +38,9 @@ export default async function StudioLayout({ children }: { children: ReactNode }
   // Pages are added here as they're built.
   const items: NavItem[] = [{ href: "/studio", label: "Today" }];
   if (ctx.myTeams.length > 0) items.push({ href: "/studio/teams", label: "Team pages" }, { href: "/studio/stories", label: "Stories" });
+  const photoTeams = ctx.teams.some((t) => ctx.can("photo.upload", { schoolId: t.schoolId, teamId: t.id }));
+  const oversees = ctx.schools.some((s) => ctx.can("content.takedown", { schoolId: s.id, teamId: null }));
+  if (photoTeams || oversees) items.push({ href: "/studio/photos", label: "Photos" });
   if (peopleSchools(ctx).length > 0) items.push({ href: "/studio/people", label: "People and roles" });
   items.push({ href: "/studio/activity", label: "Activity" });
 
