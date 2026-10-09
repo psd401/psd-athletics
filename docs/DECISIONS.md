@@ -23,3 +23,9 @@ Choices made while building, newest last. Each entry says what was decided, why,
 14. **Better Auth instead of Auth.js** (CLAUDE.md said Auth.js). Auth.js is maintained by the Better Auth team since September 2025, is in security-patch mode, and v5 never left beta; Better Auth is stable and keeps sessions in our database. Pending sign-off (QUESTIONS 21).
 15. **Missing data shows as missing.** Tickets, Watch and Directions buttons render only when the game has the link or venue; stories hide when there are none; alert forms are disabled until Phase 6; EN · ES and Search wait until they work. The comps show these filled in; the fixtures don't have the data (PLAN §4).
 16. **Public pages render per request in Phase 2** because Live/Tonight/Final depend on the time. Caching with revalidate-on-sync arrives with the sync in Phase 3.
+
+## 2026-10-08 — School themes (PLAN task 1.2)
+
+17. **Theme tokens live in `styles/themes.css` only.** Raw palettes (`--ghh-*`, `--phs-*`, `--hub-*`) map to semantic `--ath-*` tokens per `data-school` theme. `styles/tokens.test.ts` fails on hex colors, literal font families, or px values that equal a Nexus `--space-*`/`--radius-*` token in `app/` and `components/`. `styles/themes.test.ts` checks every text/background pair at 4.5:1 (3:1 for large score numerals).
+18. **Live red is `#D62F33`, not BRAND's `#E5383B`.** White 12px label text on `#E5383B` is 4.23:1, below AA; `#D62F33` is 4.87:1 and reads the same. Muted score numerals use `#74859F` (3.75:1, large text) instead of the comp's `#8597B0` (2.98:1).
+19. **Big Shoulders, opsz 72, stands in for Big Shoulders Display.** Google Fonts merged Display into the variable Big Shoulders family and `next/font` only offers the merged family; optical size 72 is the Display cut. `next/font` has no fallback metrics for it, so the build prints a harmless warning.

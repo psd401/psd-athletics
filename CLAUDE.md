@@ -39,7 +39,8 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 ## Map
 
 - `app/` — App Router routes. Planned: `/` hub, `/ghh`, `/phs`, `/studio`, `/mcp`.
-- `components/` — shared components, colocated `*.test.tsx` beside each.
+- `components/` — shared components, colocated `*.test.tsx` beside each. Public-site components in `components/athletics/`.
+- `styles/themes.css` — the only place raw colors live: school palettes and `--ath-*` theme tokens (`data-school="hub|ghh|phs"`) over Nexus tokens.
 - `design/` — approved comps (`*.dc.html`) and `assets/` (logos, photos). Reference only; the app doesn't import from here.
 - `docs/` — `SPEC.md`, `BRAND.md`, `KICKOFF.md`, `DECISIONS.md`, `QUESTIONS.md` (`PLAN.md` arrives in Phase 1).
 - `fixtures/fall-2026-snapshot.json` — real fall 2026 games, records and school facts; seed data.
