@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 import type { SchoolView, TeamView } from "../../lib/data/queries";
+import { LEAGUE_URL, schoolContent } from "../../lib/schools/content";
 import { levelLabel, type FishBowlResult } from "../../lib/schedule/games";
 import { formatShortDate } from "../../lib/schedule/time";
 import { BusIcon, CardIcon, FormIcon, InfoIcon, PulseIcon, ShieldIcon } from "../athletics/icons";
@@ -102,6 +103,7 @@ export function SchoolCards({ schools }: { schools: { school: SchoolView; honors
         <div className={styles.schools}>
           {schools.map(({ school, honors: list }) => {
             const tides = school.id === "ghhs";
+            const links = schoolContent[school.slug]?.links;
             return (
               <div key={school.id} className={`${styles.schoolCard} ${tides ? styles.tides : styles.hawks} ath-on-dark`}>
                 <div className={styles.cardTop}>
@@ -146,6 +148,25 @@ export function SchoolCards({ schools }: { schools: { school: SchoolView; honors
                         Scores <span aria-hidden="true">→</span>
                       </a>
                     </li>
+                    {links ? (
+                      <>
+                        <li>
+                          <a href={links.watch}>
+                            Watch live <span aria-hidden="true">→</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href={links.tickets}>
+                            Tickets <span aria-hidden="true">→</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href={links.store}>
+                            Sideline Store <span aria-hidden="true">→</span>
+                          </a>
+                        </li>
+                      </>
+                    ) : null}
                   </ul>
                 </div>
               </div>
@@ -334,6 +355,9 @@ export function HubFooter({ schools }: { schools: SchoolView[] }) {
           <div className={styles.footCol}>
             <h2 className={`ath-label ${styles.footLabel}`}>Links</h2>
             <ul className={styles.footList}>
+              <li>
+                <a href={LEAGUE_URL}>Puget Sound League</a>
+              </li>
               <li>
                 <a href="https://www.wiaa.com">WIAA</a>
               </li>

@@ -35,8 +35,8 @@ describe("seedFromFixtures", () => {
     ]);
     expect(schools[1]?.homeField).toBe("Roy Anderson Field");
     expect(schools[0]?.logoPath).toBe("/logos/ghhs-gh-logo.png");
-    // Which Arbiter id belongs to which school isn't confirmed (QUESTIONS 1).
-    expect(schools.every((x) => x.arbiterEntityId === null)).toBe(true);
+    // Confirmed on ArbiterLive 2026-10-08 (DECISIONS 46).
+    expect(schools.map((x) => x.arbiterEntityId)).toEqual(["8486", "17802"]);
   });
 
   it("loads every game in the snapshot", async () => {

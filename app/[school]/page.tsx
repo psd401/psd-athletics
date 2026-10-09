@@ -104,7 +104,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
 
   return (
     <div data-school={slug} className={styles.page}>
-      <UtilityBar other={other} />
+      <UtilityBar other={other} content={content} />
       <Masthead school={school} seasons={seasons.map((s) => ({ term: s.term, label: s.label, sports: s.teams.map((t) => t.name) }))} />
       <main>
         <ScoreTicker

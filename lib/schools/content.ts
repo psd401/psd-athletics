@@ -1,8 +1,21 @@
-// Per-school words and images for the shared school template. Copy comes
+// Per-school words, images and outside links for the shared school template. Copy comes
 // from the approved comps (design/GHHS-Home.dc.html, design/PHS-Home.dc.html).
+
+/** Puget Sound League, both schools' league (DECISIONS 46). */
+export const LEAGUE_URL = "https://www.pugetsoundleague.org/";
+
+export interface SchoolLinks {
+  /** GoFan school page: every ticketed event. */
+  tickets: string;
+  /** NFHS Network school page: every streamed event. */
+  watch: string;
+  /** BSN Sideline team store, as linked from the school's own site. */
+  store: string;
+}
 
 export interface SchoolContent {
   slug: "ghh" | "phs";
+  links: SchoolLinks;
   motif: "waves" | "chevrons";
   heroPhoto: string;
   traditionPhoto: string;
@@ -21,6 +34,11 @@ export interface SchoolContent {
 export const schoolContent: Record<string, SchoolContent> = {
   ghh: {
     slug: "ghh",
+    links: {
+      tickets: "https://gofan.co/app/school/WA23221",
+      watch: "https://www.nfhsnetwork.com/schools/gig-harbor-high-school-gig-harbor-wa",
+      store: "https://sideline.bsnsports.com/schools/washington/gigharbor/gig-harbor-high-school",
+    },
     motif: "waves",
     heroPhoto: "/images/ghhs-friday-night.jpg",
     traditionPhoto: "/images/ghhs-runners.jpg",
@@ -37,6 +55,11 @@ export const schoolContent: Record<string, SchoolContent> = {
   },
   phs: {
     slug: "phs",
+    links: {
+      tickets: "https://gofan.co/app/school/WA23302",
+      watch: "https://www.nfhsnetwork.com/schools/peninsula-high-school-gig-harbor-wa",
+      store: "https://sideline.bsnsports.com/schools/washington/gigharbor/peninsula-high-school",
+    },
     motif: "chevrons",
     heroPhoto: "/images/phs-osprey.jpg",
     traditionPhoto: "/images/phs-osprey.jpg",

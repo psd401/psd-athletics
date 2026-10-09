@@ -86,3 +86,6 @@ Choices made while building, newest last. Each entry says what was decided, why,
 | ArbiterLive | https://www.arbiterlive.com/School/8486 | https://www.arbiterlive.com/School/17802 |
 
 League: Puget Sound League, https://www.pugetsoundleague.org/.
+
+47. **School links are live** in each school's utility bar, Fan Zone and footer, and on the hub's school cards: GoFan, NFHS Network, BSN Sideline store and Puget Sound League, from `lib/schools/content.ts`. That closes the "Link coming soon" placeholders from DECISIONS 28 and 35 for these four. The seed now records the confirmed ArbiterLive ids (`fixtures/school-content.json`).
+

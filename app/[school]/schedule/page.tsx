@@ -61,7 +61,7 @@ export default async function SchedulePage({
 
   return (
     <div data-school={slug} className={styles.page}>
-      <UtilityBar other={other} />
+      <UtilityBar other={other} content={content} />
       <Masthead school={school} seasons={[]} current="schedule" />
       <main>
         <ScheduleView
