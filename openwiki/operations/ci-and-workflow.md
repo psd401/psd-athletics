@@ -55,3 +55,5 @@ Branch + PR for every change, small and single-purpose. Body follows the org tem
 ## OpenWiki scope
 
 `.openwikiignore` keeps `fixtures/` (staff names/emails), `design/assets/photos/`, `design/*.dc.html` and `vendor/` out of generated wiki (DECISIONS #9). The repo is public (DECISIONS #3): everything committed is permanent.
+
+Agent instructions are split by file: `CLAUDE.md` is the context file, and its OpenWiki block points to `AGENTS.md`. `AGENTS.md` says the wiki is optional just-in-time context, that source and tests are authoritative, and that generated `openwiki/` pages should not be hand-edited: change source or docs and let the scheduled `openwiki.yml` refresh them. Both files are code-owned via CODEOWNERS.
