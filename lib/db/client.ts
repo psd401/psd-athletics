@@ -7,6 +7,7 @@ import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import { migrate as migratePglite } from "drizzle-orm/pglite/migrator";
 import { Pool } from "pg";
 
+import { poolConfig, postgresTarget, type PostgresTarget } from "./postgres";
 import * as schema from "./schema";
 
 export type Schema = typeof schema;
@@ -28,20 +29,25 @@ export function createPostgresDb(connectionString: string): Db {
   return drizzleNodePg(pool, { schema }) as unknown as Db;
 }
 
+/** A pool for a DATABASE_URL or the RDS instance (lib/db/postgres.ts). */
+export async function connectPostgres(target: PostgresTarget, max = 10): Promise<Pool> {
+  return new Pool(await poolConfig(target, {}, max));
+}
+
 type Prepare = (db: Db) => Promise<void>;
 
 const globalForDb = globalThis as typeof globalThis & { __athleticsDb?: Promise<Db> };
 
 /**
- * The app's database. With DATABASE_URL, Postgres (migrations are applied by
- * `bun run db:migrate` at deploy). Without it, an in-memory PGlite that is
+ * The app's database. With DATABASE_URL or the RDS settings, Postgres
+ * (migrations are applied by `bun run db:migrate` at deploy). Without them, an in-memory PGlite that is
  * migrated and then handed to `prepare` (the fixture seed) once per process,
  * so dev and tests need no database server. docs/PLAN.md §2.
  */
 export function getDb(prepare?: Prepare): Promise<Db> {
   globalForDb.__athleticsDb ??= (async () => {
-    const url = process.env.DATABASE_URL;
-    if (url) return createPostgresDb(url);
+    const target = postgresTarget();
+    if (target) return drizzleNodePg(await connectPostgres(target), { schema }) as unknown as Db;
     const db = await createMemoryDb();
     if (prepare) await prepare(db);
     return db;

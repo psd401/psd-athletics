@@ -13,6 +13,7 @@ describe("devSignInEnabled", () => {
     expect(devSignInEnabled({ ATHLETICS_DEV_SIGN_IN: "1" })).toBe(true);
     expect(devSignInEnabled({})).toBe(false);
     expect(devSignInEnabled({ ATHLETICS_DEV_SIGN_IN: "1", DATABASE_URL: "postgres://db" })).toBe(false);
+    expect(devSignInEnabled({ ATHLETICS_DEV_SIGN_IN: "1", DATABASE_HOST: "db.internal" })).toBe(false);
     expect(devSignInEnabled({ ATHLETICS_DEV_SIGN_IN: "1", BETTER_AUTH_URL: "https://athletics.psd401.net" })).toBe(false);
     expect(devSignInEnabled({ ATHLETICS_DEV_SIGN_IN: "true" })).toBe(false);
   });
