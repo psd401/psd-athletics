@@ -48,6 +48,7 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 - `design/` — approved comps (`*.dc.html`) and `assets/` (logos, photos). Reference only; the app doesn't import from here.
 - `docs/` — `SPEC.md`, `BRAND.md`, `KICKOFF.md`, `DECISIONS.md`, `QUESTIONS.md` (`PLAN.md` arrives in Phase 1).
 - `fixtures/fall-2026-snapshot.json` — real fall 2026 games, records and school facts; `fixtures/school-content.json` — honors for the titles bands. Loaded by `lib/db/seed.ts`.
+- `lib/auth/` — Better Auth (Google, `psd401.net` only; the rule is `domain.ts`). Local secrets: `scripts/with-keychain.sh bun run dev`.
 - `vendor/nexus/` — read-only copy of Nexus from `psd-dev-standards`. Never edit.
 - `.github/workflows/` — thin callers of `PSD401/.github` reusable workflows. Never add CI logic here.
 

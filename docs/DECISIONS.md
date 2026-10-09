@@ -36,3 +36,9 @@ Choices made while building, newest last. Each entry says what was decided, why,
 21. **Teams for the whole school year** come from each school's `sportsBySeason` lists (varsity), plus any other level that appears in the games (Peninsula JV and freshman football and volleyball, JV girls soccer): 51 teams.
 22. **The seed only runs on an empty database** (no schools). It's a bootstrap; once the Arbiter sync runs, the sync owns schedule data.
 23. **`fixtures/school-content.json`** holds the honors for the titles bands: facts from the snapshot, figures and wording from the approved comps, placeholders kept in brackets.
+
+## 2026-10-08 — Sign-in (PLAN task 1.5)
+
+24. **Three checks keep the Studio to `psd401.net`:** Google's `hd` option (Google offers only district accounts, and Better Auth rejects an id token whose `hd` claim differs), `user.validateUserInfo` on every Google sign-in (verified email whose domain is exactly `psd401.net`), and a `session.create.before` hook that refuses a session for any person row that isn't a verified district account. The rule is one function, `lib/auth/domain.ts`.
+25. **Studio pages render with Nexus CSS only** (`tokens.css` + `bundle.css`, `nx-` classes) and no Nexus React bundle yet, which targets React 18 (QUESTIONS 15). Each Studio page checks the session itself as well as the layout.
+26. **`BETTER_AUTH_SECRET` is required in production** (Better Auth refuses its default secret there). With no Google client configured, the sign-in page says so and the button is disabled.
