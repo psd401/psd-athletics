@@ -197,3 +197,12 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 104. **The outbox sends one message per change per follower,** only to confirmed followers who haven't stopped. Schedule changes go to those who want them, and finals (from the recorded score only) to those who asked. Quiet hours are 9 pm to 7 am Pacific, except for messages about a game that day. Every message links to the game page and ends with a signed stop link. The stop page needs a button press, so email link scanners can't unsubscribe anyone. `jobs/deliver-alerts.ts` drains the outbox (`bun run job deliver-alerts`). The Arbiter sync (Phase 3) and the Studio's change confirmation will call `queueGameChange` and `queueFinal`; nothing calls them yet.
 105. **Senders: email goes through AWS SES** (Hagel, 2026-10-09). The SES sender arrives with `infra/`, along with the sending identity. With local dev sign-in on, both channels only log, with the contact masked, and the confirm page shows the logged message so the flow can be tested. Anywhere else, with no provider configured, sign-ups say alerts start later. Texting waits for a provider (QUESTIONS 27). STOP and HELP replies by text need the provider's inbound messages, so they come with it.
 106. **The hub, both school homes and the game-day page now sign people up.** The game-day page's disabled "Text me" switches are replaced by a "Follow {sport}" link to `/alerts` with the team chosen. Album emails to followers (SPEC §7) come with SES.
+
+## 2026-10-09 — AWS infrastructure in Terraform
+
+107. **Terraform in `infra/`** (Hagel, 2026-10-09; psd-dev-standards 08 v0.2 in psd401/psd-dev-standards#42).
+   - **Site:** one container on ECS Fargate (ARM64) behind an ALB with WAF. That's simpler than Lambda adapters for Next.js with `sharp`, and the same image runs the scheduled jobs.
+   - **Database:** RDS PostgreSQL. The app reads the RDS-managed master password at connect time, so it never sits in Terraform state and rotation doesn't break connections.
+   - **No NAT gateway.** App tasks take public IPs for outbound calls (Google sign-in, SES, AWS APIs), and their security group admits only the load balancer. That's a Checkov skip (CKV_AWS_333). Adding a NAT gateway later is a small change if the district prefers private tasks.
+   - **WAF:** AWS managed rules plus a per-IP rate limit, which also slows abuse of the public report and alert forms (DECISIONS 96, 103).
+   - **Not applied.** The account, state bucket and SMS provider are open (QUESTIONS 26, 27).

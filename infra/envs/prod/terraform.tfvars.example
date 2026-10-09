@@ -1,0 +1,3 @@
+# Copy to terraform.tfvars (git-ignored) or pass as -var in CI.
+aws_account_id = "123456789012"
+alarm_email    = "athletics-alarms@psd401.net"
