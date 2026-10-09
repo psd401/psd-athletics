@@ -8,6 +8,7 @@ import { BellIcon, CalendarAddIcon, PinIcon, WatchIcon } from "../../../../compo
 import { StatusTag } from "../../../../components/athletics/status-tag";
 import { Tabs } from "../../../../components/athletics/tabs";
 import { AlbumGrid } from "../../../../components/school/album-grid";
+import { FeedList } from "../../../../components/school/feed-list";
 import { Motif } from "../../../../components/school/school-hero";
 import { Masthead, SchoolFooter, UtilityBar } from "../../../../components/school/school-sections";
 import styles from "../../../../components/school/school.module.css";
@@ -15,6 +16,7 @@ import phone from "../../../../components/school/phone.module.css";
 import { PhoneTabBar } from "../../../../components/school/phone-tabbar";
 import t from "../../../../components/school/team.module.css";
 import { appDb } from "../../../../lib/data/db";
+import { gameLabels, listFeed } from "../../../../lib/feed/posts";
 import { albumCards } from "../../../../lib/photos/cards";
 import { getTeamContent, listGames, listSchools, listTeams, type TeamView } from "../../../../lib/data/queries";
 import { LEAGUE_URL, schoolContent } from "../../../../lib/schools/content";
@@ -96,10 +98,11 @@ export default async function TeamPage({ params, searchParams }: { params: Param
   const wanted = (Array.isArray(query.level) ? query.level[0] : query.level) as Level | undefined;
   const team: TeamView = teams.find((x) => x.level === wanted) ?? teams.find((x) => x.level === "varsity") ?? teams[0]!;
   const now = currentTime();
-  const [games, teamContent, albums] = await Promise.all([
+  const [games, teamContent, albums, posts] = await Promise.all([
     listGames(db, { schoolId: school.id }),
     getTeamContent(db, team.id),
     albumCards(db, { schoolId: school.id, teamId: team.id, limit: 12 }),
+    listFeed(db, { schoolId: school.id, teamIds: [team.id], limit: 6 }),
   ]);
   const rows = teamRows(
     games.filter((g) => g.teamId === team.id),
@@ -214,20 +217,30 @@ export default async function TeamPage({ params, searchParams }: { params: Param
       id: "news",
       label: "News",
       panel:
-        teamContent.stories.length === 0 ? (
+        teamContent.stories.length === 0 && posts.length === 0 ? (
           <Empty>{`No ${team.sport.toLowerCase()} stories yet. Recaps appear here when the coaching staff publishes them.`}</Empty>
         ) : (
-          <ul className={t.list}>
-            {teamContent.stories.map((s) => (
-              <li key={s.id} className={t.card}>
-                <span className={`ath-label ${t.small}`}>{formatShortDate(pacificDate(s.publishedAt))}</span>
-                <h3>
-                  <Link href={`/${slug}/stories/${s.slug}`}>{s.title}</Link>
-                </h3>
-                {s.summary ? <p className={t.meta}>{s.summary}</p> : null}
-              </li>
-            ))}
-          </ul>
+          <>
+            {posts.length ? (
+              <>
+                <h3 className={t.panelHeading}>From the sidelines</h3>
+                <FeedList slug={slug} posts={posts} games={gameLabels(games)} empty="" />
+              </>
+            ) : null}
+            {teamContent.stories.length ? (
+              <ul className={t.list}>
+                {teamContent.stories.map((s) => (
+                  <li key={s.id} className={t.card}>
+                    <span className={`ath-label ${t.small}`}>{formatShortDate(pacificDate(s.publishedAt))}</span>
+                    <h3>
+                      <Link href={`/${slug}/stories/${s.slug}`}>{s.title}</Link>
+                    </h3>
+                    {s.summary ? <p className={t.meta}>{s.summary}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </>
         ),
     },
     {

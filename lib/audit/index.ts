@@ -20,6 +20,7 @@ const tables = {
   role_assignment: s.roleAssignment,
   album: s.album,
   photo: s.photo,
+  feed_post: s.feedPost,
 } as const;
 
 export type ObjectType = keyof typeof tables;
