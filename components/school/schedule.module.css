@@ -372,6 +372,8 @@
 }
 
 .scroll {
+  /* Contains absolutely positioned visually-hidden text, so it can't widen the page. */
+  position: relative;
   overflow-x: auto;
   border-radius: 18px;
 }
