@@ -1,7 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { compactRemaining, Countdown, remaining } from "./countdown";
+import { CompactCountdown, compactRemaining, Countdown, remaining } from "./countdown";
 
 describe("remaining", () => {
   it("splits the time left into days, hours, minutes and seconds", () => {
@@ -60,5 +60,34 @@ describe("compactRemaining", () => {
     expect(compactRemaining(start, start - 2 * 3_600_000 - 5_000)).toBe("02:00:05");
     expect(compactRemaining(start, start - 86_400_000 - 1000)).toBe("1 day 00:00:01");
     expect(compactRemaining(start, start)).toBeNull();
+  });
+});
+
+describe("CompactCountdown", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-09T02:29:58Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("counts down in one line and says Live at the start time", () => {
+    render(
+      <CompactCountdown
+        startsAt="2026-10-09T02:30:00Z"
+        clockOffsetMs={0}
+        initialNow={Date.parse("2026-10-09T02:29:58Z")}
+        unit="Start"
+        startLabel="7:30 PM"
+      />,
+    );
+    const timer = screen.getByRole("timer", { name: "Time until start" });
+    expect(timer).toHaveTextContent("Start in00:02");
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getByRole("timer")).toHaveTextContent("Start was 7:30 PMLive");
   });
 });
