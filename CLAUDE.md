@@ -32,6 +32,8 @@ bun run build        # production build — must pass before PR
 bun run test         # vitest run (CI gate; a zero-test repo fails psd-ci)
 bun run lint         # eslint . — includes test-quality rules
 bun run typecheck    # tsc --noEmit
+bun run db:generate  # drizzle-kit: write a new SQL migration in drizzle/ after editing lib/db/schema.ts
+bun run db:migrate   # apply migrations to DATABASE_URL (without it, the app uses in-memory PGlite and migrates itself)
 ```
 
 Always `bun run test` (the package script), never bare `bun test` (bun's own runner).
@@ -41,6 +43,7 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 - `app/` — App Router routes. Planned: `/` hub, `/ghh`, `/phs`, `/studio`, `/mcp`.
 - `components/` — shared components, colocated `*.test.tsx` beside each. Public-site components in `components/athletics/`.
 - `styles/themes.css` — the only place raw colors live: school palettes and `--ath-*` theme tokens (`data-school="hub|ghh|phs"`) over Nexus tokens.
+- `lib/db/schema.ts` — the data model; `drizzle/` — committed migrations (never edit one; generate a new one).
 - `design/` — approved comps (`*.dc.html`) and `assets/` (logos, photos). Reference only; the app doesn't import from here.
 - `docs/` — `SPEC.md`, `BRAND.md`, `KICKOFF.md`, `DECISIONS.md`, `QUESTIONS.md` (`PLAN.md` arrives in Phase 1).
 - `fixtures/fall-2026-snapshot.json` — real fall 2026 games, records and school facts; seed data.
