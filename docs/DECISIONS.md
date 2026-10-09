@@ -104,6 +104,12 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 54. **Each school picks a section order** (`layout` in `lib/schools/content.ts`): Gig Harbor uses the GHHS-Home order, Peninsula the PHS-Home order. The new patterns are shared components either school can use: match-card hero, Live now strip, week board, champions band, pillars and athletics office. The champions band only shows on the page of the school that won the latest Fish Bowl.
 55. **Small departures from the PHS comp:** the opponent's crest is a monogram of their initials (we don't hold other schools' logos) instead of the comp's dashed placeholder; the photo tint is a flat 78% of the school's darkest color instead of a gradient; the pillars are 1978, Unified and Letter, picked by `pillarFigures` (the 2012–13 league titles are in 1978's text); Stories stay hidden until there are stories.
 
+## 2026-10-08 — Game-day page (PLAN task 2.6)
+
+56. **`/[school]/game/[id]` works for any game**, not just tonight's: before the game it counts down ("Start in 28:00"; "Kickoff" for football) and flips to Live at the listed start; after, it shows the final; a past game without a score says so. A game id under the other school's path is a 404. "Game-day info" links come from the school hero's tonight card, Peninsula's match card and the team page's next game.
+57. **"Know before you go" shows only for home games** and keeps the comp's bracketed placeholders (gates, parking, bag policy, accessible seating) until the athletics office supplies them. It's a native `<details>` accordion.
+58. **The text-me switches are shown disabled** with "Text alerts start later this season", like the other alert forms until Phase 6. The comp's search button and "More" tab are left out; the phone tab bar has Home, Schedule, Scores and Teams.
+
 ## 2026-10-08 — Review fixes
 
 63. **Roster entries need a publish step** (review finding on #16). `roster_entry` gains `published_at` (null until a coach publishes) in migration `0001`, and public pages show published entries only. There's no directory-information opt-out in athletics (Kris Hagel, 2026-10-09), so no opt-out column. Coach-supplied document and sponsor links render only if they're `https:` URLs.

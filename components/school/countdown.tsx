@@ -70,3 +70,46 @@ export function Countdown({ startsAt, clockOffsetMs, initialNow, label }: Countd
     </div>
   );
 }
+
+/** "1:23:45", "2 days 03:10:05", or null once started. */
+export function compactRemaining(startsAt: number, now: number): string | null {
+  const t = remaining(startsAt, now);
+  if (t.started) return null;
+  const clock = `${t.h > 0 || t.d > 0 ? `${pad(t.h)}:` : ""}${pad(t.m)}:${pad(t.s)}`;
+  return t.d > 0 ? `${t.d} ${t.d === 1 ? "day" : "days"} ${clock}` : clock;
+}
+
+/** One-line countdown for the game-day page; says Live at the start time. */
+export function CompactCountdown({
+  startsAt,
+  clockOffsetMs,
+  initialNow,
+  unit,
+  startLabel,
+  className,
+}: {
+  startsAt: string;
+  clockOffsetMs: number;
+  initialNow: number;
+  /** "Kickoff" or "Start" */
+  unit: string;
+  /** "7:30 PM" */
+  startLabel: string;
+  className?: string;
+}) {
+  const start = new Date(startsAt).getTime();
+  const [now, setNow] = useState(initialNow);
+  useEffect(() => {
+    const tick = () => setNow(Date.now() + clockOffsetMs);
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [clockOffsetMs]);
+  const text = compactRemaining(start, now);
+  return (
+    <div className={className} role="timer" aria-label={`Time until ${unit.toLowerCase()}`}>
+      <span className="ath-label">{text ? `${unit} in` : `${unit} was ${startLabel}`}</span>
+      <span className="ath-display">{text ?? "Live"}</span>
+    </div>
+  );
+}

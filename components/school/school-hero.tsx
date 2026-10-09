@@ -77,6 +77,9 @@ function TonightCard({ game, now }: { game: GameView; now: Date }) {
             Directions
           </a>
         ) : null}
+        <Link className={`${styles.btn} ${styles.btnLine}`} href={`/${game.schoolSlug}/game/${game.id}`}>
+          Game-day info
+        </Link>
         <a className={`${styles.btn} ${styles.btnLine}`} href={`/api/games/${game.id}/ics`}>
           <CalendarAddIcon />
           Add to calendar
