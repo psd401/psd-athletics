@@ -45,6 +45,14 @@ const sharedPairs: [string, string, number][] = [
   ["--ath-white", "--ghh-navy", 4.5],
   ["--ath-white", "--phs-green", 4.5],
   ["--ghh-columbia", "--ghh-navy", 4.5],
+  ["--ghh-on-navy", "--ghh-navy", 4.5],
+  ["--ghh-sky-light", "--ghh-navy", 4.5],
+  ["--phs-tag", "--phs-green", 4.5],
+  ["--phs-motif", "--phs-green", 4.5],
+  ["--hub-on-night", "--hub-night", 4.5],
+  ["--hub-on-night-text", "--hub-night", 4.5],
+  ["--hub-on-night-label", "--hub-night", 4.5],
+  ["--ath-white", "--hub-ink", 4.5],
 ];
 
 describe("athletics themes", () => {
