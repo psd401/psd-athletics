@@ -127,7 +127,7 @@ Each line is one small PR, stacked in order. Every PR runs `bun run test`, `lint
 | 2.7 | Staff directory (`/[school]/staff`) with message relay stubbed until alerts infrastructure exists | `PHS-Staff.dc.html` |
 | 2.8 | Families hub (`/families`) | `Main.dc.html` families section, SPEC §4 |
 
-This session builds 1.1–1.6 and 2.1–2.2. 2.3–2.8 follow.
+Built so far: 1.1–1.6 and 2.1–2.2 (PRs #4–#11). 2.3–2.8 follow; team links, schedule CTAs and the game-day buttons light up as those pages land (DECISIONS 28, 35).
 
 ### Phase 2 rules for data the fixtures don't have
 
