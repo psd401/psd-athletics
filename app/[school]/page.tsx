@@ -97,7 +97,11 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
         const levels = inTerm.filter((t) => t.sportSlug === sportSlug);
         const varsity = levels.find((t) => t.level === "varsity");
         const streak = varsity ? winStreak(games.filter((g) => g.teamId === varsity.id)) : 0;
-        return { name: sport, meta: teamMeta(varsity?.record ?? {}, levels.map((t) => t.level), streak) };
+        return {
+          name: sport,
+          meta: teamMeta(varsity?.record ?? {}, levels.map((t) => t.level), streak),
+          href: `/${slug}/teams/${sportSlug}`,
+        };
       }),
     };
   });
@@ -105,7 +109,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
   return (
     <div data-school={slug} className={styles.page}>
       <UtilityBar other={other} content={content} />
-      <Masthead school={school} seasons={seasons.map((s) => ({ term: s.term, label: s.label, sports: s.teams.map((t) => t.name) }))} />
+      <Masthead school={school} seasons={seasons.map((s) => ({ term: s.term, label: s.label, sports: s.teams.map((t) => ({ name: t.name, href: t.href })) }))} />
       <main>
         <ScoreTicker
           items={tickerItems(games, now, { mode: "school", finals: 4 })}
@@ -133,7 +137,7 @@ export default async function SchoolPage({ params }: { params: Promise<{ school:
           sport={marquee ? { slug: marquee.sportSlug, name: marquee.sport } : null}
         />
         <LatestFinals games={latestFinals(games, 8)} />
-        <SeasonForm cards={seasonFormCards(games, now, { marqueeSport: marquee?.sportSlug ?? null, limit: 3 })} />
+        <SeasonForm schoolSlug={slug} cards={seasonFormCards(games, now, { marqueeSport: marquee?.sportSlug ?? null, limit: 3 })} />
         <TeamsTabs seasons={seasons} initial={currentTerm(today)} />
         <Tradition school={school} content={content} honors={honors} />
         <FanZone school={school} content={content} />

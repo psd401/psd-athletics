@@ -468,6 +468,8 @@ export const rosterEntry = pgTable("roster_entry", {
   position: text("position"),
   grade: integer("grade"),
   photoReleaseOptOut: boolean("photo_release_opt_out").notNull().default(false),
+  /** Null until a coach publishes the roster entry; public pages show published entries only. */
+  publishedAt: timestamp("published_at", { withTimezone: true }),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
 });

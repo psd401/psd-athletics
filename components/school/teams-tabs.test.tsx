@@ -4,9 +4,9 @@ import { describe, expect, it } from "vitest";
 import { TeamsTabs, type SeasonTeams } from "./teams-tabs";
 
 const seasons: SeasonTeams[] = [
-  { term: "fall", label: "Fall", teams: [{ name: "Football", meta: "3–2 · League 2–0" }] },
-  { term: "winter", label: "Winter", teams: [{ name: "Wrestling", meta: "Varsity" }] },
-  { term: "spring", label: "Spring", teams: [{ name: "Baseball", meta: "Varsity" }] },
+  { term: "fall", label: "Fall", teams: [{ name: "Football", meta: "3–2 · League 2–0", href: "/ghh/teams/football" }] },
+  { term: "winter", label: "Winter", teams: [{ name: "Wrestling", meta: "Varsity", href: "/ghh/teams/wrestling" }] },
+  { term: "spring", label: "Spring", teams: [{ name: "Baseball", meta: "Varsity", href: "/ghh/teams/baseball" }] },
 ];
 
 describe("TeamsTabs", () => {
@@ -16,6 +16,7 @@ describe("TeamsTabs", () => {
     const panel = screen.getByRole("tabpanel", { name: "Fall" });
     expect(within(panel).getByRole("heading", { name: "Football" })).toBeInTheDocument();
     expect(within(panel).getByText("3–2 · League 2–0")).toBeInTheDocument();
+    expect(within(panel).getByRole("link", { name: /Football/ })).toHaveAttribute("href", "/ghh/teams/football");
   });
 
   it("switches seasons on click", () => {

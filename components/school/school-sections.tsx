@@ -47,7 +47,7 @@ export function Masthead({
 }: {
   school: SchoolView;
   seasons: MenuSeason[];
-  current?: "home" | "schedule";
+  current?: "home" | "schedule" | "team";
 }) {
   const tile = school.id === "phs"; // The P logo disappears on green; it sits on a white tile (docs/BRAND.md).
   const home = `/${school.slug}`;
@@ -149,7 +149,7 @@ export function LatestFinals({ games }: { games: GameView[] }) {
   );
 }
 
-export function SeasonForm({ cards }: { cards: FormCard[] }) {
+export function SeasonForm({ cards, schoolSlug }: { cards: FormCard[]; schoolSlug: string }) {
   if (cards.length === 0) return null;
   return (
     <section className={`${styles.sec} ${styles.secTight}`} aria-label="Season form">
@@ -157,7 +157,10 @@ export function SeasonForm({ cards }: { cards: FormCard[] }) {
       <ul className={styles.form3}>
         {cards.map((card, i) => (
           <li key={card.teamId}>
-            <div className={`${styles.formCard} ${i === 0 ? `${styles.formCardLead} ath-on-dark` : ""}`}>
+            <Link
+              href={`/${schoolSlug}/teams/${card.sportSlug}${card.level === "varsity" ? "" : `?level=${card.level}`}`}
+              className={`${styles.formCard} ${i === 0 ? `${styles.formCardLead} ath-on-dark` : ""}`}
+            >
               <h3 className={`ath-label ${styles.formSport}`} style={{ margin: 0 }}>
                 {card.sport} · {levelLabel[card.level]}
               </h3>
@@ -186,7 +189,7 @@ export function SeasonForm({ cards }: { cards: FormCard[] }) {
                 ))}
               </ol>
               {card.next ? <p className={styles.formNext}>{card.next}</p> : null}
-            </div>
+            </Link>
           </li>
         ))}
       </ul>

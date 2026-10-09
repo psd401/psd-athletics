@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { ChevronDownIcon } from "../athletics/icons";
@@ -8,7 +9,7 @@ import styles from "./school.module.css";
 export interface MenuSeason {
   term: string;
   label: string;
-  sports: string[];
+  sports: { name: string; href: string }[];
 }
 
 /** Teams mega-menu: a disclosure that closes on Escape or a click outside. */
@@ -51,11 +52,10 @@ export function TeamsMenu({ seasons }: { seasons: MenuSeason[] }) {
               <h2 className={`ath-label ${styles.megaTitle}`}>{season.label}</h2>
               <ul className={styles.megaList}>
                 {season.sports.map((sport) => (
-                  <li key={sport}>
-                    {/* Team pages arrive in task 2.4; until then each entry opens the Teams section. */}
-                    <a href={`#teams-${season.term}`} onClick={() => setOpen(false)}>
-                      {sport} <span aria-hidden="true">→</span>
-                    </a>
+                  <li key={sport.href}>
+                    <Link href={sport.href} onClick={() => setOpen(false)}>
+                      {sport.name} <span aria-hidden="true">→</span>
+                    </Link>
                   </li>
                 ))}
               </ul>

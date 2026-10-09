@@ -4,8 +4,15 @@ import { describe, expect, it } from "vitest";
 import { TeamsMenu } from "./teams-menu";
 
 const seasons = [
-  { term: "fall", label: "Fall", sports: ["Football", "Volleyball"] },
-  { term: "winter", label: "Winter", sports: ["Wrestling"] },
+  {
+    term: "fall",
+    label: "Fall",
+    sports: [
+      { name: "Football", href: "/ghh/teams/football" },
+      { name: "Volleyball", href: "/ghh/teams/volleyball" },
+    ],
+  },
+  { term: "winter", label: "Winter", sports: [{ name: "Wrestling", href: "/ghh/teams/wrestling" }] },
 ];
 
 describe("TeamsMenu", () => {
@@ -18,7 +25,7 @@ describe("TeamsMenu", () => {
     fireEvent.click(button);
     expect(button).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("heading", { name: "Fall" })).toBeVisible();
-    expect(screen.getByRole("link", { name: /Football/ })).toHaveAttribute("href", "#teams-fall");
+    expect(screen.getByRole("link", { name: /Football/ })).toHaveAttribute("href", "/ghh/teams/football");
 
     fireEvent.keyDown(document, { key: "Escape" });
     expect(button).toHaveAttribute("aria-expanded", "false");
