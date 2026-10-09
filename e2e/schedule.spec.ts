@@ -43,6 +43,7 @@ test.describe("school schedule", () => {
     await expect(october.getByRole("columnheader")).toHaveCount(7);
     await expect(october.locator('td[aria-current="date"]')).toContainText("8");
     expect(await axeViolations(page)).toEqual([]);
+    expect(await hasHorizontalScroll(page)).toBe(false);
   });
 
   test("serves the filtered view as a calendar feed", async ({ request }) => {
