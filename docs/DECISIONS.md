@@ -65,3 +65,13 @@ Choices made while building, newest last. Each entry says what was decided, why,
 38. **The Google OAuth client is set up through `psd-gcp-infra`.** That repo keeps OAuth clients and consent screens out of Terraform (no public API) and documents them in its `RUNBOOK.md`, so the athletics client is a runbook entry there: an Internal consent screen (district accounts only), scopes `openid email profile`, redirect URIs `http://localhost:3000/api/auth/callback/google` and `https://athletics.psd401.net/api/auth/callback/google`. The client ID and secret go to the Keychain locally and Secrets Manager in the cloud (QUESTIONS 17).
 39. **Away venues come from Arbiter.** No hand entry; away games keep no Directions button until the sync brings venues (QUESTIONS 19).
 40. **PRs stay stacked** and work continues without waiting for each merge.
+46. **School-level ticket, stream, store and league links** (QUESTIONS 20). Verified on 2026-10-08: the GoFan API returns each school's name, mascot and address for its ID, the NFHS page titles name the school and city, and the schools' own athletics pages link to the stores and to ArbiterLive. Recorded in `lib/schools/content.ts` and used for the Fan Zone, utility bar, footers and hub cards. Per-game Tickets and Watch buttons still need a per-event link, because a school page isn't the game.
+
+| | Gig Harbor | Peninsula |
+|---|---|---|
+| GoFan | https://gofan.co/app/school/WA23221 | https://gofan.co/app/school/WA23302 |
+| NFHS Network | https://www.nfhsnetwork.com/schools/gig-harbor-high-school-gig-harbor-wa | https://www.nfhsnetwork.com/schools/peninsula-high-school-gig-harbor-wa |
+| Team store (BSN Sideline, as linked from the school sites) | http://sideline.bsnsports.com/schools/washington/gigharbor/gig-harbor-high-school | https://sideline.bsnsports.com/schools/washington/gigharbor/peninsula-high-school |
+| ArbiterLive | https://www.arbiterlive.com/School/8486 | https://www.arbiterlive.com/School/17802 |
+
+League: Puget Sound League, https://www.pugetsoundleague.org/.
