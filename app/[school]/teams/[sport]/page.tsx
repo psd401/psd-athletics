@@ -7,6 +7,7 @@ import { GameActions, mapsUrl } from "../../../../components/athletics/game-acti
 import { BellIcon, CalendarAddIcon, PinIcon, WatchIcon } from "../../../../components/athletics/icons";
 import { StatusTag } from "../../../../components/athletics/status-tag";
 import { Tabs } from "../../../../components/athletics/tabs";
+import { AlbumGrid } from "../../../../components/school/album-grid";
 import { Motif } from "../../../../components/school/school-hero";
 import { Masthead, SchoolFooter, UtilityBar } from "../../../../components/school/school-sections";
 import styles from "../../../../components/school/school.module.css";
@@ -14,6 +15,7 @@ import phone from "../../../../components/school/phone.module.css";
 import { PhoneTabBar } from "../../../../components/school/phone-tabbar";
 import t from "../../../../components/school/team.module.css";
 import { appDb } from "../../../../lib/data/db";
+import { albumCards } from "../../../../lib/photos/cards";
 import { getTeamContent, listGames, listSchools, listTeams, type TeamView } from "../../../../lib/data/queries";
 import { LEAGUE_URL, schoolContent } from "../../../../lib/schools/content";
 import { safeHttpsUrl } from "../../../../lib/security/url";
@@ -94,7 +96,11 @@ export default async function TeamPage({ params, searchParams }: { params: Param
   const wanted = (Array.isArray(query.level) ? query.level[0] : query.level) as Level | undefined;
   const team: TeamView = teams.find((x) => x.level === wanted) ?? teams.find((x) => x.level === "varsity") ?? teams[0]!;
   const now = currentTime();
-  const [games, teamContent] = await Promise.all([listGames(db, { schoolId: school.id }), getTeamContent(db, team.id)]);
+  const [games, teamContent, albums] = await Promise.all([
+    listGames(db, { schoolId: school.id }),
+    getTeamContent(db, team.id),
+    albumCards(db, { schoolId: school.id, teamId: team.id, limit: 12 }),
+  ]);
   const rows = teamRows(
     games.filter((g) => g.teamId === team.id),
     now,
@@ -228,16 +234,10 @@ export default async function TeamPage({ params, searchParams }: { params: Param
       id: "photos",
       label: "Photos",
       panel:
-        teamContent.albums.length === 0 ? (
+        albums.length === 0 ? (
           <Empty>Game albums appear here when the coaching staff posts them.</Empty>
         ) : (
-          <ul className={t.list}>
-            {teamContent.albums.map((a) => (
-              <li key={a.id} className={t.card}>
-                {a.title}
-              </li>
-            ))}
-          </ul>
+          <AlbumGrid slug={slug} albums={albums} empty="" showSport={false} />
         ),
     },
     {
