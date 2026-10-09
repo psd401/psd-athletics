@@ -188,26 +188,17 @@ export default async function GameDayPage({ params }: { params: Params }) {
         ) : null}
 
         <section className={g.card} aria-labelledby="text-title">
-          <h2 id="text-title" className="ath-visually-hidden">
-            Text alerts
-          </h2>
           <div className={g.switchRow}>
             <span className={g.switchText}>
-              <b id="sw-final">Text me the final score</b>
+              <b id="text-title">Get the final score and any schedule change</b>
               <span className={g.small}>
-                {game.sport} · {levelLabel[game.level]}
+                {game.sport} · {levelLabel[game.level]} · by text or email, no account
               </span>
             </span>
-            <button type="button" className={g.sw} role="switch" aria-checked="false" aria-labelledby="sw-final" disabled />
           </div>
-          <div className={g.switchRow}>
-            <span className={g.switchText}>
-              <b id="sw-change">Text me schedule changes</b>
-              <span className={g.small}>Time, field or date moves from Arbiter</span>
-            </span>
-            <button type="button" className={g.sw} role="switch" aria-checked="false" aria-labelledby="sw-change" disabled />
-          </div>
-          <p className={g.small}>Text alerts start later this season.</p>
+          <Link className={`${g.big} ${g.bigGhost}`} href={`/alerts?team=${game.teamId}`}>
+            Follow {game.sport}
+          </Link>
         </section>
 
         {next.length > 0 ? (

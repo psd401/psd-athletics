@@ -15,7 +15,7 @@ test.describe("game-day page", () => {
     await expect(page.getByRole("definition").first()).toHaveText("5–2");
     await expect(page.getByRole("link", { name: "Tickets on GoFan" })).toHaveAttribute("href", "https://gofan.co/app/school/WA23221");
     await expect(page.getByRole("heading", { name: "Know before you go" })).toBeVisible();
-    await expect(page.getByRole("switch", { name: "Text me the final score" })).toBeDisabled();
+    await expect(page.getByRole("link", { name: /^Follow / })).toHaveAttribute("href", /^\/alerts\?team=[0-9a-f-]{36}$/);
     await expect(page.getByRole("heading", { name: "Up next" })).toBeVisible();
     expect(await axeViolations(page)).toEqual([]);
     expect(await hasHorizontalScroll(page)).toBe(false);

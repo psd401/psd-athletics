@@ -1,0 +1,97 @@
+/* Alerts sign-up, confirm and stop pages (SPEC §9). */
+
+/* Paired with .ath-wrap: vertical padding only, so the side gutter stays (DECISIONS 69). */
+.main {
+  max-width: 720px;
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+.h1 {
+  margin: 0 0 var(--space-4);
+  font-size: clamp(44px, 6vw, 72px);
+  color: var(--ath-brand);
+}
+
+.lede {
+  margin: 0 0 var(--space-8);
+  font: 500 18px/1.55 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--ath-surface);
+  border: 1px solid var(--ath-line);
+}
+
+.card label {
+  display: grid;
+  gap: var(--space-2);
+  font: 600 15px/1.3 var(--ath-font-text);
+}
+
+[data-school] .card input:not([type="checkbox"]),
+[data-school] .card select {
+  min-height: var(--touch-min);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--ath-line-strong);
+  background: var(--ath-white);
+  color: var(--ath-ink);
+  font: 500 16px/1.4 var(--ath-font-text);
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.checks legend {
+  margin-bottom: var(--space-2);
+  font: 600 15px/1.3 var(--ath-font-text);
+}
+
+.card .check,
+.check {
+  display: inline-flex;
+  grid-template-columns: none;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  font: 500 16px/1.3 var(--ath-font-text);
+}
+
+.check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--ath-brand);
+}
+
+.note {
+  margin: 0;
+  font: 500 14px/1.5 var(--ath-font-text);
+  color: var(--ath-muted);
+}
+
+.error,
+.ok,
+.dev {
+  margin: 0 0 var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  font: 600 16px/1.5 var(--ath-font-text);
+  color: var(--ath-ink);
+  background: var(--ath-tint);
+}
+
+.dev {
+  border: 2px dashed var(--ath-line-strong);
+}

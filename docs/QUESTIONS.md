@@ -42,3 +42,4 @@ Things the district needs to answer. When one is answered, write the answer here
 | 24 | Peninsula varsity football results for Sep 25 (at Timberline) and Oct 2 (vs Capital) aren't in the fixture. The site shows "Result not reported" until they're added. | Peninsula AD | Open |
 | 25 | Fish Bowl all-time series record and the first year it was played (shown as placeholders on the hub). | School ADs | Open |
 | 26 | Terraform for AWS: does it live in this repo (`infra/`) or a shared AWS infrastructure repo (like `psd-gcp-infra` for GCP)? Which account, region (assumed `us-west-2`) and state backend? | Technology Services | Open |
+| 27 | Text alerts: which SMS provider (AWS End User Messaging/SNS with a registered 10DLC or toll-free number, or Twilio), and the monthly budget? Email uses AWS SES (answered 2026-10-09); what sending address and domain (for example `alerts@athletics.psd401.net`)? | Technology Services | Open |
