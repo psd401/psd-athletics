@@ -43,15 +43,19 @@ beforeAll(async () => {
   albumId = album!.id;
 }, 30_000);
 
-describe("initial migration", () => {
-  it("creates every table in the plan", async () => {
+describe("migrations", () => {
+  it("create every table in the plan", async () => {
     // Both drivers return { rows }; the shared Db type leaves the result untyped.
     const result = (await db.execute(
       sql`select table_name from information_schema.tables where table_schema = 'public'`,
     )) as unknown as { rows: { table_name: string }[] };
     expect(result.rows.map((r) => r.table_name).sort()).toEqual([
       "account", "agent_connection", "album", "alert_message", "audit_log", "coach_note", "document",
-      "feed_post", "feed_post_photo", "follower", "follower_team", "game", "honor", "person", "photo",
+      "feed_post", "feed_post_photo", "follower", "follower_team", "game", "honor",
+      // OAuth for MCP clients (migration 0002, DECISIONS 109).
+      "jwks", "oauth_access_token", "oauth_client", "oauth_client_assertion", "oauth_client_resource",
+      "oauth_consent", "oauth_refresh_token", "oauth_resource",
+      "person", "photo",
       "photo_report", "role_assignment", "roster_entry", "rule", "schedule_change", "school",
       "school_contact", "season", "session", "sponsor", "sport", "story", "team", "venue", "verification",
     ]);

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   addDays,
@@ -64,9 +64,14 @@ describe("currentTime", () => {
     delete process.env.ATHLETICS_NOW;
   });
 
-  it("uses ATHLETICS_NOW when it's set", () => {
+  it("starts at ATHLETICS_NOW and moves forward from there, so changes get distinct times", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2030-01-01T00:00:00Z"));
     process.env.ATHLETICS_NOW = "2026-10-08T19:00:00-07:00";
     expect(currentTime().toISOString()).toBe("2026-10-09T02:00:00.000Z");
+    vi.advanceTimersByTime(1500);
+    expect(currentTime().toISOString()).toBe("2026-10-09T02:00:01.500Z");
+    vi.useRealTimers();
   });
 
   it("ignores an unreadable ATHLETICS_NOW", () => {

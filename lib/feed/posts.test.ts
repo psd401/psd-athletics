@@ -12,7 +12,7 @@ import { listPublishedAlbums, photoForServing } from "../photos/albums";
 import { memoryPhotoStorage } from "../photos/storage";
 import { cameraJpeg } from "../photos/test-images";
 import { PermissionError, ValidationError } from "../studio/errors";
-import { createPost, listFeed, removePost } from "./posts";
+import { createPost, listFeed, publishPost, removePost } from "./posts";
 
 let db: Db;
 let soccer: string;
@@ -105,16 +105,19 @@ describe("createPost", () => {
     await expect(createPost(as(coach), storage, { teamId: football, kind: "note", body: "Hi" })).rejects.toThrow(PermissionError);
   });
 
-  it("keeps an AI agent's post as a draft for a person to publish", async () => {
+  it("posts from a coach's assistant go live with the coach's access, and the log names the assistant", async () => {
     const [connection] = await db
       .insert(s.agentConnection)
       .values({ personId: "coach", clientName: "Test assistant", expiresAt: new Date("2026-10-10T00:00:00Z") })
       .returning();
     const viaAgent = actor("coach", "head_coach", soccer, connection!.id);
-    const post = await createPost(as(viaAgent), storage, { teamId: soccer, kind: "note", body: "Drafted by the agent." });
-    expect(post.publishedAt).toBeNull();
-    expect((await listFeed(db, { schoolId: "ghhs" })).some((p) => p.id === post.id)).toBe(false);
-    await expect(createPost(as(viaAgent), storage, { teamId: soccer, kind: "photo", photos: [{ data: jpeg, altText: "x" }] })).rejects.toThrow(ValidationError);
+    const post = await createPost(as(viaAgent), storage, { teamId: soccer, kind: "note", body: "Posted by the assistant." });
+    expect(post.publishedAt?.toISOString()).toBe(now.toISOString());
+    expect((await listFeed(db, { schoolId: "ghhs" })).some((p) => p.id === post.id)).toBe(true);
+    const [log] = await db.select().from(s.auditLog).where(eq(s.auditLog.objectId, post.id));
+    expect(log!.agentConnectionId).toBe(connection!.id);
+    // Never beyond the person: the coach's assistant can't post for another team.
+    await expect(createPost(as(viaAgent), storage, { teamId: football, kind: "note", body: "x" })).rejects.toThrow(PermissionError);
   });
 });
 
@@ -140,5 +143,16 @@ describe("listFeed", () => {
     await db.update(s.photo).set({ hiddenReason: "Reported" }).where(eq(s.photo.id, withPhotos.photos[0]!.id));
     expect((await listFeed(db, { schoolId: "ghhs" })).find((p) => p.id === withPhotos.id)!.photos).toHaveLength(1);
     expect(await listFeed(db, { schoolId: "phs" })).toEqual([]);
+  });
+});
+
+describe("publishPost", () => {
+  it("publishes a draft for anyone who can post to the team, including their assistant", async () => {
+    const [draft] = await db.insert(s.feedPost).values({ teamId: soccer, kind: "note", body: "Waiting.", authorId: "asst" }).returning();
+    const [connection] = await db.insert(s.agentConnection).values({ personId: "asst", clientName: "Claude", expiresAt: new Date("2026-10-10T00:00:00Z") }).returning();
+    await expect(publishPost(as(photographer), draft!.id)).rejects.toThrow(PermissionError);
+    const live = await publishPost(as(actor("asst", "assistant_coach", soccer, connection!.id)), draft!.id);
+    expect(live.publishedAt?.toISOString()).toBe(now.toISOString());
+    expect((await listFeed(db, { schoolId: "ghhs" })).some((p) => p.id === draft!.id)).toBe(true);
   });
 });

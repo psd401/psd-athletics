@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { and, desc, eq, inArray, isNotNull } from "drizzle-orm";
+import { and, desc, eq, inArray, isNotNull, isNull } from "drizzle-orm";
 
 import { TrustFooter } from "../../../components/studio/trust-footer";
 import { Card, PageHead } from "../../../components/studio/ui";
@@ -11,7 +11,7 @@ import { MAX_POST_PHOTOS } from "../../../lib/feed/posts";
 import { byStart, gameState, levelLabel, opponentLine, timeLabel } from "../../../lib/schedule/games";
 import { formatShortDate, pacificDate } from "../../../lib/schedule/time";
 import { requireStudio } from "../../../lib/studio/context";
-import { removePostAction } from "./actions";
+import { publishPostAction, removePostAction } from "./actions";
 
 type Search = Promise<{ team?: string; saved?: string; error?: string }>;
 
@@ -32,6 +32,13 @@ export default async function PostPage({ searchParams }: { searchParams: Search 
     .orderBy(desc(s.feedPost.publishedAt))
     .limit(5);
   const name = (t: (typeof teams)[number]) => `${t.sport} · ${levelLabel[t.level]}`;
+  // Unpublished posts on this person's teams.
+  const drafts = await ctx.db
+    .select({ id: s.feedPost.id, kind: s.feedPost.kind, body: s.feedPost.body, teamId: s.feedPost.teamId })
+    .from(s.feedPost)
+    .where(and(inArray(s.feedPost.teamId, teams.map((t) => t.id)), isNull(s.feedPost.publishedAt)))
+    .orderBy(desc(s.feedPost.createdAt))
+    .limit(10);
 
   return (
     <>
@@ -114,6 +121,25 @@ export default async function PostPage({ searchParams }: { searchParams: Search 
             </button>
           </form>
         </Card>
+
+        {drafts.length ? (
+          <Card title="Drafts" subtitle="Posts saved but not on the feed yet">
+            <ul className={`nx-list ${styles.list}`}>
+              {drafts.map((p) => (
+                <li key={p.id} className={styles.checkRow}>
+                  <span>
+                    {p.body ?? p.kind} <span className={styles.muted}>· {name(teams.find((t) => t.id === p.teamId)!)}</span>
+                  </span>
+                  <form action={publishPostAction.bind(null, p.id)}>
+                    <button type="submit" className="nx-btn nx-btn--secondary nx-btn--sm" aria-label={`Publish "${(p.body ?? p.kind).slice(0, 40)}"`}>
+                      Publish
+                    </button>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        ) : null}
 
         {recent.length ? (
           <Card title="Your recent posts" subtitle="Remove one from the feed; you can undo for 30 minutes">

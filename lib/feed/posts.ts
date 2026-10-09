@@ -1,8 +1,9 @@
 // The team feed (SPEC §7, design/PHS-Feed-Mobile.dc.html,
 // CMS-Sideline-Mobile.dc.html): short posts from coaches, as a photo, a
-// score update or a note. Posts go live at once, except an AI agent's, which
-// wait for a person. Score updates are words; the game's score stays whatever
-// Arbiter says. No likes or comments.
+// score update or a note. Posts go live at once, including from a coach's AI
+// assistant, which acts with the coach's access (DECISIONS 112). Score
+// updates are words; the game's score stays whatever Arbiter says. No likes
+// or comments.
 
 import { randomUUID } from "node:crypto";
 
@@ -64,7 +65,6 @@ export async function createPost(ctx: Ctx, storage: PhotoStorage, input: PostInp
     if (photos.length > MAX_POST_PHOTOS) throw new ValidationError(`Post up to ${MAX_POST_PHOTOS} photos at a time. Use an album for more.`);
     if (photos.some((p) => !p.altText.trim())) throw new ValidationError("Every photo needs an image description.");
     if (photos.some((p) => p.altText.trim().length > 300)) throw new ValidationError("Keep each image description to 300 characters or fewer.");
-    if (ctx.actor.agentConnectionId) throw new ValidationError("Photo posts come from a person. An assistant can draft the words.");
   }
   if (input.kind === "score" && !input.gameId) throw new ValidationError("Pick the game this score is from.");
   let gameId: string | null = null;
@@ -73,8 +73,7 @@ export async function createPost(ctx: Ctx, storage: PhotoStorage, input: PostInp
     if (!game || game.teamId !== input.teamId) throw new ValidationError("Pick one of this team's games, or none.");
     gameId = input.gameId;
   }
-  // Agents propose; people publish.
-  const publishedAt = ctx.actor.agentConnectionId ? null : ctx.now;
+  const publishedAt = ctx.now;
 
   // Check every photo before anything is stored.
   const processed = await Promise.all(photos.map((p) => processPhoto(p.data)));
@@ -130,6 +129,17 @@ export async function removePost(ctx: Ctx, postId: string) {
   }
   const [after] = await ctx.db.update(s.feedPost).set({ publishedAt: null }).where(eq(s.feedPost.id, postId)).returning();
   await recordChange(ctx.db, { actor: ctx.actor, verb: "remove", objectType: "feed_post", objectId: postId, scope, before, after: after!, now: ctx.now });
+  return after!;
+}
+
+/** Publish a draft post. Anyone with feed.post on the team, or their assistant. */
+export async function publishPost(ctx: Ctx, postId: string) {
+  const [before] = await ctx.db.select().from(s.feedPost).where(eq(s.feedPost.id, postId));
+  if (!before) throw new ValidationError("That post doesn't exist.");
+  const scope = await teamScope(ctx.db, before.teamId);
+  if (!can(ctx.actor, "feed.post", scope)) throw new PermissionError("Only this team's coaches can publish to its feed.");
+  const [after] = await ctx.db.update(s.feedPost).set({ publishedAt: before.publishedAt ?? ctx.now }).where(eq(s.feedPost.id, postId)).returning();
+  await recordChange(ctx.db, { actor: ctx.actor, verb: "publish", objectType: "feed_post", objectId: postId, scope, before, after: after!, now: ctx.now });
   return after!;
 }
 

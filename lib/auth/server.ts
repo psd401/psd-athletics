@@ -1,6 +1,8 @@
+import { mcp } from "@better-auth/mcp";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { jwt } from "better-auth/plugins";
 import { APIError } from "better-auth/api";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
@@ -16,11 +18,19 @@ export function googleConfigured(): boolean {
   return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
 }
 
+/** The site's base URL; the MCP endpoint is `${baseUrl()}/mcp`. */
+export function baseUrl(): string {
+  return (process.env.BETTER_AUTH_URL ?? "http://localhost:3000").replace(/\/$/, "");
+}
+
+/** The protected resource MCP clients ask for; access tokens are audience-bound to it (DECISIONS 109). */
+export const mcpResource = () => `${baseUrl()}/mcp`;
+
 export function createAuth(db: Db) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   return betterAuth({
-    baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
+    baseURL: baseUrl(),
     secret: process.env.BETTER_AUTH_SECRET,
     // Password sign-in exists only for the made-up dev people (lib/auth/dev.ts).
     emailAndPassword: { enabled: devSignInEnabled(), disableSignUp: true },
@@ -39,6 +49,14 @@ export function createAuth(db: Db) {
         session: schema.session,
         account: schema.account,
         verification: schema.verification,
+        jwks: schema.jwks,
+        oauthClient: schema.oauthClient,
+        oauthResource: schema.oauthResource,
+        oauthClientResource: schema.oauthClientResource,
+        oauthRefreshToken: schema.oauthRefreshToken,
+        oauthAccessToken: schema.oauthAccessToken,
+        oauthConsent: schema.oauthConsent,
+        oauthClientAssertion: schema.oauthClientAssertion,
       },
     }),
     socialProviders:
@@ -87,7 +105,21 @@ export function createAuth(db: Db) {
         },
       },
     },
-    plugins: [nextCookies()],
+    plugins: [
+      // Coaches' AI assistants sign in as the coach through OAuth 2.1 (SPEC §8).
+      // Tokens are JWTs bound to the /mcp resource; consent is always asked.
+      jwt(),
+      mcp({
+        loginPage: "/sign-in",
+        consentPage: "/connect",
+        resource: mcpResource(),
+        // Assistants like Claude register themselves (RFC 7591). Registering
+        // grants nothing: a psd401.net person still signs in and consents.
+        allowDynamicClientRegistration: true,
+        allowUnauthenticatedClientRegistration: true,
+      }),
+      nextCookies(),
+    ],
   });
 }
 
@@ -108,4 +140,12 @@ export async function currentPerson() {
   const auth = await getAuth();
   const result = await auth.api.getSession({ headers: requestHeaders });
   return result?.user ?? null;
+}
+
+/** The signed OAuth request if its signature checks out (an assistant connecting), else null. */
+export async function verifiedOAuthQuery(query: string | null | undefined): Promise<string | null> {
+  if (!query) return null;
+  const { verifyOAuthQueryParams } = await import("@better-auth/oauth-provider");
+  const { secret } = await (await getAuth()).$context;
+  return (await verifyOAuthQueryParams(query, secret)) ? query : null;
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import "../../vendor/nexus/bundle.css";
@@ -7,7 +8,8 @@ import { TrustFooter } from "../../components/studio/trust-footer";
 import { DEV_PASSWORD, devPeople, devSignInEnabled } from "../../lib/auth/dev";
 import { DISTRICT_DOMAIN } from "../../lib/auth/domain";
 import { safeNext } from "../../lib/auth/redirect";
-import { currentPerson, getAuth, googleConfigured } from "../../lib/auth/server";
+import { authorizePath, oauthQuery } from "../../lib/auth/oauth-flow";
+import { currentPerson, getAuth, googleConfigured, verifiedOAuthQuery } from "../../lib/auth/server";
 
 export const metadata: Metadata = { title: "Sign in · Athletics Studio" };
 
@@ -21,15 +23,19 @@ async function signInAsDevPerson(formData: FormData) {
   const email = String(formData.get("email") ?? "");
   if (!devPeople.some((p) => p.email === email)) throw new Error("Not a development person");
   const auth = await getAuth();
-  await auth.api.signInEmail({ body: { email, password: DEV_PASSWORD } });
-  redirect(safeNext(String(formData.get("next") ?? "")));
+  await auth.api.signInEmail({ body: { email, password: DEV_PASSWORD }, headers: await headers() });
+  // An assistant asked to connect: continue its authorization (DECISIONS 109).
+  const oauth = await verifiedOAuthQuery(String(formData.get("oauth_query") ?? ""));
+  redirect(oauth ? authorizePath(oauth) : safeNext(String(formData.get("next") ?? "")));
 }
 
 async function signInWithGoogle(formData: FormData) {
   "use server";
   const auth = await getAuth();
+  const oauth = await verifiedOAuthQuery(String(formData.get("oauth_query") ?? ""));
   const result = await auth.api.signInSocial({
-    body: { provider: "google", callbackURL: safeNext(String(formData.get("next") ?? "")) },
+    body: { provider: "google", callbackURL: oauth ? authorizePath(oauth) : safeNext(String(formData.get("next") ?? "")) },
+    headers: await headers(),
   });
   if (!result.url) throw new Error("Google sign-in did not return a URL");
   redirect(result.url);
@@ -38,11 +44,17 @@ async function signInWithGoogle(formData: FormData) {
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string | string[]; error?: string | string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const params = await searchParams;
   const next = safeNext(params.next);
-  if (await currentPerson()) redirect(next);
+  // Sent here by an AI assistant's sign-in (OAuth authorize): carry the signed request through.
+  const pendingOAuth = await verifiedOAuthQuery(oauthQuery(params));
+  const wantsFreshLogin = pendingOAuth ? new URLSearchParams(pendingOAuth).get("prompt")?.split(" ").includes("login") : false;
+  if (await currentPerson()) {
+    if (!pendingOAuth) redirect(next);
+    if (!wantsFreshLogin) redirect(authorizePath(pendingOAuth));
+  }
 
   const errorCode = Array.isArray(params.error) ? params.error[0] : params.error;
   const configured = googleConfigured();
@@ -81,6 +93,7 @@ export default async function SignInPage({
                         <form action={signInAsDevPerson}>
                           <input type="hidden" name="email" value={p.email} />
                           <input type="hidden" name="next" value={next} />
+                          {pendingOAuth ? <input type="hidden" name="oauth_query" value={pendingOAuth} /> : null}
                           <button type="submit" className="nx-btn nx-btn--secondary nx-btn--sm">
                             {p.name}
                           </button>
@@ -93,6 +106,7 @@ export default async function SignInPage({
             ) : null}
             <form action={signInWithGoogle}>
               <input type="hidden" name="next" value={next} />
+              {pendingOAuth ? <input type="hidden" name="oauth_query" value={pendingOAuth} /> : null}
               <button type="submit" className="nx-btn nx-btn--primary nx-btn--lg nx-btn--block" disabled={!configured}>
                 Sign in with Google
               </button>
