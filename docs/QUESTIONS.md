@@ -41,3 +41,4 @@ Things the district needs to answer. When one is answered, write the answer here
 | 23 | Link targets for the families hub: the WIAA physical form, each school's ASB payment portal, the self-transportation form, insurance and health forms, eligibility and transfer rules. | School ADs, athletic secretaries | Open |
 | 24 | Peninsula varsity football results for Sep 25 (at Timberline) and Oct 2 (vs Capital) aren't in the fixture. The site shows "Result not reported" until they're added. | Peninsula AD | Open |
 | 25 | Fish Bowl all-time series record and the first year it was played (shown as placeholders on the hub). | School ADs | Open |
+| 26 | Terraform for AWS: does it live in this repo (`infra/`) or a shared AWS infrastructure repo (like `psd-gcp-infra` for GCP)? Which account, region (assumed `us-west-2`) and state backend? | Technology Services | Open |

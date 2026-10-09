@@ -21,7 +21,7 @@ The athletics platform for Peninsula School District: the district hub at `athle
 - Next.js 16 (App Router) · React 19 · TypeScript (strict, `noUncheckedIndexedAccess`) — from `template-nextjs-app`
 - Vitest 4 + @testing-library/react (jsdom) · ESLint flat config · Playwright + axe for smoke and accessibility (`e2e/`; first run: `bunx playwright install chromium`)
 - Chosen in `docs/PLAN.md` §2: Postgres + Drizzle ORM (SQL migrations in `drizzle/`; PGlite in process when `DATABASE_URL` is unset), S3 for photos (Phase 5), Better Auth with Google limited to `psd401.net`, scheduled job handlers in `jobs/` (Phase 3), the official TypeScript MCP SDK (Phase 7).
-- Hosting: AWS `us-west-2`, not yet confirmed. Don't provision anything or add IaC until it is.
+- Hosting: AWS (confirmed 2026-10-09), infrastructure as code in Terraform (the PSD standard). Region `us-west-2` is assumed (QUESTIONS 26). Never apply Terraform or provision anything without the owner's go-ahead.
 
 ## Commands (exact)
 
@@ -49,6 +49,7 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 - `design/` — approved comps (`*.dc.html`) and `assets/` (logos, photos). Reference only; the app doesn't import from here.
 - `docs/` — `SPEC.md`, `BRAND.md`, `KICKOFF.md`, `DECISIONS.md`, `QUESTIONS.md` (`PLAN.md` arrives in Phase 1).
 - `fixtures/fall-2026-snapshot.json` — real fall 2026 games, records and school facts; `fixtures/school-content.json` — honors for the titles bands. Loaded by `lib/db/seed.ts`.
+- `lib/photos/` — photo ingest (`sharp`: strips all metadata), storage (local `.data/photos` now, S3 later), albums, holds and reports. Files are served only through `app/media/[photo]/[size]`.
 - `lib/auth/` — Better Auth (Google, `psd401.net` only; the rule is `domain.ts`). Local secrets: `scripts/with-keychain.sh bun run dev`.
 - `vendor/nexus/` — read-only copy of Nexus from `psd-dev-standards`. Never edit.
 - `.github/workflows/` — thin callers of `PSD401/.github` reusable workflows. Never add CI logic here.
