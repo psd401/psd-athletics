@@ -137,7 +137,7 @@ Each line is one small PR, stacked in order. Every PR runs `bun run test`, `lint
 | 2.7 | Staff directory (`/[school]/staff`) with message relay stubbed until alerts infrastructure exists | `PHS-Staff.dc.html` |
 | 2.8 | Families hub (`/families`) | `Main.dc.html` families section, SPEC §4 |
 
-Built so far: 1.1–1.6 and 2.1–2.2 (PRs #4–#11). 2.3–2.8 follow; team links, schedule CTAs and the game-day buttons light up as those pages land (DECISIONS 28, 35).
+Built so far: all of Phase 1 (1.1–1.6) and Phase 2 (2.1–2.8), PRs #4–#20 in one stack. What's left for the public sites before Arbiter access: per-event ticket/stream links, away venues, stories and photos (Studio, Phase 4–5), and alerts (Phase 6).
 
 ### Phase 2 rules for data the fixtures don't have
 

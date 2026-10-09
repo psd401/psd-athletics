@@ -271,7 +271,7 @@ export function AthleticsOffice({ schoolView, content }: { schoolView: SchoolVie
             <a className={`${styles.btn} ${styles.btnGhost}`} href={content.links.store}>
               Sideline Store
             </a>
-            <Link className={`${styles.btn} ${styles.btnGhost}`} href="/#families">
+            <Link className={`${styles.btn} ${styles.btnGhost}`} href="/families">
               Forms for families
             </Link>
           </div>

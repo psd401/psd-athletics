@@ -115,6 +115,11 @@ League: Puget Sound League, https://www.pugetsoundleague.org/.
 59. **`/[school]/staff` lists the athletics office and one card per sport.** Head coaches come from active `head_coach` role assignments (started, not ended); names only, never contact details. With no assignments yet (QUESTIONS 5, 6), every card says "Head coach not listed yet" and links to its team page. Gig Harbor's office shows the comp's `[Athletic director]` placeholder until the name is confirmed.
 60. **"Message the coach" waits for the relay.** It has to deliver to the coach's district inbox without exposing the address, which needs the email provider (QUESTIONS 3). Until then the page says the athletics office can pass messages along. The masthead gains a Coaches link, and the school footer gains "Coaches & staff".
 
+## 2026-10-08 — Families hub (PLAN task 2.8)
+
+61. **`/families` explains each step in plain language and links where a link is confirmed**: Final Forms and the WIAA Student Eligibility Center (both checked 2026-10-08). The physical form, ASB portal, self-transportation form and health forms say "Link coming soon. Your athletics office can help now." until QUESTIONS 23 is answered. Both offices' published contacts sit beside the steps. Registration stays in Final Forms (SPEC §1).
+62. **One list of family steps** (`lib/families/steps.ts`) feeds the hub's grid and this page. Hub cards without a confirmed outside link now open their step on `/families`. The hub header's links work from any page (`/#week`, `/families`), and school footers link to `/families`.
+
 ## 2026-10-08 — Review fixes
 
 63. **Roster entries need a publish step** (review finding on #16). `roster_entry` gains `published_at` (null until a coach publishes) in migration `0001`, and public pages show published entries only. There's no directory-information opt-out in athletics (Kris Hagel, 2026-10-09), so no opt-out column. Coach-supplied document and sponsor links render only if they're `https:` URLs.

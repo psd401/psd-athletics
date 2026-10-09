@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import type { SchoolView, TeamView } from "../../lib/data/queries";
+import { familySteps, type FamilyIcon } from "../../lib/families/steps";
 import { LEAGUE_URL, schoolContent } from "../../lib/schools/content";
 import { levelLabel, type FishBowlResult } from "../../lib/schedule/games";
 import { formatShortDate } from "../../lib/schedule/time";
@@ -180,41 +182,14 @@ export function SchoolCards({ schools }: { schools: { school: SchoolView; honors
 
 // ------------------------------------------------------------ families
 
-const FINAL_FORMS = "https://peninsula-wa.finalforms.com";
-
-interface FamilyItem {
-  icon: ReactNode;
-  title: string;
-  text: string;
-  href?: string;
-}
-
-// Only Final Forms has a confirmed link; the rest wait for QUESTIONS 23.
-const familyItems: FamilyItem[] = [
-  {
-    icon: <FormIcon />,
-    title: "Register on Final Forms",
-    text: "One account per family for every sport, every season, at both schools.",
-    href: FINAL_FORMS,
-  },
-  {
-    icon: <PulseIcon />,
-    title: "Sports physical",
-    text: "Use the WIAA physical form, then upload it to Final Forms. Valid for two years.",
-  },
-  { icon: <CardIcon />, title: "ASB card", text: "Required for every athlete. Buy it through the school bookkeeper's payment portal." },
-  {
-    icon: <BusIcon />,
-    title: "Self-transportation form",
-    text: "Driving yourself or riding with family to an away game? File it before game day.",
-  },
-  { icon: <ShieldIcon />, title: "Insurance & health forms", text: "Accident insurance, asthma, EpiPen and medication forms in one place." },
-  {
-    icon: <InfoIcon />,
-    title: "Eligibility & transfers",
-    text: "Transfer rules, alternative-education contracts and WIAA eligibility, in plain language.",
-  },
-];
+const familyIcons: Record<FamilyIcon, ReactNode> = {
+  form: <FormIcon />,
+  pulse: <PulseIcon />,
+  card: <CardIcon />,
+  bus: <BusIcon />,
+  shield: <ShieldIcon />,
+  info: <InfoIcon />,
+};
 
 export function FamiliesGrid() {
   return (
@@ -230,28 +205,34 @@ export function FamiliesGrid() {
           <p className={styles.intro}>Same forms, same steps at Gig Harbor and Peninsula. Finish these before the first practice.</p>
         </div>
         <ul className={styles.fam}>
-          {familyItems.map((item) => {
+          {familySteps.map((step) => {
             const body = (
               <>
-                <span className={styles.famIco}>{item.icon}</span>
-                <h3 className={styles.famTitle}>{item.title}</h3>
-                <p className={styles.famText}>{item.text}</p>
-                {item.href ? null : <span className={styles.famSoon}>Link coming soon. Ask your athletics office.</span>}
+                <span className={styles.famIco}>{familyIcons[step.icon]}</span>
+                <h3 className={styles.famTitle}>{step.title}</h3>
+                <p className={styles.famText}>{step.summary}</p>
               </>
             );
             return (
-              <li key={item.title}>
-                {item.href ? (
-                  <a className={styles.famItem} href={item.href}>
+              <li key={step.id}>
+                {step.link ? (
+                  <a className={styles.famItem} href={step.link.href}>
                     {body}
                   </a>
                 ) : (
-                  <div className={styles.famItem}>{body}</div>
+                  <Link className={styles.famItem} href={`/families#${step.id}`}>
+                    {body}
+                  </Link>
                 )}
               </li>
             );
           })}
         </ul>
+        <p className={styles.famMore}>
+          <Link className={`${styles.pill} ${styles.pillDark}`} href="/families">
+            Every step for families
+          </Link>
+        </p>
       </div>
     </section>
   );
