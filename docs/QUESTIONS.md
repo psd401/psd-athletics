@@ -32,11 +32,11 @@ Things the district needs to answer. When one is answered, write the answer here
 
 | # | Question | Who | Status |
 |---|---|---|---|
-| 17 | Who creates the Google OAuth client for Studio sign-in (dev with `http://localhost:3000`, and production), and which Google Cloud project holds it? Nobody can sign in until it exists. | Technology Services | Open |
+| 17 | Who creates the Google OAuth client for Studio sign-in (dev with `http://localhost:3000`, and production), and which Google Cloud project holds it? Nobody can sign in until it exists. | Technology Services | Answered 2026-10-08: the client lives with the district's Google Cloud setup in `psd-gcp-infra` and is created there. That repo keeps OAuth clients out of Terraform (no public API) and records them in its `RUNBOOK.md`; the athletics entry to add is in `docs/PLAN.md` §2 (DECISIONS 38). Open until the client exists. |
 | 18 | Can the org add a reusable E2E workflow (Playwright + axe) so the smoke suite blocks merge, as standards/05 requires? This repo can't add CI logic. Until then Playwright output is pasted into PRs. | Technology Services | Open |
-| 19 | Away-game venues: wait for Arbiter, or should the athletics office enter league venues by hand? Until one happens, away games show no Directions button. | District AD | Open |
+| 19 | Away-game venues: wait for Arbiter, or should the athletics office enter league venues by hand? Until one happens, away games show no Directions button. | District AD | Closed 2026-10-08: wait for Arbiter (DECISIONS 39). |
 | 20 | Does each school have a GoFan school page and an NFHS Network school page we can link to while per-game mapping (9) is sorted? Without links, no Tickets or Watch buttons appear. | District AD | Open |
-| 21 | Sign-off on Better Auth instead of Auth.js for sign-in (reasons in `docs/PLAN.md` §2). | Technology Services | Open |
+| 21 | Sign-off on Better Auth instead of Auth.js for sign-in (reasons in `docs/PLAN.md` §2). | Technology Services | Closed 2026-10-08: approved (DECISIONS 14). |
 | 22 | Which game gets the countdown hero? Plan: next varsity football game in the fall, otherwise the next varsity game. Is there a winter/spring equivalent (for example basketball)? | District AD | Open |
 | 23 | Link targets for the families hub: the WIAA physical form, each school's ASB payment portal, the self-transportation form, insurance and health forms, eligibility and transfer rules. | School ADs, athletic secretaries | Open |
 | 24 | Peninsula varsity football results for Sep 25 (at Timberline) and Oct 2 (vs Capital) aren't in the fixture. The site shows "Result not reported" until they're added. | Peninsula AD | Open |

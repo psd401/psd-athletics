@@ -60,6 +60,16 @@ Schools are one dynamic segment, `[school]`, limited to `ghh` and `phs` by `gene
 | Styling | **CSS Modules** reading CSS variables: Nexus tokens (`vendor/nexus/tokens.css`) for spacing, radii, motion, z-index; athletics theme tokens (`styles/themes.css`) for school colors and type. Fonts through `next/font/google` (self-hosted at build). | No new dependency; tokens stay the single source of values. A Vitest check fails the build if a component stylesheet uses a raw hex color or font family. | The template has no Tailwind; adding it would mean a second token path. |
 | E2E | **Playwright** + **`@axe-core/playwright`**, desktop (1440) and phone (390) projects, WCAG 2.1 A/AA rules | Required by standards/05 and CLAUDE.md. | `psd-ci` doesn't run Playwright, and this repo can't add CI logic. Until the org adds an E2E workflow (QUESTIONS 18), Playwright output is pasted into each PR. |
 
+**Google OAuth client** (DECISIONS 38): created in the district's Google Cloud setup and recorded in `psd-gcp-infra`'s `RUNBOOK.md`, since OAuth clients have no Terraform API. What the entry needs:
+
+| Setting | Value |
+|---|---|
+| Consent screen | Internal (psd401.net users only) |
+| Scopes | `openid`, `email`, `profile` |
+| Authorized redirect URIs | `http://localhost:3000/api/auth/callback/google`, `https://athletics.psd401.net/api/auth/callback/google` (add staging when it exists) |
+| Authorized JavaScript origins | none needed (the redirect is server-side) |
+| Where the credentials go | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: Keychain locally, Secrets Manager in AWS |
+
 Secrets (`BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `DATABASE_URL`) come from the environment. Locally, `scripts/with-keychain.sh` reads them from the macOS Keychain (service = variable name, account = `$USER`) per standards/04 rule 15a. No `.env` files.
 
 ### Time and "now"
