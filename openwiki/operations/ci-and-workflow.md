@@ -6,7 +6,7 @@ tags: [ci, github-actions, standards, pull-requests, codeowners]
 openwiki:
   roles: [delivery, operations]
   change_kinds: [ci, review-process]
-  source_paths: [.github/workflows/psd-ci.yml, .github/workflows/claude-review.yml, .github/workflows/license-check.yml, .github/workflows/openwiki.yml, .github/CODEOWNERS, .github/dependabot.yml, CLAUDE.md, .openwikiignore]
+  source_paths: [.github/workflows/psd-ci.yml, .github/workflows/claude-review.yml, .github/workflows/license-check.yml, .github/workflows/openwiki.yml, .github/workflows/security-scan.yml, .github/CODEOWNERS, .github/dependabot.yml, CLAUDE.md, .openwikiignore]
   invariants: [Workflow files are thin callers of PSD401/.github reusable workflows; never add CI logic here., Tier A requires one human approval other than the author., Zero-test repos fail psd-ci.]
   validation_commands: [bun run test, bun run lint, bun run typecheck, bun run build]
 ---
@@ -20,12 +20,12 @@ openwiki:
 | File | Trigger | Delegates to |
 |---|---|---|
 | `psd-ci.yml` | PRs, push to `main` | `PSD401/.github/.github/workflows/reusable-psd-ci.yml@main` |
-| `claude-review.yml` | PR opened/ready/reopened (skipped for Dependabot) | `reusable-claude-review.yml` (needs `id-token: write`) |
+| `claude-review.yml` | PR opened, synchronize (new pushes), ready for review, reopened (skipped for Dependabot) | `reusable-claude-review.yml` (needs `id-token: write`) |
 | `license-check.yml` | PRs | `reusable-license-check.yml` |
 | `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml`; refreshes this wiki |
 | `security-scan.yml` | PRs, push to `main`, Monday 09:00 cron, manual | `reusable-security-scan.yml@main`; the `@main` ref is deliberate so central bumps propagate, and it is annotated for zizmor's unpinned-uses check |
 
-Never edit workflows to bypass psd-ci. `.github/`, `.claude/`, `.mcp.json`, `CLAUDE.md`, `AGENTS.md` and `vendor/nexus/` require owner review via `.github/CODEOWNERS`. `.github/dependabot.yml` handles dependency updates; adding dependencies requires stating why in the PR body.
+Never edit workflows to bypass psd-ci. `.github/`, `.claude/`, `.mcp.json`, `CLAUDE.md`, `AGENTS.md` and `vendor/nexus/` require owner review via `.github/CODEOWNERS`. `.github/dependabot.yml` opens weekly update PRs for the `github-actions` and `bun` ecosystems. Minor and patch bumps are grouped into one PR; major bumps are ignored (including all `typescript` majors), so they are scheduled migration work. Ignore rules do not suppress Dependabot security alerts. The `bun` ecosystem is deliberate: an npm-ecosystem update would edit `package.json` without `bun.lock`, which psd-ci's frozen-lockfile install correctly rejects. Adding dependencies requires stating why in the PR body.
 
 ## Commands
 
