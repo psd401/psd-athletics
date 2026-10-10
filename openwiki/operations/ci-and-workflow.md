@@ -25,6 +25,8 @@ openwiki:
 | `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml`; refreshes this wiki |
 | `security-scan.yml` | PRs, push to `main`, Monday 09:00 cron, manual | `reusable-security-scan.yml@main`; the `@main` ref is deliberate so central bumps propagate, and it is annotated for zizmor's unpinned-uses check |
 
+The Dependabot split exists because the reusable review cannot receive `id-token: write` from a Dependabot run, and the skipped caller job would otherwise leave the required `claude-review / claude-review` check unreported. Keep the skip job's `name: claude-review` if you touch that file.
+
 Never edit workflows to bypass psd-ci. `.github/`, `.claude/`, `.mcp.json`, `CLAUDE.md`, `AGENTS.md` and `vendor/nexus/` require owner review via `.github/CODEOWNERS`. `.github/dependabot.yml` opens weekly update PRs for the `github-actions` and `bun` ecosystems. Minor and patch bumps are grouped into one PR; major bumps are ignored (including all `typescript` majors), so they are scheduled migration work. Ignore rules do not suppress Dependabot security alerts. The `bun` ecosystem is deliberate: an npm-ecosystem update would edit `package.json` without `bun.lock`, which psd-ci's frozen-lockfile install correctly rejects. Adding dependencies requires stating why in the PR body.
 
 ## Commands
