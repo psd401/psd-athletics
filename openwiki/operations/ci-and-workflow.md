@@ -19,13 +19,16 @@ openwiki:
 
 | File | Trigger | Delegates to |
 |---|---|---|
-| `psd-ci.yml` | PRs, push to `main` | `PSD401/.github/.github/workflows/reusable-psd-ci.yml@main` |
-| `claude-review.yml` | PR opened, synchronize (new pushes), ready for review, reopened (skipped for Dependabot) | `reusable-claude-review.yml` (needs `id-token: write`) |
-| `license-check.yml` | PRs | `reusable-license-check.yml` |
-| `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml`; refreshes this wiki |
-| `security-scan.yml` | PRs, push to `main`, Monday 09:00 cron, manual | `reusable-security-scan.yml@main`; the `@main` ref is deliberate so central bumps propagate, and it is annotated for zizmor's unpinned-uses check |
+| `psd-ci.yml` | PRs, push to `main` | `PSD401/.github/.github/workflows/reusable-psd-ci.yml` pinned to `1aa5f5351a78b15f5c71668037f5d35b9613ae41` (`v1.0.0`) |
+| `claude-review.yml` | PR opened, synchronize (new pushes), ready for review, reopened (not Dependabot) | `reusable-claude-review.yml` (needs `id-token: write`) |
+| `claude-review.yml` job `claude-review-dependabot` | Dependabot PRs only | `reusable-claude-review-skip.yml` (no-op, same check name) |
+| `license-check.yml` | PRs | `reusable-license-check.yml` (same pin) |
+| `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml` (same pin); refreshes this wiki |
+| `security-scan.yml` | PRs, push to `main`, Monday 09:00 cron, manual | `reusable-security-scan.yml` (same pin); the SHA pin is annotated `# v1.0.0` |
 
 The Dependabot split exists because the reusable review cannot receive `id-token: write` from a Dependabot run, and the skipped caller job would otherwise leave the required `claude-review / claude-review` check unreported. Keep the skip job's `name: claude-review` if you touch that file.
+
+Reusable workflows are pinned to a commit SHA, not a branch. To take a central change, bump the pin in each caller in one PR; `.github/dependabot.yml`'s `github-actions` ecosystem (weekly) is configured to propose these bumps.
 
 Never edit workflows to bypass psd-ci. `.github/`, `.claude/`, `.mcp.json`, `CLAUDE.md`, `AGENTS.md` and `vendor/nexus/` require owner review via `.github/CODEOWNERS`. `.github/dependabot.yml` opens weekly update PRs for the `github-actions` and `bun` ecosystems. Minor and patch bumps are grouped into one PR; major bumps are ignored (including all `typescript` majors), so they are scheduled migration work. Ignore rules do not suppress Dependabot security alerts. The `bun` ecosystem is deliberate: an npm-ecosystem update would edit `package.json` without `bun.lock`, which psd-ci's frozen-lockfile install correctly rejects. Adding dependencies requires stating why in the PR body.
 
