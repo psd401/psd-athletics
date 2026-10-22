@@ -45,4 +45,4 @@ Diagram: ordering from SPEC §7 ingest/agent/publishing lists. Volunteer uploads
 
 - Privacy invariants belong in [permission/privacy rules](roles-permissions-privacy.md); test-first for holds, description gating and EXIF stripping (assert stored output has no GPS fields).
 - Uploads through MCP use `psd_athletics_media_upload`, which must run opt-out checks ([MCP tools](../integrations/mcp-server-and-agents.md)).
-- Design photos in `design/assets/photos/` are excluded from this wiki; credits are in `design/assets/photos/CREDITS.md`.
+- Design photos in `design/assets/photos/` are excluded from this wiki; credits are in `design/assets/photos/CREDITS.md`. Committing student-athlete photos to the repo was accepted in DECISIONS #12 ([privacy rules](roles-permissions-privacy.md#student-privacy)); that decision covers the repo only and does not relax the product's EXIF stripping or opt-out holds.
