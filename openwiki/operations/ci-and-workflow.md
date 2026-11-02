@@ -23,7 +23,7 @@ openwiki:
 | `claude-review.yml` | PR opened, synchronize (new pushes), ready for review, reopened (not Dependabot) | `reusable-claude-review.yml` (needs `id-token: write`) |
 | `claude-review.yml` job `claude-review-dependabot` | Dependabot PRs only | `reusable-claude-review-skip.yml` (no-op, same check name) |
 | `license-check.yml` | PRs | `reusable-license-check.yml` (same pin) |
-| `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml` (same pin); refreshes this wiki |
+| `openwiki.yml` | manual, push to `main` ignoring `openwiki/**`, Monday 08:00 cron | `reusable-openwiki.yml` (same pin); refreshes this wiki. Caller grants only `contents: read` and `pull-requests: read` and passes the `BEDROCK_API_KEY` and `PSD_AUTOMATION_APP_PRIVATE_KEY` secrets; the reusable writes through the psd-automation App, not `GITHUB_TOKEN` |
 | `security-scan.yml` | PRs, push to `main`, Monday 09:00 cron, manual | `reusable-security-scan.yml` (same pin); the SHA pin is annotated `# v1.0.0` |
 
 The Dependabot split exists because the reusable review cannot receive `id-token: write` from a Dependabot run, and the skipped caller job would otherwise leave the required `claude-review / claude-review` check unreported. Keep the skip job's `name: claude-review` if you touch that file.
