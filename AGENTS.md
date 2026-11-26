@@ -69,7 +69,7 @@ Always `bun run test` (the package script), never bare `bun test` (bun's own run
 
 ## Working style
 
-- Every change goes through a branch and PR: `psd-ci`, `security-scan` (which includes the license check) and `claude-review` run, and Tier A needs one human approval. Keep PRs small and single-purpose.
+- Every change goes through a branch and PR: `psd-ci`, `security-scan` (which includes the license check) and `claude-review` run, and Tier A needs one human approval. The one exception is a Dependabot PR that `dependabot-auto-merge.yml` accepts, which merges on green required checks with no approval (`docs/DECISIONS.md`, 2026-11-26). Keep PRs small and single-purpose.
 - PR body follows the org template: purpose, AI disclosure, evidence (paste test/lint/typecheck/build output).
 - Build in the phases in `docs/SPEC.md` §11. Phases 1–2 run on fixtures, so the public sites work before Arbiter access is sorted.
 - Questions for the district go in `docs/QUESTIONS.md`; choices you make go in `docs/DECISIONS.md`.
