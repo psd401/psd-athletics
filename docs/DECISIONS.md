@@ -16,3 +16,8 @@ Choices made while building, newest last. Each entry says what was decided, why,
 10. **CODEOWNERS covers agent config and workflows** (`.claude/`, `.mcp.json`, `.github/`, `CLAUDE.md`, `AGENTS.md`), per standards/02 and /04 rule 13.
 11. **The `mcp-server` property stays `false`** until the MCP server exists. Set it to `true` and add `server.json` in the PR that adds the server.
 12. **Photos of student athletes in the repo are fine.** Students who take part in athletics waive photo privacy as part of participating (Kris Hagel). This resolves the claude-review finding on PR #2 about the photos in `design/assets/photos/`. The product's opt-out holds in SPEC §7 stay as designed.
+
+## 2026-11-26 — Dependabot auto-merge
+
+1. **A Dependabot PR the auto-merge workflow accepts merges without a human approval** (decided by Kris Hagel, 2026-11-26). `.github/workflows/dependabot-auto-merge.yml` calls the org reusable at PSD401/.github v1.23.0 with `psd_reusable_pins: true`. It turns on auto-merge only when every update is a patch to a development dependency, or a patch or minor bump of a PSD401/.github reusable workflow pin, Dependabot wrote and signed every commit, and `main` enforces a required status check (psd-dev-standards standards/04 rule 4). Why: nothing else merges a shared-workflow pin bump, and the pins age past the 21-day rule until someone moves them by hand. Cost: those PRs reach `main` on CI alone, and the AI review does not run on a Dependabot PR. A major bump, any other action, a production dependency and every PR a person opens still need the approval.
+
